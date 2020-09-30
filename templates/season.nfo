@@ -1,0 +1,51 @@
+                     m                          m
+                    h+y                        y+h
+                    N++sN                    Ns++N
+       m             ooos                    sooo             m
+      m+             soooy                  yooos             +m
+      /+             oooooN                Nooooo             +/
+     h.om           hoooood                doooooh           m+.h
+     o.oh          msoosssd                dssssosm          ho.o
+     /-osd        dsssssssN                Nsssssssd        dso-/
+     :-+ssymN  Nmysssssssd                  dsssssssymN  Nmyss+-:
+     /-/ssssssssssssssssh                    hssssssssssssssss/-/
+ N   o--sssssssssssssssh                      hsssssssssssssss--o   N
+ h   d--+sssssssssssssd                        dsssssssssssss+--d   h
+ sm   /--syyyyyyyyyyyd      mN                  dyyyyyyyyyyys--/   ms
+ hsN  h--:syyyyyyyyyd       N+/syhhyysosN        dyyyyyyyyys:--h  Nsh
+ mosN  +:::syyyyyyyy        dms::::::::::/osd     yyyyyyyys:::+  Nsom
+  sood m::::oyyyyyyd        Nhs+:::::::::/oooy    dyyyyyyo::::m doos
+  dooosdy::::/syyyym            +::::::+N         myyyys/::::ydsoood
+   ssssss/:::::+syyyN          N:::::::d         Nyyys+:::::/ssssss
+   mssssss+///////+oym         s///////s        mys+///////+ssssssm
+    dsssssso//////////+sydmNNdo/////////ymmmdys+//////////ossssssd
+     dssssssso//////////////////////////////////////////osssssssd
+      Nyssssssso+/////////// :: PHOENiX :: //////////+osssssssyN
+        dyyyyyyyso++++++ : PROUDLY · PRESENTS : ++++osyyyyyyyd
+          myyyyyyyyso++++++++++++++++++++++++++++osyyyyyyyym
+            Ndyyyyyyyysso++++++++++++++++++++ossyyyyyyyydN
+               Ndhyyyyyyysso++++++++++++++ossyyyyyyyhdN
+
+%releaseName%
+
+  Title    : %titleName%
+  Type     : %titleType% (%titleYear%)
+  Season   : %seasonNum% (%episodeCount% Episodes)
+  IMDb     : https://imdb.com/title/%imdbId%
+  TMDB     : https://themoviedb.org/%tmdbId%
+  TVDB     : https://thetvdb.com/?tab=series&id=%tvdbId%
+  Preview  : %imageboxUrl%
+  Source   : %source%
+  Chapters : %chapters%
+
+  ┌ Video :
+  %videoTracks%
+  └ total video tracks: %videoTrackCount%
+
+  ┌ Audio :
+  %audioTracks%
+  └ total audio tracks: %audioTrackCount%
+
+  ┌ Subtitles :
+  %subtitleTracks%
+  └ total subtitle tracks: %subtitleTrackCount%

@@ -1,0 +1,2 @@
+pymediainfo>=4.2.1
+pycountry>=20.7.3
