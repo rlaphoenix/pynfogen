@@ -7,16 +7,16 @@ from pymediainfo import MediaInfo
 # CONFIG
 CFG = {
   "file": "file:///mnt/emby-red/discs/dvd/Family Guy/USA NTSC DVD/Misc/Family.Guy.Off.The.Cutting.Room.Floor.USA.NTSC.DVD5.MPEG.DD.2.0-PHOENiX/Family.Guy.Off.The.Cutting.Room.Floor.USA.NTSC.DVD5.MPEG.DD.2.0-PHOENiX.mkv",
-  "type": "season",
-  "title-name": "Family Guy",
-  "title-year": "1999",
-  "imdb-id": "tt0182576",
-  "tmdb-id": "tv/1434",
-  "tvdb-id": 75978,  # can skip when doing movies
-  "season": "Misc",  # can skip when doing movies
-  "episodes": 0,  # can skip when doing episodes, movies, and discs
-  "episode": "2",  # can skip when doing seasons, movies, and discs
-  "episode-name": "Snow Job",  # can skip when doing seasons, movies, and discs
+  "type": "season",            # movie, season, episode (this is the template selector)
+  "title-name": "Family Guy",  # as appearing on imdb, or you're best judgment
+  "title-year": "1999",        # {first}-{last} or just {first} if it's still airing or a movie
+  "imdb-id": "tt0182576",      # include the initial tt
+  "tmdb-id": "tv/1434",        # must start with type crib, i.e. `tv/` or `movie/`
+  "tvdb-id": 75978,            # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
+  "season": 1,                 # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
+  "episodes": 0,               # amount of full feature episodes available in the release
+  "episode": "2",              # used for "episode" type: the episode number of the input file above
+  "episode-name": "Snow Job",  # used for "episode" type: the episode name of the input file above
   "imagebox-url": "https://imgbox.com/g/c23MlE6hCb",
   "source": "R1 USA NTSC American Dad Vol. 1 Bonus Disc"
 }
