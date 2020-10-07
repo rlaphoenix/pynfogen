@@ -156,7 +156,7 @@ with open(f"art/{CFG['art']}.nfo", mode="rt", encoding="utf-8") as f:
     NFO = f.read().replace("%nfo%", NFO)
 
 # save to NFO file
-with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo"), "wt") as f:
+with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo"), "wt", encoding="utf-8") as f:
     f.write(NFO)
 
 print(f"Generated NFO for {CFG['release-name']}")
