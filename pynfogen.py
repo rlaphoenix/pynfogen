@@ -5,7 +5,6 @@ import textwrap
 import pycountry
 import requests
 import yaml
-from pvsfunc.psourcer import PSourcer
 from pymediainfo import MediaInfo
 from pyd2v import D2V
 from pvsfunc.helpers import anti_file_prefix, get_mime_type, get_video_codec, get_d2v
@@ -76,10 +75,9 @@ elif movie_title:
 # Get percentage of progressive frames in video
 file_type = get_mime_type(CFG["file"])
 video_codec = get_video_codec(CFG["file"])
-sourcer = PSourcer.get_sourcer(video_codec)
 interlaced_percent = None
 vfr = False
-if sourcer == "core.d2v.Source":
+if video_codec in ["V_MPEG1", "V_MPEG2"]:
     # make sure a d2v file for this video exists
     CFG["file"] = get_d2v(CFG["file"])
     # parse d2v file with pyd2v
