@@ -72,12 +72,10 @@ elif movie_title:
     CFG["type"] = "movie"
 
 
-# Get percentage of progressive frames in video
-file_type = get_mime_type(CFG["file"])
-video_codec = get_video_codec(CFG["file"])
+# Get VST state and percentage of interlaced frames in video
 interlaced_percent = None
-vfr = False
-if video_codec in ["V_MPEG1", "V_MPEG2"]:
+vst = False
+if get_video_codec(CFG["file"]) in ["V_MPEG1", "V_MPEG2"]:
     # make sure a d2v file for this video exists
     CFG["file"] = get_d2v(CFG["file"])
     # parse d2v file with pyd2v
@@ -92,7 +90,7 @@ if video_codec in ["V_MPEG1", "V_MPEG2"]:
         interlaced_percent = "Interlaced (CST)"
     else:
         interlaced_percent = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
-        vfr = True
+        vst = True
     for ext in ["log", "d2v", "mpg"]:
         os.unlink(os.path.splitext(CFG["file"])[0] + "." + ext)
 
@@ -114,7 +112,7 @@ VARS = [
     ("source", CFG["source"]),
     ("videoTracks", ["├ --"] if not videos else [[
         f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
-        f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vfr else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
+        f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
     ] for t in videos]),
     ("videoTrackCount", len(videos)),
     ("audioTracks", ["├ --"] if not audios else [[
