@@ -36,7 +36,6 @@
   TVDB     : https://thetvdb.com/?tab=series&id=%tvdbId%
   Preview  : %imageboxUrl%
   Source   : %source%
-  Chapters : %chapters%
 
   ┌ Video :
   %videoTracks%
@@ -49,3 +48,7 @@
   ┌ Subtitles :
   %subtitleTracks%
   └ total subtitle tracks: %subtitleTrackCount%
+
+  ┌ Chapters :
+  %chapterEntries%
+  └ total subtitle tracks: %chaptersCount%

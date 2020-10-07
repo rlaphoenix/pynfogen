@@ -56,9 +56,8 @@ VARS = [
   ("tvdbId", CFG["tvdb-id"]),
   ("imageboxUrl", CFG["imagebox-url"]),
   ("source", CFG["source"]),
-  ("chapters", "Yes" if chapters else "No"),
   ("videoTracks", ["├ --"] if not videos else [[
-    f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+    f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG')} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
     f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS, {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {t.scan_type}"
   ] for t in videos]),
   ("videoTrackCount", len(videos)),
@@ -70,6 +69,10 @@ VARS = [
     f"├ {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}"
   ] for t in subtitles]),
   ("subtitleTrackCount", len(subtitles)),
+  ("chapterEntries", ["├ --"] if not chapters else [[
+    f"├ {v}"
+  ] for k,v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]),
+  ("chaptersCount", sum(1 for k,v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit())),
 ]
 
 # Load NFO template
