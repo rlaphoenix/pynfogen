@@ -7,7 +7,7 @@ import requests
 import yaml
 from pymediainfo import MediaInfo
 from pyd2v import D2V
-from pvsfunc.helpers import anti_file_prefix, get_mime_type, get_video_codec, get_d2v
+from pvsfunc.helpers import anti_file_prefix, get_video_codec, get_d2v
 
 # CONFIG, this is edited in `config.yml` next to pynfogen.py
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
