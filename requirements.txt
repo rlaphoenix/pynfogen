@@ -1,2 +1,4 @@
-pymediainfo>=4.2.1
-pycountry>=20.7.3
+pymediainfo>=4.1
+pycountry>=19.8.18
+pyd2v>=1.0.4
+pvsfunc>=3.5.2
