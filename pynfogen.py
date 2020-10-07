@@ -6,19 +6,20 @@ from pymediainfo import MediaInfo
 
 # CONFIG
 CFG = {
-  "file": "file:///mnt/emby-red/discs/dvd/Family Guy/USA NTSC DVD/Misc/Family.Guy.Off.The.Cutting.Room.Floor.USA.NTSC.DVD5.MPEG.DD.2.0-PHOENiX/Family.Guy.Off.The.Cutting.Room.Floor.USA.NTSC.DVD5.MPEG.DD.2.0-PHOENiX.mkv",
-  "type": "season",            # movie, season, episode (this is the template selector)
-  "title-name": "Family Guy",  # as appearing on imdb, or you're best judgment
-  "title-year": "1999",        # {first}-{last} or just {first} if it's still airing or a movie
-  "imdb-id": "tt0182576",      # include the initial tt
-  "tmdb-id": "tv/1434",        # must start with type crib, i.e. `tv/` or `movie/`
-  "tvdb-id": 75978,            # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
-  "season": 1,                 # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
-  "episodes": 0,               # amount of full feature episodes available in the release
-  "episode": "2",              # used for "episode" type: the episode number of the input file above
-  "episode-name": "Snow Job",  # used for "episode" type: the episode name of the input file above
-  "imagebox-url": "https://imgbox.com/g/c23MlE6hCb",
-  "source": "R1 USA NTSC American Dad Vol. 1 Bonus Disc"
+  "file": "file:///mnt/emby-red/tv/Sonic Underground/Sonic.Underground.S01.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG/Sonic.Underground.S01E01.Beginnings.Origins.Part.1.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG.mkv",
+  "art": "rpg",                       # ASCII NFO art selector
+  "type": "season",                   # movie, season, episode (this is the template selector)
+  "title-name": "Sonic Underground",  # as appearing on imdb, or you're best judgment
+  "title-year": "1999-2000",          # {first}-{last} or just {first} if it's still airing or a movie
+  "imdb-id": "tt0230804",             # include the initial tt
+  "tmdb-id": "tv/20992",              # must start with type crib, i.e. `tv/` or `movie/`
+  "tvdb-id": 73634,                   # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
+  "season": 1,                        # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
+  "episodes": 40,                     # amount of full feature episodes available in the release
+  "episode": "2",                     # used for "episode" type: the episode number of the input file above
+  "episode-name": "Snow Job",         # used for "episode" type: the episode name of the input file above
+  "imagebox-url": "https://imgbox.com/g/WFl98E7Iyg",
+  "source": "R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)"
 }
 
 # Prepare config data
@@ -57,7 +58,7 @@ VARS = [
   ("imageboxUrl", CFG["imagebox-url"]),
   ("source", CFG["source"]),
   ("videoTracks", ["├ --"] if not videos else [[
-    f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG')} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+    f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
     f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS, {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {t.scan_type}"
   ] for t in videos]),
   ("videoTrackCount", len(videos)),
@@ -97,6 +98,11 @@ with open(f"templates/{CFG['type']}.nfo", mode="rt", encoding="utf-8") as f:
 
 NFO = "\n".join(NFO)
 
+# apply art template
+with open(f"art/{CFG['art']}.nfo", mode="rt", encoding="utf-8") as f:
+  NFO = f.read().replace("%nfo%", NFO)
+
+# save to NFO file
 with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo"), "wt") as f:
   f.write(NFO)
 
