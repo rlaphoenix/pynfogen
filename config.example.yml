@@ -1,0 +1,37 @@
+# make sure you change this filename to config.yml after reading
+# Make sure you have the file be 100% ready for release, including global tags, container title, track names, filenames e.t.c
+# don't worry about `file://` in the path for "file" below, the script deals with that.
+# Meaning you can copy a file, and paste it in here, no grabbing paths from tons of right clicks and select alls and shit
+
+# Instructions for Movies and TV Episodes:
+# Simply configure all the options, and run `python pynfogen.py` (>= python v3.6)
+
+# Instructions for TV Seasons:
+# Make sure all episodes your releasing is in a folder, and the folder name is the release name
+# Then, configure all the options, and run `python pynfogen.py` (>= python v3.6)
+
+file: file:///path/to/the/file.mkv
+# rpg, phoenix. This is the ascii art added around the NFO information
+art: rpg
+# season, episode, movie. Movies will automatically set this, but for tv you need to specify season or episode
+type: season
+# recommended to be 4 screenshots, 350x350 resized, disable comments, and set the gallery name as the release name
+imagebox-url: https://imgbox.com/g/.....
+# the source of this remux, try give credit, if you cant, end it with -???
+source: R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)
+
+
+####
+
+# the following entries will be attempted to auto-set based on information in the mkv container
+# these will only ever be used if the info wasn't found
+
+title-name: abc
+title-year: 1990
+imdb-id: tt12345678
+tmdb-id: 123456789
+tvdb-id: 123456
+season: 1
+episode: 2
+episodes: 12
+episode-name: Abc

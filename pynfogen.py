@@ -4,29 +4,17 @@ import re
 import textwrap
 import pycountry
 import requests
+import yaml
 from pvsfunc.psourcer import PSourcer
 from pymediainfo import MediaInfo
 from pyd2v import D2V
 from pvsfunc.helpers import anti_file_prefix, get_mime_type, get_video_codec, get_d2v
 
-# CONFIG
-CFG = {
-    "file": "file:///mnt/emby-red/tv/Sonic Underground/Sonic.Underground.S01.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG/Sonic.Underground.S01E01.Beginnings.Origins.Part.1.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG.mkv",
-    "art": "rpg",  # ASCII NFO art selector
-    "type": "season",  # this is the template selector, movie, season, episode, this is fallback'd for movies only
-    "imagebox-url": "https://imgbox.com/g/WFl98E7Iyg",
-    "source": "R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)",
-    # FALLBACK ENTRIES (these will only be used if not found in MediaInfo)
-    "title-name": "abc123",
-    "title-year": "1999-2000",  # {first}-{last} or just {first} if it's still airing or a movie
-    "imdb-id": "111",  # include the initial tt
-    "tmdb-id": "222",  # must start with type crib, i.e. `tv/` or `movie/`
-    "tvdb-id": 333,  # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
-    "season": 111,  # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
-    "episode": "222",  # used for "episode" type: the episode number of the input file above
-    "episodes": 123,  # amount of full feature episodes available in the release
-    "episode-name": "333"  # used for "episode" type: the episode name of the input file above
-}
+# CONFIG, this is edited in `config.yml` next to pynfogen.py
+with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
+    CFG = yaml.load(f, Loader=yaml.FullLoader)
+    if not CFG:
+        raise ValueError("config.yml empty??")
 
 # Prepare config data
 CFG["file"] = anti_file_prefix(CFG["file"])
@@ -49,7 +37,6 @@ subtitles = [x for x in mi.tracks if x.track_type == "Text"]
 chapters = [x for x in mi.tracks if x.track_type == "Menu"]
 
 # Auto set CFG entries based on MediaInfo data, if present
-if os.path.dirname(CFG["file"])
 if general.imdb:
     CFG["imdb-id"] = general.imdb
 if general.tmdb:
