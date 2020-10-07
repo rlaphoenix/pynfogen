@@ -71,7 +71,6 @@ elif movie_title:
     CFG["title-name"], CFG["title-year"] = movie_title.groups()
     CFG["type"] = "movie"
 
-
 # Get VST state and percentage of interlaced frames in video
 interlaced_percent = None
 vst = False
@@ -115,13 +114,15 @@ VARS = [
         f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
     ] for t in videos]),
     ("videoTrackCount", len(videos)),
-    ("audioTracks", ["├ --"] if not audios else [[
-        f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format} ({t.other_sampling_rate[0]}), {t.other_channel_s[0]} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}"
-    ] for t in audios]),
+    ("audioTracks", ["├ --"] if not audios else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
+        f"├ {t.title if 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+        66
+    ))] for t in audios]),
     ("audioTrackCount", len(audios)),
-    ("subtitleTracks", ["├ --"] if not subtitles else [[
-        f"├ {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}"
-    ] for t in subtitles]),
+    ("subtitleTracks", ["├ --"] if not subtitles else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
+        f"├ {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}",
+        66
+    ))] for t in subtitles]),
     ("subtitleTrackCount", len(subtitles)),
     ("chapterEntries", ["├ --"] if not chapters else [[
         f"├ {v}"
@@ -143,7 +144,11 @@ with open(f"templates/{CFG['type']}.nfo", mode="rt", encoding="utf-8") as f:
                 VarValue = str(VarValue)
             elif isinstance(VarValue, list):
                 if isinstance(VarValue[0], list):
-                    VarValue = f"\n{pre}".join([f"\n{pre}".join([y for y in x]) for x in VarValue])
+                    VarValue = f"\n{pre}".join([
+                        f"\n{pre}".join([
+                            y for y in x
+                        ]) for x in VarValue
+                    ])
                 else:
                     VarValue = f"\n{pre}".join(VarValue)
             line = line.replace(VarName, VarValue)
