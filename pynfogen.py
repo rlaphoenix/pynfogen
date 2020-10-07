@@ -65,6 +65,8 @@ if sourcer == "core.d2v.Source":
     else:
         interlaced_percent = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
         vfr = True
+    for ext in ["log", "d2v", "mpg"]:
+        os.unlink(os.path.splitext(CFG["file"])[0] + "." + ext)
 
 # Configure Variables
 
