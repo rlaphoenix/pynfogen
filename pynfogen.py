@@ -1,6 +1,9 @@
+import glob
 import os
+import re
 import textwrap
 import pycountry
+import requests
 from pvsfunc.psourcer import PSourcer
 from pymediainfo import MediaInfo
 from pyd2v import D2V
@@ -10,18 +13,19 @@ from pvsfunc.helpers import anti_file_prefix, get_mime_type, get_video_codec, ge
 CFG = {
     "file": "file:///mnt/emby-red/tv/Sonic Underground/Sonic.Underground.S01.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG/Sonic.Underground.S01E01.Beginnings.Origins.Part.1.PAL.DVD.DD.2.0.MPEG-2.REMUX-RPG.mkv",
     "art": "rpg",  # ASCII NFO art selector
-    "type": "season",  # movie, season, episode (this is the template selector)
-    "title-name": "Sonic Underground",  # as appearing on imdb, or you're best judgment
-    "title-year": "1999-2000",  # {first}-{last} or just {first} if it's still airing or a movie
-    "imdb-id": "tt0230804",  # include the initial tt
-    "tmdb-id": "tv/20992",  # must start with type crib, i.e. `tv/` or `movie/`
-    "tvdb-id": 73634,  # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
-    "season": 1,  # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
-    "episodes": 40,  # amount of full feature episodes available in the release
-    "episode": "2",  # used for "episode" type: the episode number of the input file above
-    "episode-name": "Snow Job",  # used for "episode" type: the episode name of the input file above
+    "type": "season",  # this is the template selector, movie, season, episode, this is fallback'd for movies only
     "imagebox-url": "https://imgbox.com/g/WFl98E7Iyg",
-    "source": "R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)"
+    "source": "R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)",
+    # FALLBACK ENTRIES (these will only be used if not found in MediaInfo)
+    "title-name": "abc123",
+    "title-year": "1999-2000",  # {first}-{last} or just {first} if it's still airing or a movie
+    "imdb-id": "111",  # include the initial tt
+    "tmdb-id": "222",  # must start with type crib, i.e. `tv/` or `movie/`
+    "tvdb-id": 333,  # this is a number, not a title slug (e.g. `75978`, not `family-guy`)
+    "season": 111,  # recommended use cases: `1`, `V01`, `0`, `Specials`, `Compilations`, `Misc`
+    "episode": "222",  # used for "episode" type: the episode number of the input file above
+    "episodes": 123,  # amount of full feature episodes available in the release
+    "episode-name": "333"  # used for "episode" type: the episode name of the input file above
 }
 
 # Prepare config data
@@ -38,10 +42,49 @@ CFG["title-type"] = {
 
 # Get MediaInfo
 mi = MediaInfo.parse(CFG["file"])
+general = [x for x in mi.tracks if x.track_type == "General"][0]
 videos = [x for x in mi.tracks if x.track_type == "Video"]
 audios = [x for x in mi.tracks if x.track_type == "Audio"]
 subtitles = [x for x in mi.tracks if x.track_type == "Text"]
 chapters = [x for x in mi.tracks if x.track_type == "Menu"]
+
+# Auto set CFG entries based on MediaInfo data, if present
+if os.path.dirname(CFG["file"])
+if general.imdb:
+    CFG["imdb-id"] = general.imdb
+if general.tmdb:
+    CFG["tmdb-id"] = general.tmdb
+if general.tvdb:
+    CFG["tvdb-id"] = general.tvdb
+tv_title = re.search("^(.*?) S(\\d+)E(\\d+) (.*)$", general.title)
+movie_title = re.search("^(.*?) \\((\\d{4})\)$", general.title)
+if tv_title:
+    CFG["title-name"], CFG["season"], CFG["episode"], CFG["episode-name"] = tv_title.groups()
+    CFG["season"] = int(CFG["season"])
+    CFG["episode"] = int(CFG["episode"])
+    CFG["episodes"] = len(glob.glob(os.path.join(os.path.dirname(CFG["file"]), "*.mkv")))
+    imdb_page = requests.get(
+        url=f"https://www.imdb.com/title/{CFG['imdb-id']}",
+        headers={
+            # pretend to be a normal firefox user, we can't leave anything to chance
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:81.0) Gecko/20100101 Firefox/81.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.5",
+            "DNT": "1",
+            "UPGRADE-INSECURE-REQUESTS": "1"
+        }
+    ).text
+    imdb_year = re.search("TV Series (\\d{4}–\\d{4})", imdb_page)
+    if not imdb_year:
+        imdb_year = re.search("TV Series (\\d{4})–", imdb_page)
+    if not imdb_year:
+        imdb_year = re.search("TV Series (\\d{4})", imdb_page)
+    CFG["title-year"] = imdb_year.group(1)
+elif movie_title:
+    CFG["title-name"], CFG["title-year"] = movie_title.groups()
+    CFG["type"] = "movie"
+
 
 # Get percentage of progressive frames in video
 file_type = get_mime_type(CFG["file"])

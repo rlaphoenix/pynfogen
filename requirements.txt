@@ -2,3 +2,4 @@ pymediainfo>=4.1
 pycountry>=19.8.18
 pyd2v>=1.0.4
 pvsfunc>=3.5.2
+requests>=2.24.0
