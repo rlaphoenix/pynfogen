@@ -138,7 +138,7 @@ VARS = [
     ("chapterEntries", ["├ --"] if not chapters else [[
         f"├ {v}"
     ] for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]),
-    ("chaptersCount", sum(1 for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit())),
+    ("chaptersCount", 0 if not chapters else sum(1 for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit())),
 ]
 
 # Load NFO template
