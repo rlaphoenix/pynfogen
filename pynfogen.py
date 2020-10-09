@@ -9,6 +9,21 @@ from pymediainfo import MediaInfo
 from pyd2v import D2V
 from pvsfunc.helpers import anti_file_prefix, get_video_codec, get_d2v
 
+
+def scrape(url):
+    return requests.get(
+        url=url,
+        headers={
+            # pretend to be a normal firefox user, we can't leave anything to chance
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:81.0) Gecko/20100101 Firefox/81.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.5",
+            "DNT": "1",
+            "UPGRADE-INSECURE-REQUESTS": "1"
+        }
+    ).text
+
 # CONFIG, this is edited in `config.yml` next to pynfogen.py
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
     CFG = yaml.load(f, Loader=yaml.FullLoader)
@@ -42,34 +57,24 @@ if general.tmdb:
     CFG["tmdb-id"] = general.tmdb
 if general.tvdb:
     CFG["tvdb-id"] = general.tvdb
-tv_title = re.search("^(.*?) S(\\d+)E(\\d+) (.*)$", general.title)
-movie_title = re.search("^(.*?) \\((\\d{4})\)$", general.title)
-if tv_title:
-    CFG["title-name"], CFG["season"], CFG["episode"], CFG["episode-name"] = tv_title.groups()
-    CFG["season"] = int(CFG["season"])
-    CFG["episode"] = int(CFG["episode"])
-    CFG["episodes"] = len(glob.glob(os.path.join(os.path.dirname(CFG["file"]), "*.mkv")))
-    imdb_page = requests.get(
-        url=f"https://www.imdb.com/title/{CFG['imdb-id']}",
-        headers={
-            # pretend to be a normal firefox user, we can't leave anything to chance
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:81.0) Gecko/20100101 Firefox/81.0",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "en-US,en;q=0.5",
-            "DNT": "1",
-            "UPGRADE-INSECURE-REQUESTS": "1"
-        }
-    ).text
-    imdb_year = re.search("TV Series (\\d{4}–\\d{4})", imdb_page)
-    if not imdb_year:
-        imdb_year = re.search("TV Series (\\d{4})–", imdb_page)
-    if not imdb_year:
-        imdb_year = re.search("TV Series (\\d{4})", imdb_page)
-    CFG["title-year"] = imdb_year.group(1)
-elif movie_title:
-    CFG["title-name"], CFG["title-year"] = movie_title.groups()
-    CFG["type"] = "movie"
+if general.title:
+    tv_title = re.search("^(.*?) S(\\d+)E(\\d+) (.*)$", general.title)
+    movie_title = re.search("^(.*?) \\((\\d{4})\)$", general.title)
+    if tv_title:
+        CFG["title-name"], CFG["season"], CFG["episode"], CFG["episode-name"] = tv_title.groups()
+        CFG["season"] = int(CFG["season"])
+        CFG["episode"] = int(CFG["episode"])
+        CFG["episodes"] = len(glob.glob(os.path.join(os.path.dirname(CFG["file"]), "*.mkv")))
+        imdb_page = scrape(f"https://www.imdb.com/title/{CFG['imdb-id']}")
+        imdb_year = re.search("TV Series (\\d{4}–\\d{4})", imdb_page)
+        if not imdb_year:
+            imdb_year = re.search("TV Series (\\d{4})–", imdb_page)
+        if not imdb_year:
+            imdb_year = re.search("TV Series (\\d{4})", imdb_page)
+        CFG["title-year"] = imdb_year.group(1)
+    elif movie_title:
+        CFG["title-name"], CFG["title-year"] = movie_title.groups()
+        CFG["type"] = "movie"
 
 # Get VST state and percentage of interlaced frames in video
 interlaced_percent = None
@@ -163,5 +168,18 @@ with open(f"art/{CFG['art']}.nfo", mode="rt", encoding="utf-8") as f:
 # save to NFO file
 with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo"), "wt", encoding="utf-8") as f:
     f.write(NFO)
+
+# generate bb code description
+with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.description.txt"), "wt", encoding="utf-8") as f:
+    DESC = "[align=center]\n"
+    imgbox_page = scrape(CFG["imagebox-url"])
+    for i, m in enumerate(re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', imgbox_page)):
+        DESC += f"[URL=https://imgbox.com/{m.group(2)}][IMG]{m.group(1)}{m.group(2)}_t.{m.group(3)}[/IMG]"
+        if (i % 2) != 0:
+            DESC += "\n"
+    if not DESC.endswith("\n"):
+        DESC += "\n"
+    DESC += f"[/align]\n[code]\n{NFO}\n[/code]"
+    f.write(DESC)
 
 print(f"Generated NFO for {CFG['release-name']}")
