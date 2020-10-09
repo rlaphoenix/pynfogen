@@ -30,9 +30,9 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml"
     CFG = yaml.load(f, Loader=yaml.FullLoader)
     if not CFG:
         raise ValueError("config.yml empty??")
-    if "imgbox-url" in CFG:
+    if "imagebox-url" in CFG:
         raise Exception(
-            "You have imgbox-url in your config.yml, this was recently changed to preview-url"
+            "You have imagebox-url in your config.yml, this was recently changed to preview-url"
             "Please change it to preview-url to continue. This warning will be removed! (idk when)"
         )
 
