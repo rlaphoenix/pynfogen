@@ -24,11 +24,17 @@ def scrape(url):
         }
     ).text
 
+
 # CONFIG, this is edited in `config.yml` next to pynfogen.py
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
     CFG = yaml.load(f, Loader=yaml.FullLoader)
     if not CFG:
         raise ValueError("config.yml empty??")
+    if "imgbox-url" in CFG:
+        raise Exception(
+            "You have imgbox-url in your config.yml, this was recently changed to preview-url"
+            "Please change it to preview-url to continue. This warning will be removed! (idk when)"
+        )
 
 # Prepare config data
 CFG["file"] = anti_file_prefix(CFG["file"])
@@ -170,7 +176,8 @@ with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo
     f.write(NFO)
 
 # generate bb code description
-with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.description.txt"), "wt", encoding="utf-8") as f:
+with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.description.txt"), "wt",
+          encoding="utf-8") as f:
     DESC = ""
     if CFG["preview-url"]:
         supported_domains = ["imgbox.com", "beyondhd.co"]

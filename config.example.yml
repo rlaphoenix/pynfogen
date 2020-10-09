@@ -16,7 +16,7 @@ art: rpg
 # season, episode, movie. Movies will automatically set this, but for tv you need to specify season or episode
 type: season
 # recommended to be 4 screenshots, 350x350 resized, disable comments, and set the gallery name as the release name
-imagebox-url: https://imgbox.com/g/.....
+preview-url: https://imgbox.com/g/.....
 # the source of this remux, try give credit, if you cant, end it with -???
 source: R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)
 
