@@ -112,7 +112,7 @@ VARS = [
     ("imdbId", CFG["imdb-id"]),
     ("tmdbId", CFG["tmdb-id"]),
     ("tvdbId", CFG["tvdb-id"]),
-    ("imageboxUrl", CFG["imagebox-url"]),
+    ("imageboxUrl", CFG["preview-url"]),
     ("source", CFG["source"]),
     ("videoTracks", ["├ --"] if not videos else [[
         f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
@@ -171,15 +171,27 @@ with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.nfo
 
 # generate bb code description
 with open(os.path.join(os.path.dirname(CFG["file"]), f"{CFG['release-name']}.description.txt"), "wt", encoding="utf-8") as f:
-    DESC = "[align=center]\n"
-    imgbox_page = scrape(CFG["imagebox-url"])
-    for i, m in enumerate(re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', imgbox_page)):
-        DESC += f"[URL=https://imgbox.com/{m.group(2)}][IMG]{m.group(1)}{m.group(2)}_t.{m.group(3)}[/IMG]"
-        if (i % 2) != 0:
-            DESC += "\n"
-    if not DESC.endswith("\n"):
-        DESC += "\n"
-    DESC += f"[/align]\n[code]\n{NFO}\n[/code]"
+    DESC = ""
+    if CFG["preview-url"]:
+        supported_domains = ["imgbox.com", "beyondhd.co"]
+        for domain in supported_domains:
+            if domain in CFG["preview-url"].lower():
+                page = scrape(CFG["preview-url"])
+                DESC += "[align=center]\n"
+                if domain == "imgbox.com":
+                    regex = 'src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)'
+                    template = "[URL=https://imgbox.com/{1}][IMG]{0}{1}_t.{2}[/IMG][/URL]"
+                if domain == "beyondhd.co":
+                    regex = '/image/([^"]+)"\\D+src="(https://beyondhd.co/images.+/(\\w+).md.[^"]+)'
+                    template = "[URL=https://beyondhd.co/image/{0}][IMG]{1}[/img][/URL]"
+                for i, m in enumerate(re.finditer(regex, page)):
+                    DESC += template.format(*m.groups())
+                    if (i % 2) != 0:
+                        DESC += "\n"
+                if not DESC.endswith("\n"):
+                    DESC += "\n"
+                DESC += "[/align]\n"
+    DESC += f"[code]\n{NFO}\n[/code]"
     f.write(DESC)
 
 print(f"Generated NFO for {CFG['release-name']}")
