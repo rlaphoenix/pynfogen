@@ -132,12 +132,12 @@ VARS = [
     ("videoTrackCount", len(videos)),
     ("audioTracks", ["├ --"] if not audios else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
         f"├ {t.title if 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
-        66
+        64
     ))] for t in audios]),
     ("audioTrackCount", len(audios)),
     ("subtitleTracks", ["├ --"] if not subtitles else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
         f"├ {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}",
-        66
+        64
     ))] for t in subtitles]),
     ("subtitleTrackCount", len(subtitles)),
     ("chapters", "No" if not chapters else f"Yes ({'Numbered' if chapters_numbered else 'Named'})"),
