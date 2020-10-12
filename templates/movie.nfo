@@ -6,7 +6,11 @@
   TMDB     : https://themoviedb.org/%tmdbId%
   Preview  : %imageboxUrl%
   Source   : %source%
-
+  Chapters : %chapters%
+<?note?
+  Note     :
+  %note%
+?>
   ┌ Video :
   %videoTracks%
   └ total video tracks: %videoTrackCount%
@@ -18,7 +22,3 @@
   ┌ Subtitles :
   %subtitleTracks%
   └ total subtitle tracks: %subtitleTrackCount%
-
-  ┌ Chapters :
-  %chapterEntries%
-  └ total chapters: %chaptersCount%

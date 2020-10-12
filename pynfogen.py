@@ -56,6 +56,11 @@ audios = [x for x in mi.tracks if x.track_type == "Audio"]
 subtitles = [x for x in mi.tracks if x.track_type == "Text"]
 chapters = [x for x in mi.tracks if x.track_type == "Menu"]
 
+# Parse chapters
+if chapters:
+    chapters = [v for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
+    chapters_numbered = sum(1 for i, x in enumerate(chapters) if x.split(":", 2)[-1] in ['Chapter ' + str(i), 'Chapter ' + str(i).zfill(2)]) == len(chapters)
+
 # Auto set CFG entries based on MediaInfo data, if present
 if general.imdb:
     CFG["imdb-id"] = general.imdb
@@ -135,16 +140,27 @@ VARS = [
         66
     ))] for t in subtitles]),
     ("subtitleTrackCount", len(subtitles)),
+    ("chapters", "No" if not chapters else f"Yes ({'Numbered' if chapters_numbered else 'Named'})"),
     ("chapterEntries", ["├ --"] if not chapters else [[
         f"├ {v}"
-    ] for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]),
-    ("chaptersCount", 0 if not chapters else sum(1 for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit())),
+    ] for v in chapters]),
+    ("chaptersCount", 0 if not chapters else len(chapters)),
+    ("note", textwrap.wrap(CFG["note"], 68) if CFG["note"] else None),
 ]
 
 # Load NFO template
 NFO = []
 with open(f"templates/{CFG['type']}.nfo", mode="rt", encoding="utf-8") as f:
-    for line in f:
+    fs = f.read()
+    conditional_regex = re.compile('<\?(\w+)\?([\D\d]*)\?>')
+    for i, m in enumerate(re.finditer(conditional_regex, fs)):
+        VarValue = [x for k,x in VARS if k == m.group(1)][0]
+        fs = re.sub(
+            conditional_regex,
+            m.group(2) if VarValue else "",
+            fs
+        )
+    for line in fs.splitlines():
         line = line.rstrip("\n\r")
         for VarName, VarValue in VARS:
             VarName = f"%{VarName}%"
