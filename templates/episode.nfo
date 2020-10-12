@@ -7,10 +7,12 @@
   TMDB     : https://themoviedb.org/%tmdbId%
   TVDB     : https://thetvdb.com/?tab=series&id=%tvdbId%
   Preview  : %imageboxUrl%
-  Source   : %source%
   Chapters : %chapters%
-<?note?
-  Note     :
+<?source?
+  Source :
+  %source%
+?><?note?
+  Note :
   %note%
 ?>
   ┌ Video :

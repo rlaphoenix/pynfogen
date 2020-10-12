@@ -5,10 +5,12 @@
   IMDb     : https://imdb.com/title/%imdbId%
   TMDB     : https://themoviedb.org/%tmdbId%
   Preview  : %imageboxUrl%
-  Source   : %source%
   Chapters : %chapters%
-<?note?
-  Note     :
+<?source?
+  Source :
+  %source%
+?><?note?
+  Note :
   %note%
 ?>
   ┌ Video :

@@ -124,7 +124,7 @@ VARS = [
     ("tmdbId", CFG["tmdb-id"]),
     ("tvdbId", CFG["tvdb-id"]),
     ("imageboxUrl", CFG["preview-url"]),
-    ("source", CFG["source"]),
+    ("source", textwrap.wrap(CFG["source"], 68) if CFG["source"] else None),
     ("videoTracks", ["├ --"] if not videos else [[
         f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
         f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
@@ -152,11 +152,11 @@ VARS = [
 NFO = []
 with open(f"templates/{CFG['type']}.nfo", mode="rt", encoding="utf-8") as f:
     fs = f.read()
-    conditional_regex = re.compile('<\?(\w+)\?([\D\d]*)\?>')
+    conditional_regex = re.compile('<\?(\w+)\?([\D\d]*?)\?>')
     for i, m in enumerate(re.finditer(conditional_regex, fs)):
         VarValue = [x for k,x in VARS if k == m.group(1)][0]
         fs = re.sub(
-            conditional_regex,
+            '<\?' + m.group(1) + '\?([\D\d]*?)\?>',
             m.group(2) if VarValue else "",
             fs
         )
