@@ -125,24 +125,24 @@ VARS = [
     ("tvdbId", CFG["tvdb-id"]),
     ("imageboxUrl", CFG["preview-url"]),
     ("source", textwrap.wrap(CFG["source"], 68) if CFG["source"] else None),
-    ("videoTracks", ["├ --"] if not videos else [[
-        f"├ {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
-        f"│ {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
+    ("videoTracks", ["--"] if not videos else [[
+        f"- {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+        f"  {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
     ] for t in videos]),
     ("videoTrackCount", len(videos)),
-    ("audioTracks", ["├ --"] if not audios else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
-        f"├ {t.title if 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+    ("audioTracks", ["--"] if not audios else [[('  ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
+        f"- {t.title if 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
         64
     ))] for t in audios]),
     ("audioTrackCount", len(audios)),
-    ("subtitleTracks", ["├ --"] if not subtitles else [[('│ ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
-        f"├ {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}",
+    ("subtitleTracks", ["--"] if not subtitles else [[('  ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
+        f"- {t.title or pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('UTF-8', 'SubRip (SRT)')}",
         64
     ))] for t in subtitles]),
     ("subtitleTrackCount", len(subtitles)),
     ("chapters", "No" if not chapters else f"Yes ({'Numbered' if chapters_numbered else 'Named'})"),
-    ("chapterEntries", ["├ --"] if not chapters else [[
-        f"├ {v}"
+    ("chapterEntries", ["--"] if not chapters else [[
+        f"- {v}"
     ] for v in chapters]),
     ("chaptersCount", 0 if not chapters else len(chapters)),
     ("note", textwrap.wrap(CFG["note"], 68) if CFG["note"] else None),
