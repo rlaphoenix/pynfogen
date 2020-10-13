@@ -126,12 +126,12 @@ VARS = [
     ("imageboxUrl", CFG["preview-url"]),
     ("source", textwrap.wrap(CFG["source"], 68) if CFG["source"] else None),
     ("videoTracks", ["--"] if not videos else [[
-        f"- {pycountry.languages.get(alpha_2=t.language).name}, {t.format.replace('MPEG Video', 'MPEG-' + t.format_version.replace('Version ', ''))} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+        f"- {pycountry.languages.get(alpha_2=t.language).name}, {'MPEG-' + t.format_version.replace('Version ', '') if t.format == 'MPEG Video' else t.format} ({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
         f"  {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS ({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
     ] for t in videos]),
     ("videoTrackCount", len(videos)),
     ("audioTracks", ["--"] if not audios else [[('  ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
-        f"- {t.title if 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+        f"- {t.title if t.title and 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
         64
     ))] for t in audios]),
     ("audioTrackCount", len(audios)),
