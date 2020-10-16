@@ -132,7 +132,7 @@ VARS = [
     ] for t in videos]),
     ("videoTrackCount", len(videos)),
     ("audioTracks", ["--"] if not audios else [[('  ' + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(
-        f"- {t.title if t.title and 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(t.channel_s)} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
+        f"- {t.title if t.title and 'Commentary' in t.title else pycountry.languages.get(alpha_2=t.language).name}, {t.format} {float(sum({'LFE': 0.1}.get(x, 1) for x in t.channel_layout.split(' ')))} @ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}",
         64
     ))] for t in audios]),
     ("audioTrackCount", len(audios)),
