@@ -55,11 +55,12 @@ videos = [x for x in mi.tracks if x.track_type == "Video"]
 audios = [x for x in mi.tracks if x.track_type == "Audio"]
 subtitles = [x for x in mi.tracks if x.track_type == "Text"]
 chapters = [x for x in mi.tracks if x.track_type == "Menu"]
+chapters_numbered = False
 
 # Parse chapters
 if chapters:
     chapters = [v for k, v in chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
-    chapters_numbered = sum(1 for i, x in enumerate(chapters) if x.split(":", 2)[-1] in ['Chapter ' + str(i), 'Chapter ' + str(i).zfill(2)]) == len(chapters)
+    chapters_numbered = sum(1 for i, x in enumerate(chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]) == len(chapters)
 
 # Auto set CFG entries based on MediaInfo data, if present
 if general.imdb:
