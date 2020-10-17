@@ -141,7 +141,7 @@ VARS = [
         64
     ))] for t in subtitles]),
     ("subtitleTrackCount", len(subtitles)),
-    ("chapters", "No" if not chapters else f"Yes ({'Numbered' if chapters_numbered else 'Named'})"),
+    ("chapters", "No" if not chapters else f"Yes ({f'Numbered (01-{str(len(chapters)).zfill(2)})' if chapters_numbered else 'Named'})"),
     ("chapterEntries", ["--"] if not chapters else [[
         f"- {v}"
     ] for v in chapters]),
