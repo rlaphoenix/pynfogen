@@ -29,4 +29,10 @@
 
   Subtitles :
   
-  %subtitleTracks%
+  %subtitleTracks%<?chaptersNamed?
+
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
+
+  Chapters :
+
+  %chapterEntries%?>

@@ -146,6 +146,7 @@ VARS = [
         f"- {v}"
     ] for v in chapters]),
     ("chaptersCount", 0 if not chapters else len(chapters)),
+    ("chaptersNamed", chapters and not chapters_numbered),
     ("note", textwrap.wrap(CFG["note"], 68) if CFG["note"] else None),
 ]
 
