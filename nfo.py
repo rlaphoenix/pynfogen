@@ -138,11 +138,11 @@ class NFO:
 
     def getTitleNameYear(self) -> tuple:
         imdb_page = scrape(f"https://www.imdb.com/title/{self.imdb}")
-        imdb_title_re = {
-            "mv": r"<title>(?P<name>.+) \((?P<year>\d{4})\) - IMDb<\/title>",
-            "tv": r"<title>(?P<name>.+) \(TV (Series|Mini-Series) (?P<year>\d{4}|\d{4}– |\d{4}–\d{4})\) - IMDb<\/title>"
-        }
-        imdb_title = re.search(imdb_title_re[{"movie": "mv"}.get(self.title_type, "tv")], imdb_page)
+        imdb_title = re.search(
+            # testing ground: https://regex101.com/r/dRpT6g/1
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series) |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
+            imdb_page
+        )
         if not imdb_title:
             raise ValueError("Could not scrape Movie Title or Year...")
         return imdb_title.group("name"), imdb_title.group("year")
