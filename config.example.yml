@@ -29,12 +29,14 @@ note: ~
 # the following entries will be attempted to auto-set based on information in the mkv container
 # these will only ever be used if the info wasn't found
 
-title-name: abc
-title-year: 1990
-imdb-id: tt12345678
-tmdb-id: 123456789
-tvdb-id: 123456
+imdb: tt0439341
+tmdb: tv/4355
+
+# for `type: season` and `episode`
+tvdb: 75444
 season: 1
-episode: 2
 episodes: 12
-episode-name: Abc
+
+# for `type: episode`
+episode: 1
+episode-name: Don Giovanni, Dramma giocoso en deux actes
