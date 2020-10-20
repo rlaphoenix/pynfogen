@@ -102,8 +102,9 @@ class NFO:
         self.videos = self.getTracks("Video")
         self.audio = self.getTracks("Audio")
         self.subtitles = self.getTracks("Text")
-        self.chapters = [v for k, v in self.getTracks("Menu")[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
-        self.chapters_numbered = sum(
+        self.chapters = self.getTracks("Menu")
+        self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
+        self.chapters_numbered = 0 if not self.chapters else sum(
             1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
         ) == len(self.chapters)
         print(self)
