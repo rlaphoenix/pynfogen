@@ -146,7 +146,7 @@ class NFO:
         )
         if not imdb_title:
             raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
-        return imdb_title.group("name"), imdb_title.group("year")
+        return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
     def getTvInfo(self, config) -> tuple:
         general = self.getTracks("General")[0]
