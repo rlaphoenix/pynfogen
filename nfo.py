@@ -140,8 +140,8 @@ class NFO:
     def getTitleNameYear(self) -> tuple:
         imdb_page = scrape(f"https://www.imdb.com/title/{self.imdb}")
         imdb_title = re.search(
-            # testing ground: https://regex101.com/r/dRpT6g/2
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short) |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
+            # testing ground: https://regex101.com/r/dRpT6g/3
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
             imdb_page
         )
         if not imdb_title:
