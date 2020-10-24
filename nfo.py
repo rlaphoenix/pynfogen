@@ -218,7 +218,7 @@ class NFO:
         data = []
         for t in videos:
             codec = {
-                "MPEG Video": f"MPEG-{t.format_version.replace('Version ', '')}"
+                "MPEG Video": f"MPEG-{(t.format_version or '').replace('Version ', '')}"
             }.get(t.format, t.format)
             interlaced_percent = None
             vst = False
