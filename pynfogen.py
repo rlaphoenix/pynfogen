@@ -25,7 +25,7 @@ with open(f"templates/{nfo.title_type}.nfo", mode="rt", encoding="utf-8") as f:
             fs
         )
     for line in fs.splitlines():
-        line = line.rstrip("\n\r")
+        line = line.rstrip()
         for VarName in nfo.getVariables():
             VarNameS = f"%{VarName}%"
             if VarNameS not in line:
@@ -50,6 +50,7 @@ NFO = "\n".join(NFO)
 # Apply Art template
 with open(f"art/{nfo.art}.nfo", mode="rt", encoding="utf-8") as f:
     NFO = f.read().replace("%nfo%", NFO)
+    NFO = "\n".join([line.rstrip() for line in NFO.splitlines()])
 
 # Save NFO to file with release name, next to input file
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf-8") as f:
