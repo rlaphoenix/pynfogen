@@ -139,15 +139,15 @@ class NFO:
         return config["type"], name_map[config["type"]]
 
     def getTitleNameYear(self) -> tuple:
-        imdb_page = scrape(f"https://www.imdb.com/title/{self.imdb}")
+        imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/dRpT6g/3
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
             imdb_page
         )
         if not imdb_title:
             raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
-        return html.unescape(imdb_title.group("name").strip()), html.unescape(imdb_title.group("year").strip())
+        return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
     def getTvInfo(self, config) -> tuple:
         general = self.getTracks("General")[0]
