@@ -259,7 +259,10 @@ class NFO:
                 title = t.title
             else:
                 title = pycountry.languages.get(alpha_2=t.language).name
-            channels = float(sum(self.AUDIO_CHANNEL_LAYOUT_WEIGHT.get(x, 1) for x in t.channel_layout.split(" ")))
+            if t.channel_layout:
+                channels = float(sum(self.AUDIO_CHANNEL_LAYOUT_WEIGHT.get(x, 1) for x in t.channel_layout.split(" ")))
+            else:
+                channels = float(t.channel_s)
             bit_rate_mode = f" ({t.bit_rate_mode})" if t.bit_rate_mode else ""
             l1 = f"- {title}, {t.format} {channels} @ {t.other_bit_rate[0]}{bit_rate_mode}"
             data += [("  " + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(l1, 64))]
