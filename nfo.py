@@ -239,7 +239,7 @@ class NFO:
                 else:
                     interlaced_percent = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
                     vst = True
-                for ext in ["log", "d2v", "mpg"]:
+                for ext in ["log", "d2v", "mpg", "mpeg"]:
                     fp = os.path.splitext(self.file)[0] + "." + ext
                     if os.path.exists(fp):
                         os.unlink(fp)
