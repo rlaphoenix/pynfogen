@@ -240,7 +240,9 @@ class NFO:
                     interlaced_percent = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
                     vst = True
                 for ext in ["log", "d2v", "mpg"]:
-                    os.unlink(os.path.splitext(self.file)[0] + "." + ext)
+                    fp = os.path.splitext(self.file)[0] + "." + ext
+                    if os.path.exists(fp):
+                        os.unlink(fp)
             l1 = f"- {pycountry.languages.get(alpha_2=t.language).name}, {codec} " + \
                 f"({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) " + \
                 f"@ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}"
