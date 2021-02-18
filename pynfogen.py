@@ -6,6 +6,8 @@ from helpers import scrape
 from nfo import NFO
 
 
+conditional_regex = re.compile("<\\?(\\w+)\\?([\\D\\d]*?)\\?>")
+
 # Create NFO object
 nfo = NFO()
 
@@ -17,7 +19,6 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml"
 NFO = []
 with open(f"templates/{nfo.title_type}.nfo", mode="rt", encoding="utf-8") as f:
     fs = f.read()
-    conditional_regex = re.compile('<\\?(\\w+)\\?([\\D\\d]*?)\\?>')
     for i, m in enumerate(re.finditer(conditional_regex, fs)):
         fs = re.sub(
             '<\\?' + m.group(1) + '\\?([\\D\\d]*?)\\?>',
