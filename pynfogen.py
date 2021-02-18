@@ -58,27 +58,27 @@ with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "w
 
 # generate bb code description
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf-8") as f:
-    DESC = ""
+    description = ""
     if nfo.preview_url:
         supported_domains = ["imgbox.com", "beyondhd.co"]
         for domain in supported_domains:
             if domain in nfo.preview_url.lower():
                 page = scrape(nfo.preview_url)
-                DESC += "[align=center]\n"
+                description += "[align=center]\n"
                 if domain == "imgbox.com":
                     regex = 'src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)'
-                    template = "[URL=https://imgbox.com/{1}][IMG]{0}{1}_t.{2}[/IMG][/URL]"
-                if domain == "beyondhd.co":
+                    bb_code = "[URL=https://imgbox.com/{1}][IMG]{0}{1}_t.{2}[/IMG][/URL]"
+                elif domain == "beyondhd.co":
                     regex = '/image/([^"]+)"\\D+src="(https://beyondhd.co/images.+/(\\w+).md.[^"]+)'
-                    template = "[URL=https://beyondhd.co/image/{0}][IMG]{1}[/img][/URL]"
+                    bb_code = "[URL=https://beyondhd.co/image/{0}][IMG]{1}[/img][/URL]"
                 for i, m in enumerate(re.finditer(regex, page)):
-                    DESC += template.format(*m.groups())
+                    description += bb_code.format(*m.groups())
                     if (i % 2) != 0:
-                        DESC += "\n"
-                if not DESC.endswith("\n"):
-                    DESC += "\n"
-                DESC += "[/align]\n"
-    DESC += f"[code]\n{NFO}\n[/code]"
-    f.write(DESC)
+                        description += "\n"
+                if not description.endswith("\n"):
+                    description += "\n"
+                description += "[/align]\n"
+    description += f"[code]\n{NFO}\n[/code]"
+    f.write(description)
 
 print(f"Generated NFO for {nfo.release_name}")
