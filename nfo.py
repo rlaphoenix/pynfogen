@@ -76,10 +76,10 @@ class NFO:
             attrs=" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()),
         )
 
-    def setConfig(self, config):
+    def setConfig(self, config: dict):
         # Ensure config isn't empty
-        if not config:
-            raise ValueError("NFO.applyConfig: Parameter config's data is null or empty...")
+        if not config or not isinstance(config, dict):
+            raise ValueError("NFO.setConfig: Parameter config is empty or not a dictionary...")
         # Get Art Template
         self.art = config["art"]
         # Get input file path
