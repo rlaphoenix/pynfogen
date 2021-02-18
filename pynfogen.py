@@ -16,46 +16,46 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml"
     nfo.setConfig(yaml.load(f, Loader=yaml.FullLoader))
 
 # Parse NFO template
-NFO = []
-with open(f"templates/{nfo.title_type}.nfo", mode="rt", encoding="utf-8") as f:
-    fs = f.read()
-    for i, m in enumerate(re.finditer(conditional_regex, fs)):
-        fs = re.sub(
-            '<\\?' + m.group(1) + '\\?([\\D\\d]*?)\\?>',
-            m.group(2) if nfo.getVariable(m.group(1)) else "",
-            fs
-        )
-    for line in fs.splitlines():
-        line = line.rstrip()
-        for VarName in nfo.getVariables():
-            VarNameS = f"%{VarName}%"
-            if VarNameS not in line:
-                continue
-            pre = line[:line.index(VarNameS)]
-            VarValue = nfo.getVariable(VarName)
-            if isinstance(VarValue, int):
-                VarValue = str(VarValue)
-            elif isinstance(VarValue, list):
-                if isinstance(VarValue[0], list):
-                    VarValue = f"\n{pre}".join([
-                        f"\n{pre}".join([
-                            y for y in x
-                        ]) for x in VarValue
-                    ])
-                else:
-                    VarValue = f"\n{pre}".join(VarValue)
-            line = line.replace(VarNameS, VarValue or "")
-        NFO.append(line)
-NFO = "\n".join(NFO)
+with open(f"templates/{nfo.title_type}.nfo", "rt", encoding="utf-8") as f:
+    template = f.read()
+for i, m in enumerate(re.finditer(conditional_regex, template)):
+    template = re.sub(
+        "<\\?" + m.group(1) + "\\?([\\D\\d]*?)\\?>",
+        m.group(2) if nfo.getVariable(m.group(1)) else "",
+        template
+    )
+template_buffer = []
+for line in template.splitlines():
+    line = line.rstrip()
+    for VarName in nfo.getVariables():
+        VarNameS = f"%{VarName}%"
+        if VarNameS not in line:
+            continue
+        pre = line[:line.index(VarNameS)]
+        VarValue = nfo.getVariable(VarName)
+        if isinstance(VarValue, int):
+            VarValue = str(VarValue)
+        elif isinstance(VarValue, list):
+            if isinstance(VarValue[0], list):
+                VarValue = f"\n{pre}".join([
+                    f"\n{pre}".join([
+                        y for y in x
+                    ]) for x in VarValue
+                ])
+            else:
+                VarValue = f"\n{pre}".join(VarValue)
+        line = line.replace(VarNameS, VarValue or "")
+    template_buffer.append(line)
+template = "\n".join(template_buffer)
 
 # Apply Art template
-with open(f"art/{nfo.art}.nfo", mode="rt", encoding="utf-8") as f:
-    NFO = f.read().replace("%nfo%", NFO)
-    NFO = "\n".join([line.rstrip() for line in NFO.splitlines()])
+with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
+    template = f.read().replace("%nfo%", template)
+    template = "\n".join([line.rstrip() for line in template.splitlines()])
 
-# Save NFO to file with release name, next to input file
+# Save template to file with release name, next to input file
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf-8") as f:
-    f.write(NFO)
+    f.write(template)
 
 # generate bb code description
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf-8") as f:
@@ -79,7 +79,7 @@ with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"
                 if not description.endswith("\n"):
                     description += "\n"
                 description += "[/align]\n"
-    description += f"[code]\n{NFO}\n[/code]"
+    description += f"[code]\n{template}\n[/code]"
     f.write(description)
 
 print(f"Generated NFO for {nfo.release_name}")
