@@ -2,6 +2,7 @@ import os
 import re
 import yaml
 
+from formatter import CustomFormats
 from helpers import scrape
 from nfo import NFO
 
@@ -16,29 +17,35 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml"
 # Parse NFO template
 with open(f"templates/{nfo.title_type}.nfo", "rt", encoding="utf-8") as f:
     template = f.read()
-template_buffer = []
-for line in template.splitlines():
-    line = line.rstrip()
-    for VarName in nfo.getVariables():
-        VarNameS = f"%{VarName}%"
-        if VarNameS not in line:
-            continue
-        pre = line[:line.index(VarNameS)]
-        VarValue = nfo.getVariable(VarName)
-        if isinstance(VarValue, int):
-            VarValue = str(VarValue)
-        elif isinstance(VarValue, list):
-            if isinstance(VarValue[0], list):
-                VarValue = f"\n{pre}".join([
-                    f"\n{pre}".join([
-                        y for y in x
-                    ]) for x in VarValue
-                ])
-            else:
-                VarValue = f"\n{pre}".join(VarValue)
-        line = line.replace(VarNameS, VarValue or "")
-    template_buffer.append(line)
-template = "\n".join(template_buffer)
+
+# Apply formatting value logic
+template = CustomFormats().format(
+    template,
+    release_name=nfo.release_name,
+    title_name=nfo.title_name,
+    title_type_name=nfo.title_type_name,
+    title_year=nfo.title_year,
+    season=nfo.season,
+    episodes=nfo.episodes,
+    episode=nfo.episode,
+    episode_name=nfo.episode_name,
+    imdb=nfo.imdb,
+    tmdb=nfo.tmdb,
+    tvdb=nfo.tvdb,
+    preview_url=nfo.preview_url,
+    source=nfo.source,
+    note=nfo.note,
+    videos=nfo.getVideoPrint(nfo.videos),
+    videos_count=len(nfo.videos),
+    audios=nfo.getAudioPrint(nfo.audio),
+    audios_count=len(nfo.audio),
+    subtitles=nfo.getSubtitlePrint(nfo.subtitles),
+    subtitles_count=nfo.subtitles,
+    chapters=nfo.getChapterPrintShort(nfo.chapters),
+    chapters_count=len(nfo.chapters) if nfo.chapters else 0,
+    chapters_named=nfo.chapters and not nfo.chapters_numbered,
+    chapter_entries=nfo.getChapterPrint(nfo.chapters)
+)
 
 # Apply Art template
 with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:

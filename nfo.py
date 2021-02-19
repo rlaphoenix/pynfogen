@@ -14,33 +14,6 @@ from helpers import scrape
 
 class NFO:
 
-    TEMPLATE_VAR_TO_CLASS_VAR_MAP = {
-        "releaseName": "release_name",
-        "titleName": "title_name",
-        "titleType": "title_type_name",
-        "titleYear": "title_year",
-        "seasonNum": "season",
-        "episodeCount": "episodes",
-        "episodeNum": "episode",
-        "episodeName": "episode_name",
-        "imdbId": "imdb",
-        "tmdbId": "tmdb",
-        "tvdbId": "tvdb",
-        "imageboxUrl": "preview_url",
-        "source": "source",
-        "note": "note",
-        "videoTracks": "videos",
-        "videoTrackCount": "videos",
-        "audioTracks": "audio",
-        "audioTrackCount": "audio",
-        "subtitleTracks": "subtitles",
-        "subtitleTrackCount": "subtitles",
-        "chapters": "chapters",
-        "chapterEntries": "chapters",
-        "chaptersCount": "chapters",
-        "chaptersNamed": "chapters",
-    }
-
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
@@ -293,28 +266,3 @@ class NFO:
         if self.chapters_numbered:
             return f"Yes (Numbered 01-{str(len(chapters)).zfill(2)})"
         return f"Yes (Named)"
-
-    def getVariable(self, name):
-        val = self.__dict__[self.TEMPLATE_VAR_TO_CLASS_VAR_MAP[name]]
-        if name == "releaseName":
-            return [x.center(70) for x in textwrap.wrap(val, 68)]
-        if name in ["source", "note"]:
-            return textwrap.wrap(val, 68) if val else None
-        if name == "videoTracks":
-            return self.getVideoPrint(val)
-        if name == "audioTracks":
-            return self.getAudioPrint(val)
-        if name == "subtitleTracks":
-            return self.getSubtitlePrint(val)
-        if name == "chapters":
-            return self.getChapterPrintShort(val)
-        if name == "chapterEntries":
-            return self.getChapterPrint(val)
-        if name == "chaptersNamed":
-            return val and not self.chapters_numbered
-        if name in ["videoTrackCount", "audioTrackCount", "subtitleTrackCount", "chaptersCount"]:
-            return len(val)
-        return val
-
-    def getVariables(self):
-        return self.TEMPLATE_VAR_TO_CLASS_VAR_MAP.keys()

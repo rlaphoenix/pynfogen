@@ -1,34 +1,34 @@
-%releaseName%
+{release_name:^>70:68}
 
-  Title    : %titleName%
-  Type     : %titleType% (%titleYear%)
-  Season   : %seasonNum% (%episodeCount% Episodes)
-  IMDb     : https://imdb.com/title/%imdbId%
-  TMDB     : https://themoviedb.org/%tmdbId%
-  TVDB     : https://thetvdb.com/?tab=series&id=%tvdbId%
-  Preview  : %imageboxUrl%
-  Chapters : %chapters%
-<?source?
+  Title    : {title_name}
+  Type     : {title_type_name} ({title_year})
+  Season   : {season} ({episode_count} Episodes)
+  IMDb     : https://imdb.com/title/{imdb}
+  TMDB     : https://themoviedb.org/{tmdb}
+  TVDB     : https://thetvdb.com/?tab=series&id={tvdb}
+  Preview  : {preview_url}
+  Chapters : {chapters}
+<?{source:true}?
   Source :
-  %source%
-?><?note?
+  {source:>>2:65}
+?><?{note:true}?
   Note :
-  %note%
+  {note:>>2:65}
 ?>
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Video :
 
-  %videoTracks%
+  {videos:>>2:65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Audio :
 
-  %audioTracks%
+  {audios:>>2:65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Subtitles :
   
-  %subtitleTracks%
+  {subtitles:>>2:65}
