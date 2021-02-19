@@ -24,6 +24,17 @@ class CustomFormats(Formatter):
             if len(value) == 1:
                 return value[0]
             return value
+        if re.match(r"^layout,\d+x\d+x\d+$", format_spec):
+            # e.g. {var:layout,3x2x1} will return the var list 3 items horizontally separated by 1 space, twice vertically by 1 (+1) lines.
+            w, h, space = [int(x) for x in format_spec[7:].split("x")]  # w x h x spacer
+            if not isinstance(value, list):
+                value = [value]
+            if len(value) != w * h:
+                raise ValueError("Layout invalid, not enough images...")
+            value = [(value[i:i + w]) for i in range(0, len(value), w)]
+            value = [(" " * space).join(x) for x in value]
+            value = ("\n" * (space + 1)).join(value)
+            return value
         if re.match(r"^>>\d+x\d+$", format_spec):
             # e.g. {var:>>2x68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
             indent, chars = [int(x) for x in format_spec[2:].split("x")]
