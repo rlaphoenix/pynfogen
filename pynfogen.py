@@ -65,6 +65,8 @@ print(template)
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf-8") as f:
     f.write(template)
 
+print(f"Generated NFO for {nfo.release_name}")
+
 # generate bb code description
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf-8") as f:
     description = ""
@@ -90,4 +92,4 @@ with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"
     description += f"[code]\n{template}\n[/code]"
     f.write(description)
 
-print(f"Generated NFO for {nfo.release_name}")
+print(f"Generated BBCode Description for {nfo.release_name}")
