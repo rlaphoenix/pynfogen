@@ -204,8 +204,10 @@ class NFO:
         return images
     
     def getBannerImage(self, tvdb_id: int):
+        if self.title_type not in ("season", "episode"):
+            return None  # I don't have a source for movie banners
         if not self.fanart_api_key:
-            raise ValueError("Need Fanart.tv api key!")
+            raise ValueError("Need Fanart.tv api key for TV titles!")
         res = scrape(f"http://webservice.fanart.tv/v3/tv/{tvdb_id}?api_key={self.fanart_api_key}")
         res = json.loads(res)
         if "error message" in res:

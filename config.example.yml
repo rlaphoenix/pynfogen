@@ -10,7 +10,7 @@
 # Make sure all episodes your releasing is in a folder, and the folder name is the release name
 # Then, configure all the options, and run `python pynfogen.py` (>= python v3.6)
 
-fanart_api_key: ~  # key is needed
+fanart_api_key: ~  # key is needed for TV titles
 
 file: file:///path/to/the/file.mkv
 # rpg, phoenix. This is the ascii art added around the NFO information
