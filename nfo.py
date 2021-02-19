@@ -3,6 +3,7 @@ import os
 import re
 import html
 import textwrap
+import json
 
 import pycountry
 from pvsfunc.helpers import anti_file_prefix, get_d2v
@@ -35,6 +36,7 @@ class NFO:
         self.episodes = None
         self.release_name = None
         self.preview_url = None
+        self.banner_image = None
         self.source = None
         self.note = None
         self.videos = None
@@ -42,6 +44,8 @@ class NFO:
         self.subtitles = None
         self.chapters = None
         self.chapters_numbered = None
+
+        self.fanart_api_key = None
 
     def __repr__(self):
         return "<{c} {attrs}>".format(
@@ -53,6 +57,8 @@ class NFO:
         # Ensure config isn't empty
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.setConfig: Parameter config is empty or not a dictionary...")
+        # Set Fanart.tv API Key
+        self.fanart_api_key = config.get("fanart_api_key")
         # Get Art Template
         self.art = config["art"]
         # Get input file path
@@ -69,6 +75,8 @@ class NFO:
         self.release_name = self.getReleaseName()
         # Get Preview Url
         self.preview_url = config["preview-url"]
+        # Get Banner Image
+        self.banner_image = self.getBannerImage(self.tvdb) if self.tvdb else None
         # Get Source and Note
         self.source = config["source"]
         self.note = config["note"]
@@ -169,6 +177,19 @@ class NFO:
         if self.title_type == "season":
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
+    
+    def getBannerImage(self, tvdb_id: int):
+        if not self.fanart_api_key:
+            raise ValueError("Need Fanart.tv api key!")
+        res = scrape(f"http://webservice.fanart.tv/v3/tv/{tvdb_id}?api_key={self.fanart_api_key}")
+        res = json.loads(res)
+        if "error message" in res:
+            if res["error message"] == "Not found":
+                return None
+            raise ValueError(f"Fanart.tv spat out an error! {res}")
+        if "tvbanner" not in res or not any(x for x in res["tvbanner"] if x["lang"] == "en"):
+            raise ValueError("Fanart.tv doesn't have an English TV banner for this title. Not sure how you want to proceed.")
+        return res["tvbanner"][0]["url"]
 
     def getMediaInfo(self):
         self.media_info = MediaInfo.parse(self.file)
