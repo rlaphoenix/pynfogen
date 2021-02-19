@@ -17,7 +17,13 @@ class CustomFormats(Formatter):
             # e.g. {var:false} will return 1 if var is not a truthy value, {var:!true} is an identical alternative
             return "0" if value else "1"
         if format_spec == "bbimg":
-            return [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in value]
+            if not isinstance(value, list):
+                value = [value]
+            value = [({"url": x, "src": x} if not isinstance(x, dict) else x) for x in value]
+            value = [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in value]
+            if len(value) == 1:
+                return value[0]
+            return value
         if re.match(r"^>>\d+x\d+$", format_spec):
             # e.g. {var:>>2x68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
             indent, chars = [int(x) for x in format_spec[2:].split("x")]
