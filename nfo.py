@@ -36,6 +36,7 @@ class NFO:
         self.episodes = None
         self.release_name = None
         self.preview_url = None
+        self.preview_images = []
         self.banner_image = None
         self.source = None
         self.note = None
@@ -75,6 +76,7 @@ class NFO:
         self.release_name = self.getReleaseName()
         # Get Preview Url
         self.preview_url = config["preview-url"]
+        self.preview_images = self.getPreviewImages(self.preview_url)
         # Get Banner Image
         self.banner_image = self.getBannerImage(self.tvdb) if self.tvdb else None
         # Get Source and Note
@@ -177,6 +179,29 @@ class NFO:
         if self.title_type == "season":
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
+    
+    def getPreviewImages(self, url: str) -> list[dict]:
+        if not url:
+            return []
+        images = []
+        for domain in ["imgbox.com", "beyondhd.co"]:
+            if domain not in url.lower():
+                continue
+            page = scrape(url)
+            if domain == "imgbox.com":
+                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
+                    images.append({
+                        "url": f"https://imgbox.com/{m.group(2)}",
+                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
+                    })
+            elif domain == "beyondhd.co":
+                for m in re.finditer('/image/([^"]+)"\\D+src="(https://beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
+                    images.append({
+                        "url": f"https://beyondhd.co/image/{m.group(1)}",
+                        "src": m.group(2)
+                    })
+            break
+        return images
     
     def getBannerImage(self, tvdb_id: int):
         if not self.fanart_api_key:

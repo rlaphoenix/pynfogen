@@ -33,6 +33,7 @@ template = CustomFormats().format(
     tmdb=nfo.tmdb,
     tvdb=nfo.tvdb,
     preview_url=nfo.preview_url,
+    preview_images=nfo.preview_images,
     source=nfo.source,
     note=nfo.note,
     videos=nfo.getVideoPrint(nfo.videos),
@@ -70,25 +71,6 @@ print(f"Generated NFO for {nfo.release_name}")
 # generate bb code description
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf-8") as f:
     description = ""
-    if nfo.preview_url:
-        supported_domains = ["imgbox.com", "beyondhd.co"]
-        for domain in supported_domains:
-            if domain in nfo.preview_url.lower():
-                page = scrape(nfo.preview_url)
-                description += "[align=center]\n"
-                if domain == "imgbox.com":
-                    regex = 'src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)'
-                    bb_code = "[URL=https://imgbox.com/{1}][IMG]{0}{1}_t.{2}[/IMG][/URL]"
-                elif domain == "beyondhd.co":
-                    regex = '/image/([^"]+)"\\D+src="(https://beyondhd.co/images.+/(\\w+).md.[^"]+)'
-                    bb_code = "[URL=https://beyondhd.co/image/{0}][IMG]{1}[/img][/URL]"
-                for i, m in enumerate(re.finditer(regex, page)):
-                    description += bb_code.format(*m.groups())
-                    if (i % 2) != 0:
-                        description += "\n"
-                if not description.endswith("\n"):
-                    description += "\n"
-                description += "[/align]\n"
     description += f"[code]\n{template}\n[/code]"
     f.write(description)
 
