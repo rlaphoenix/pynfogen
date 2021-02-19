@@ -5,6 +5,10 @@ from string import Formatter
 
 class CustomFormats(Formatter):
     def format_field(self, value, format_spec: str):
+        if ":" in format_spec:
+            # add chaing support, e.g. {var:bbimg:layout,2x2x0}
+            for spec in format_spec.split(":"):
+                value = self.format_field(value, spec)
         if format_spec in ("true", "!false"):
             # e.g. {var:true} will return 1 if var is a truthy value, {var:!false} is an identical alternative
             return "1" if value else "0"
