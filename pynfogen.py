@@ -6,7 +6,7 @@ from helpers import scrape
 from nfo import NFO
 
 
-conditional_regex = re.compile("<\\?(\\w+)\\?([\\D\\d]*?)\\?>")
+conditional_regex = re.compile(r"<\?(\w+)\?([\D\d]*?)\?>")
 
 # Create NFO object
 nfo = NFO()
