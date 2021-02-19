@@ -1,4 +1,4 @@
-{release_name:^>70:68}
+{release_name:^>70x68}
 
   Title    : {title_name}
   Type     : {title_type_name} ({title_year})
@@ -10,28 +10,28 @@
   Chapters : {chapters}
 <?{source:true}?
   Source :
-  {source:>>2:65}
+  {source:>>2x65}
 ?><?{note:true}?
   Note :
-  {note:>>2:65}
+  {note:>>2x65}
 ?>
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Video :
 
-  {videos:>>2:65}
+  {videos:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Audio :
 
-  {audios:>>2:65}
+  {audios:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Subtitles :
   
-  {subtitles:>>2:65}<?{chapters_named:true}?
+  {subtitles:>>2x65}<?{chapters_named:true}?
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 

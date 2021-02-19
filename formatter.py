@@ -11,16 +11,16 @@ class CustomFormats(Formatter):
         if format_spec in ("false", "!true"):
             # e.g. {var:false} will return 1 if var is not a truthy value, {var:!true} is an identical alternative
             return "0" if value else "1"
-        if re.match(r"^>>\d+:\d+$", format_spec):
-            # e.g. {var:>>2:68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
-            indent, chars = [int(x) for x in format_spec[2:].split(":")]
+        if re.match(r"^>>\d+x\d+$", format_spec):
+            # e.g. {var:>>2x68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
+            indent, chars = [int(x) for x in format_spec[2:].split("x")]
             if isinstance(value, list):
                 value = self.list_to_indented_strings(value, indent)
                 return value
             return "\n".join(textwrap.wrap(value, chars, subsequent_indent=" " * indent))
-        if re.match(r"^\^>\d+:\d+$", format_spec):
-            # e.g. {var:^>70:68} will center each line (at 70 chars) and textwrap each line (at 68 chars)
-            center, wrap = [int(x) for x in format_spec[2:].split(":")]
+        if re.match(r"^\^>\d+x\d+$", format_spec):
+            # e.g. {var:^>70x68} will center each line (at 70 chars) and textwrap each line (at 68 chars)
+            center, wrap = [int(x) for x in format_spec[2:].split("x")]
             return "\n".join([x.center(center) for x in textwrap.wrap(value, wrap)])
         return super().format_field(value, format_spec)
 
