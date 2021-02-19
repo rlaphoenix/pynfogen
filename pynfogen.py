@@ -49,7 +49,7 @@ template = CustomFormats().format(
 
 # Apply Art template
 with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
-    template = f.read().replace("%nfo%", template)
+    template = f.read().format(nfo=template)
 
 # Apply conditional logic
 for i, m in enumerate(re.finditer(r"<\?(0|1)\?([\D\d]*?)\?>", template)):
