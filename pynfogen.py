@@ -6,8 +6,6 @@ from helpers import scrape
 from nfo import NFO
 
 
-conditional_regex = re.compile(r"<\?(\w+)\?([\D\d]*?)\?>")
-
 # Create NFO object
 nfo = NFO()
 
@@ -18,12 +16,6 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml"
 # Parse NFO template
 with open(f"templates/{nfo.title_type}.nfo", "rt", encoding="utf-8") as f:
     template = f.read()
-for i, m in enumerate(re.finditer(conditional_regex, template)):
-    template = re.sub(
-        "<\\?" + m.group(1) + "\\?([\\D\\d]*?)\\?>",
-        m.group(2) if nfo.getVariable(m.group(1)) else "",
-        template
-    )
 template_buffer = []
 for line in template.splitlines():
     line = line.rstrip()
@@ -51,6 +43,11 @@ template = "\n".join(template_buffer)
 # Apply Art template
 with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
     template = f.read().replace("%nfo%", template)
+
+# Apply conditional logic
+for i, m in enumerate(re.finditer(r"<\?(0|1)\?([\D\d]*?)\?>", template)):
+    template = template.replace(
+        m.group(0), m.group(2) if int(m.group(1)) else "")
 
 # Strip unnecessary whitespace to reduce character count
 template = "\n".join([line.rstrip() for line in template.splitlines()])
