@@ -34,6 +34,7 @@ template = CustomFormats().format(
     tvdb=nfo.tvdb,
     preview_url=nfo.preview_url,
     preview_images=nfo.preview_images,
+    banner_image=nfo.banner_image,
     source=nfo.source,
     note=nfo.note,
     videos=nfo.getVideoPrint(nfo.videos),
