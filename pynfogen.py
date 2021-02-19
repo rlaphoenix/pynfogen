@@ -51,7 +51,9 @@ template = "\n".join(template_buffer)
 # Apply Art template
 with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
     template = f.read().replace("%nfo%", template)
-    template = "\n".join([line.rstrip() for line in template.splitlines()])
+
+# Strip unnecessary whitespace to reduce character count
+template = "\n".join([line.rstrip() for line in template.splitlines()])
 
 # Save template to file with release name, next to input file
 with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf-8") as f:
