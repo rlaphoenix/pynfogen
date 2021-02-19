@@ -1,0 +1,40 @@
+[align=center]<?{banner_image:true}?
+{banner_image:bbimg}
+
+[HR][/HR]
+?>
+{preview_images:bbimg:layout,2x2x0}
+[/align]
+
+[HR][/HR]
+<?{note:true}?
+{note:>>0x100}
+
+[HR][/HR]
+?>
+Release: {release_name}
+Title: {title_name}
+Type: {title_type_name} ({title_year})
+Season: {season} ({episode_count} Episodes)
+IMDb: https://imdb.com/title/{imdb}
+TMDB: https://themoviedb.org/{tmdb}
+TVDB: https://thetvdb.com/?tab=series&id={tvdb}
+Preview: {preview_url}
+Chapters: {chapters}<?{source:true}?
+Source: {source:>>0x100}?>
+
+[HR][/HR]
+
+Video Tracks ({videos_count}):
+{videos:>>0x68}
+
+Audio Tracks ({audios_count}):
+{audios:>>0x68}
+
+Subtitle Tracks ({subtitles_count}):
+{subtitles:>>0x68}
+
+[HR][/HR]
+
+I sincerely hope you enjoy this release! - PHOENiX
+Greetz: -RPG -MKVULTRA -FraMeSToR
