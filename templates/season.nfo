@@ -2,7 +2,7 @@
 
   Title    : {title_name}
   Type     : {title_type_name} ({title_year})
-  Season   : {season} ({episode_count} Episodes)
+  Season   : {season} ({episodes} Episodes)
   IMDb     : https://imdb.com/title/{imdb}
   TMDB     : https://themoviedb.org/{tmdb}
   TVDB     : https://thetvdb.com/?tab=series&id={tvdb}
