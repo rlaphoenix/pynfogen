@@ -6,7 +6,7 @@ from string import Formatter
 class CustomFormats(Formatter):
     def format_field(self, value, format_spec: str):
         if ":" in format_spec:
-            # add chaing support, e.g. {var:bbimg:layout,2x2x0}
+            # add chain support, e.g. {var:bbimg:layout,2x2x0}
             for spec in format_spec.split(":"):
                 value = self.format_field(value, spec)
             return value
@@ -17,6 +17,8 @@ class CustomFormats(Formatter):
             # e.g. {var:false} will return 1 if var is not a truthy value, {var:!true} is an identical alternative
             return "0" if value else "1"
         if format_spec == "bbimg":
+            if not value:
+                return ""
             if not isinstance(value, list):
                 value = [value]
             value = [({"url": x, "src": x} if not isinstance(x, dict) else x) for x in value]
@@ -39,13 +41,12 @@ class CustomFormats(Formatter):
             # e.g. {var:>>2x68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
             indent, chars = [int(x) for x in format_spec[2:].split("x")]
             if isinstance(value, list):
-                value = self.list_to_indented_strings(value, indent)
-                return value
-            return "\n".join(textwrap.wrap(value, chars, subsequent_indent=" " * indent))
+                return self.list_to_indented_strings(value, indent)
+            return "\n".join(textwrap.wrap(value or "", chars, subsequent_indent=" " * indent))
         if re.match(r"^\^>\d+x\d+$", format_spec):
             # e.g. {var:^>70x68} will center each line (at 70 chars) and textwrap each line (at 68 chars)
             center, wrap = [int(x) for x in format_spec[2:].split("x")]
-            return "\n".join([x.center(center) for x in textwrap.wrap(value, wrap)])
+            return "\n".join([x.center(center) for x in textwrap.wrap(value or "", wrap)])
         return super().format_field(value, format_spec)
 
     def list_to_indented_strings(self, value: list, indent: int = 0):
