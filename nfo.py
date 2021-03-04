@@ -215,7 +215,7 @@ class NFO:
                 return None
             raise ValueError(f"Fanart.tv spat out an error! {res}")
         if "tvbanner" not in res or not any(x for x in res["tvbanner"] if x["lang"] == "en"):
-            raise ValueError("Fanart.tv doesn't have an English TV banner for this title. Not sure how you want to proceed.")
+            return None
         return res["tvbanner"][0]["url"]
 
     def getMediaInfo(self):
