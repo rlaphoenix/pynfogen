@@ -195,7 +195,7 @@ class NFO:
                         "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
                     })
             elif domain == "beyondhd.co":
-                for m in re.finditer('/image/([^"]+)"\\D+src="(https://beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
+                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
                     images.append({
                         "url": f"https://beyondhd.co/image/{m.group(1)}",
                         "src": m.group(2)
