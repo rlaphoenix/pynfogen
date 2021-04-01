@@ -1,7 +1,7 @@
 import requests
 
 
-def scrape(url):
+def scrape(url: str) -> str:
     return requests.get(
         url=url,
         headers={

@@ -3,7 +3,6 @@ import re
 import yaml
 
 from formatter import CustomFormats
-from helpers import scrape
 from nfo import NFO
 
 
@@ -44,6 +43,7 @@ template_data = {
     "chapter_entries": nfo.getChapterPrint(nfo.chapters)
 }
 
+
 def parse_template(template: str, art: bool = False):
     template = CustomFormats().format(template, **template_data)
     # Apply Art template
@@ -51,13 +51,14 @@ def parse_template(template: str, art: bool = False):
         with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
             template = f.read().format(nfo=template)
     # Apply conditional logic
-    for m in re.finditer(r"<\?(0|1)\?([\D\d]*?)\?>", template):
+    for m in re.finditer(r"<\?([01])\?([\D\d]*?)\?>", template):
         template = template.replace(
             m.group(0), m.group(2) if int(m.group(1)) else "")
     # Strip unnecessary whitespace to reduce character count
     template = "\n".join([line.rstrip() for line in template.splitlines()])
 
     return template
+
 
 # Parse NFO template
 with open(f"templates/{nfo.title_type}.nfo", "rt", encoding="utf-8") as f:

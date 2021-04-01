@@ -125,7 +125,7 @@ class NFO:
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/dRpT6g/3
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb<\/title>",
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb</title>",
             imdb_page
         )
         if not imdb_title:
@@ -179,30 +179,7 @@ class NFO:
         if self.title_type == "season":
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
-    
-    def getPreviewImages(self, url: str) -> list[dict]:
-        if not url:
-            return []
-        images = []
-        for domain in ["imgbox.com", "beyondhd.co"]:
-            if domain not in url.lower():
-                continue
-            page = scrape(url)
-            if domain == "imgbox.com":
-                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
-                    images.append({
-                        "url": f"https://imgbox.com/{m.group(2)}",
-                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
-                    })
-            elif domain == "beyondhd.co":
-                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
-                    images.append({
-                        "url": f"https://beyondhd.co/image/{m.group(1)}",
-                        "src": m.group(2)
-                    })
-            break
-        return images
-    
+
     def getBannerImage(self, tvdb_id: int):
         if self.title_type not in ("season", "episode"):
             return None  # I don't have a source for movie banners
@@ -290,6 +267,30 @@ class NFO:
             l1 = f"- {title}, {t.format} {channels} @ {t.other_bit_rate[0]}{bit_rate_mode}"
             data += [("  " + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(l1, 64))]
         return data
+
+    @staticmethod
+    def getPreviewImages(url: str) -> list[dict]:
+        if not url:
+            return []
+        images = []
+        for domain in ["imgbox.com", "beyondhd.co"]:
+            if domain not in url.lower():
+                continue
+            page = scrape(url)
+            if domain == "imgbox.com":
+                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
+                    images.append({
+                        "url": f"https://imgbox.com/{m.group(2)}",
+                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
+                    })
+            elif domain == "beyondhd.co":
+                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
+                    images.append({
+                        "url": f"https://beyondhd.co/image/{m.group(1)}",
+                        "src": m.group(2)
+                    })
+            break
+        return images
 
     @staticmethod
     def getSubtitlePrint(subs):
