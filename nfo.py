@@ -4,6 +4,7 @@ import re
 import html
 import textwrap
 import json
+from typing import List
 
 import pycountry
 from pvsfunc.helpers import anti_file_prefix, get_d2v
@@ -269,7 +270,7 @@ class NFO:
         return data
 
     @staticmethod
-    def getPreviewImages(url: str) -> list[dict]:
+    def getPreviewImages(url: str) -> List[dict]:
         if not url:
             return []
         images = []
