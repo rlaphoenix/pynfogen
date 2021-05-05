@@ -70,7 +70,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     template_data = template_path.read_text()
 
     nfo_txt = nfo.run(template_data, art=artwork, **template_vars)
-    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
+    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf8") as f:
         f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
 
@@ -78,6 +78,6 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     if template_path.exists():
         template_data = template_path.read_text()
         bb_txt = nfo.run(template_data, **template_vars)
-        with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
+        with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf8") as f:
             f.write(bb_txt)
         print(f"Generated BBCode Description for {nfo.release_name}")
