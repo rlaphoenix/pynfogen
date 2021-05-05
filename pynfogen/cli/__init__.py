@@ -20,7 +20,8 @@ def cli(ctx):
     ctx.obj = {
         "user_dir": user_dir,
         "config_path": config_path,
-        "templates": user_dir / "templates"
+        "templates": user_dir / "templates",
+        "artwork": user_dir / "artwork"
     }
 
 
