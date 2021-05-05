@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "pynfogen"
+version = "0.1.0"
+description = "Scriptable MediaInfo-fed NFO Generator for Movies and TV"
+license = "MIT"
+authors = ["PHOENiX <rlaphoenix@pm.me>"]
+maintainers = ["PHOENiX <rlaphoenix@pm.me>"]
+readme = "README.md"
+homepage = "https://github.com/rlaphoenix/pynfogen"
+repository = "https://github.com/rlaphoenix/pynfogen"
+documentation = "https://github.com/rlaphoenix/pynfogen"
+keywords = ["python", "nfo", "generator", "scriptable"]
+classifiers = [
+    # python ver and license set by poetry automatically
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Documentation",
+    "Topic :: Multimedia",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Multimedia :: Video :: Conversion"
+]
+include = ["LICENSE", "README.md"]
+
+[tool.poetry.dependencies]
+python = ">=3.6,<4.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
