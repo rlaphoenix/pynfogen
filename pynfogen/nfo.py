@@ -98,11 +98,10 @@ class NFO:
             1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
         ) == len(self.chapters)
 
-        self.art = config["art"]
-
         self.fanart_api_key = config.get("fanart_api_key")
-
         self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
+
+        self.art = config["art"]
 
         self.title_name, self.title_year = self.get_title_name_year()
 
@@ -141,7 +140,8 @@ class NFO:
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/dRpT6g/3
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |)(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb</title>",
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |)"
+            r"(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb</title>",
             imdb_page
         )
         if not imdb_title:
