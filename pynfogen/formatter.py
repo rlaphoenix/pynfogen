@@ -1,52 +1,79 @@
 import re
 import textwrap
 from string import Formatter
+from typing import Any, List, Union
 
 
 class CustomFormats(Formatter):
-    def format_field(self, value, format_spec: str):
+    def chain(self, value: Any, format_spec: str) -> Any:
+        """Support chaining format specs separated by `:`."""
+        for spec in format_spec.split(":"):
+            value = self.format_field(value, spec)
+        return value
+
+    @staticmethod
+    def boolean(value: Any, spec: str) -> str:
+        """Return evaluated boolean value of input as a bool-int cast as string."""
+        true = spec in ("true", "!false")
+        false = spec in ("false", "!true")
+        if not true and not false:
+            raise ValueError("spec must be true, !false, false, or !true")
+        b = bool(value)
+        if false:
+            b = not b
+        return str(int(b))
+
+    @staticmethod
+    def bbimg(value: Union[List[Union[dict, str]], Union[dict, str]]) -> Union[List[str], str]:
+        """Convert a list of values into a list of BBCode [LIST][IMG] strings."""
+        if not value:
+            return ""
+        if not isinstance(value, list):
+            value = [value]
+        value = [({"url": x, "src": x} if not isinstance(x, dict) else x) for x in value]
+        value = [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in value]
+        if len(value) == 1:
+            return value[0]
+        return value
+
+    @staticmethod
+    def layout(value: Union[List[str], str], width: int, height: int, spacing: int) -> str:
+        """Lay out data in a grid with specific lengths, heights, and spacing."""
+        if not isinstance(value, list):
+            value = [value]
+        if len(value) != width * height:
+            # TODO: How about just ignore and try fill as much as it can?
+            raise ValueError("Layout invalid, not enough images...")
+        value = [(value[i:i + width]) for i in range(0, len(value), width)]
+        value = [(" " * spacing).join(x) for x in value]
+        value = ("\n" * (spacing + 1)).join(value)
+        return value
+
+    def wrap(self, value: Union[List[str], str], indent: int, width: int) -> str:
+        """Text-wrap data at a specific width and indent amount."""
+        if isinstance(value, list):
+            return self.list_to_indented_strings(value, indent)
+        return "\n".join(textwrap.wrap(value or "", width, subsequent_indent=" " * indent))
+
+    @staticmethod
+    def center(value: str, center_width: int, wrap_width: int) -> str:
+        """Center data at a specific width, while also text-wrapping at a specific width."""
+        return "\n".join([x.center(center_width) for x in textwrap.wrap(value or "", wrap_width)])
+
+    def format_field(self, value: Any, format_spec: str):
+        """Apply both standard formatters along with custom formatters to value."""
         if ":" in format_spec:
-            # add chain support, e.g. {var:bbimg:layout,2x2x0}
-            for spec in format_spec.split(":"):
-                value = self.format_field(value, spec)
-            return value
-        if format_spec in ("true", "!false"):
-            # e.g. {var:true} will return 1 if var is a truthy value, {var:!false} is an identical alternative
-            return "1" if value else "0"
-        if format_spec in ("false", "!true"):
-            # e.g. {var:false} will return 1 if var is not a truthy value, {var:!true} is an identical alternative
-            return "0" if value else "1"
+            return self.chain(value, format_spec)
+        if format_spec in ("true", "!false", "false", "!true"):
+            return self.boolean(value, format_spec)
         if format_spec == "bbimg":
-            if not value:
-                return ""
-            if not isinstance(value, list):
-                value = [value]
-            value = [({"url": x, "src": x} if not isinstance(x, dict) else x) for x in value]
-            value = [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in value]
-            if len(value) == 1:
-                return value[0]
-            return value
+            return self.bbimg(value)
         if re.match(r"^layout,\d+x\d+x\d+$", format_spec):
-            # e.g. {var:layout,3x2x1} will return the var list 3 items horizontally separated by 1 space, twice vertically by 1 (+1) lines.
-            w, h, space = [int(x) for x in format_spec[7:].split("x")]  # w x h x spacer
-            if not isinstance(value, list):
-                value = [value]
-            if len(value) != w * h:
-                raise ValueError("Layout invalid, not enough images...")
-            value = [(value[i:i + w]) for i in range(0, len(value), w)]
-            value = [(" " * space).join(x) for x in value]
-            value = ("\n" * (space + 1)).join(value)
-            return value
+            return self.layout(value, *map(int, format_spec[7:].split("x")))
         if re.match(r"^>>\d+x\d+$", format_spec):
-            # e.g. {var:>>2x68} will textwrap each line (at 68 chars), and each line will be indented by 2 spaces
-            indent, chars = [int(x) for x in format_spec[2:].split("x")]
-            if isinstance(value, list):
-                return self.list_to_indented_strings(value, indent)
-            return "\n".join(textwrap.wrap(value or "", chars, subsequent_indent=" " * indent))
+            return self.wrap(value, *map(int, format_spec[2:].split("x")))
         if re.match(r"^\^>\d+x\d+$", format_spec):
-            # e.g. {var:^>70x68} will center each line (at 70 chars) and textwrap each line (at 68 chars)
-            center, wrap = [int(x) for x in format_spec[2:].split("x")]
-            return "\n".join([x.center(center) for x in textwrap.wrap(value or "", wrap)])
+            return self.center(value, *map(int, format_spec[2:].split("x")))
         return super().format_field(value, format_spec)
 
     def list_to_indented_strings(self, value: list, indent: int = 0):
