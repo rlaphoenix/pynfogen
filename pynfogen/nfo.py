@@ -108,10 +108,11 @@ class NFO:
         self.source = config["source"]
         self.note = config["note"]
         # Get Tracks
-        self.videos = self.get_tracks("Video")
-        self.audio = self.get_tracks("Audio")
-        self.subtitles = self.get_tracks("Text")
-        self.chapters = self.get_tracks("Menu")
+        self.media_info = MediaInfo.parse(self.file)
+        self.videos = self.media_info.video_tracks
+        self.audio = self.media_info.audio_tracks
+        self.subtitles = self.media_info.text_tracks
+        self.chapters = self.media_info.menu_tracks
         self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
         self.chapters_numbered = 0 if not self.chapters else sum(
             1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
@@ -119,7 +120,7 @@ class NFO:
         print(self)
 
     def get_database_ids(self, config):
-        general = self.get_tracks("General")[0].to_data()
+        general = self.media_info.general_tracks[0].to_data()
         dbs = {"imdb": None, "tmdb": None, "tvdb": None}
         for db in dbs.keys():
             if db in general and general[db]:
@@ -158,7 +159,7 @@ class NFO:
         return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
     def get_tv_info(self, config) -> tuple:
-        general = self.get_tracks("General")[0]
+        general = self.media_info.general_tracks[0]
         if general.title:
             tv_title = re.search("^.*? S(\\d+)E(\\d+) (.*)$", general.title)
             if tv_title:
@@ -219,22 +220,6 @@ class NFO:
         if "tvbanner" not in res or not any(x for x in res["tvbanner"] if x["lang"] == "en"):
             return None
         return res["tvbanner"][0]["url"]
-
-    def get_media_info(self):
-        self.media_info = MediaInfo.parse(self.file)
-        """
-        general = self.get_tracks("General")[0]
-        videos = self.get_tracks("Video")
-        audios = self.get_tracks("Audio")
-        subtitles = self.get_tracks("Text")
-        chapters = self.get_tracks("Menu")
-        chapters_numbered = False
-        """
-
-    def get_tracks(self, type=None):
-        if not self.media_info:
-            self.get_media_info()
-        return [track for track in self.media_info.tracks if not type or track.track_type == type]
 
     def get_video_print(self, videos) -> list:
         if not videos:
