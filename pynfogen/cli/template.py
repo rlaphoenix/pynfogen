@@ -14,11 +14,12 @@ def template():
 
 @template.command()
 @click.argument("name", type=str)
+@click.option("--bbcode", is_flag=True, default=False, help="Specify template as a BBCode Description template.")
 @click.pass_obj
-def edit(obj, name: str):
+def edit(obj, name: str, bbcode: bool):
     """Edit a template file. If one does not exist, one will be created."""
     log = logging.getLogger("template")
-    location = Path(obj["templates"] / f"{name}.nfo")
+    location = Path(obj["templates"] / f"{name}.{'txt' if bbcode else 'nfo'}")
     if not location.exists():
         log.info(f"Creating new template named {name}")
         location.parent.mkdir(exist_ok=True, parents=True)
@@ -30,12 +31,13 @@ def edit(obj, name: str):
 
 @template.command()
 @click.argument("name", type=str)
+@click.option("--bbcode", is_flag=True, default=False, help="Specify template as a BBCode Description template.")
 @click.confirmation_option(prompt="Are you sure you want to delete the template?")
 @click.pass_obj
 def delete(obj, name: str):
     """Delete a template file."""
     log = logging.getLogger("template")
-    location = Path(obj["templates"] / f"{name}.nfo")
+    location = Path(obj["templates"] / f"{name}.{'txt' if bbcode else 'nfo'}")
     if not location.exists():
         raise click.ClickException(f"Template {name} does not exist.")
     location.unlink()
@@ -50,4 +52,4 @@ def list_(obj):
     if not location.is_dir():
         raise click.ClickException("No templates exist.")
     for file in location.iterdir():
-        print(file.stem)
+        print(file.stem, "-", {".nfo": "NFO", ".txt": "BBCode"}[file.suffix.lower()], "Template")
