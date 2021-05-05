@@ -80,7 +80,7 @@ class NFO:
 
         return template
 
-    def set_config(self, file: str, season: Union[int, str], episode: Tuple[int, str], **config):
+    def set_config(self, file: str, season: Union[int, str] = None, episode: Tuple[int, str] = None, **config):
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
