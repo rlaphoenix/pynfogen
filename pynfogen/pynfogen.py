@@ -77,5 +77,10 @@ def parse_template(template: str, art: str = None, **kwargs) -> str:
     return template
 
 
+def cli():
+    # cli will just do what main does for now
+    main()
+
+
 if __name__ == "__main__":
     main()
