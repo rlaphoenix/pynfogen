@@ -31,6 +31,7 @@ PyYAML = "^5.4.1"
 pymediainfo = "^5.1.0"
 pvsfunc = "^3.16.1"
 pycountry = "^20.7.3"
+requests = "^2.25.1"
 
 [tool.poetry-dynamic-versioning]
 enable = true
