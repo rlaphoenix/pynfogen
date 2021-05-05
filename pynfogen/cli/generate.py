@@ -49,7 +49,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
                 )
             )
 
-    template_data = {
+    template_vars = {
         "videos": nfo.get_video_print(nfo.videos),
         "audios": nfo.get_audio_print(nfo.audio),
         "subtitles": nfo.get_subtitle_print(nfo.subtitles),
@@ -59,25 +59,25 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     }
 
     if artwork:
-        artwork = Path(obj["artworks"] / f"{artwork}.nfo")
+        artwork = Path(obj["artwork"] / f"{artwork}.nfo")
         if not artwork.exists():
             raise click.ClickException(f"No artwork named {artwork.stem} exists.")
         artwork = artwork.read_text()
 
-    template = Path(obj["templates"] / f"{template}.nfo")
-    if not template.exists():
-        raise click.ClickException(f"No template named {template.stem} exists.")
-    template = template.read_text()
+    template_path = Path(obj["templates"] / f"{template}.nfo")
+    if not template_path.exists():
+        raise click.ClickException(f"No template named {template} exists.")
+    template_data = template_path.read_text()
 
-    nfo_txt = nfo.run(template, art=artwork, **template_data)
+    nfo_txt = nfo.run(template_data, art=artwork, **template_vars)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
         f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
 
-    template = Path(obj["templates"] / f"{template}.txt")
-    if template.exists():
-        template = template.read_text()
-        bb_txt = nfo.run(template, **template_data)
+    template_path = Path(obj["templates"] / f"{template}.txt")
+    if template_path.exists():
+        template_data = template_path.read_text()
+        bb_txt = nfo.run(template_data, **template_vars)
         with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
             f.write(bb_txt)
         print(f"Generated BBCode Description for {nfo.release_name}")
