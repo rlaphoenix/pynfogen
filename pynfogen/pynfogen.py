@@ -40,8 +40,10 @@ def main():
         "chapter_entries": nfo.get_chapter_print(nfo.chapters)
     }
 
-    with open(f"art/{nfo.art}.nfo", "rt") as f:
-        art = f.read()
+    art = None
+    if nfo.art and os.path.exists(f"art/{nfo.art}.nfo"):
+        with open(f"art/{nfo.art}.nfo", "rt") as f:
+            art = f.read()
 
     with open(f"templates/{nfo.title_type}.nfo", "rt") as f:
         template = nfo.run(f.read(), art=art, **template_data)
