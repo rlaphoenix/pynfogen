@@ -1,3 +1,7 @@
+import os
+import platform
+import subprocess
+
 import requests
 
 
@@ -13,3 +17,13 @@ def scrape(url: str) -> str:
             "UPGRADE-INSECURE-REQUESTS": "1"
         }
     ).text
+
+
+def open_file(path: str):
+    """Open file in file-associated text-editor."""
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.run(("open", path), check=True)
+    else:
+        subprocess.run(("xdg-open", path), check=True)
