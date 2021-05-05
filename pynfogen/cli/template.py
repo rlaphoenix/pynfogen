@@ -53,3 +53,10 @@ def list_(obj):
         raise click.ClickException("No templates exist.")
     for file in location.iterdir():
         print(file.stem, "-", {".nfo": "NFO", ".txt": "BBCode"}[file.suffix.lower()], "Template")
+
+
+@template.command()
+@click.pass_obj
+def explore(obj):
+    """Open the template directory in your File Explorer."""
+    open_file(obj["templates"])
