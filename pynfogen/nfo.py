@@ -11,6 +11,7 @@ from pvsfunc.helpers import anti_file_prefix, get_d2v
 from pyd2v import D2V
 from pymediainfo import MediaInfo
 
+from pynfogen.formatter import CustomFormats
 from pynfogen.helpers import scrape
 
 
@@ -54,6 +55,29 @@ class NFO:
             c=self.__class__.__name__,
             attrs=" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()),
         )
+
+    @staticmethod
+    def run(template: str, art: str = None, **kwargs) -> str:
+        """
+        Evaluate and apply formatting on template, apply any art if provided.
+        Any additional parameters are passed as variables to the template.
+        """
+        template = CustomFormats().format(template, **kwargs)
+        if art:
+            art = art.format(nfo=template)
+            template = art
+
+        for m in re.finditer(r"<\?([01])\?([\D\d]*?)\?>", template):
+            # TODO: This if check is quite yucky, look into alternative options.
+            #       Ideally a custom format spec would be great.
+            template = template.replace(
+                m.group(0),
+                m.group(2) if int(m.group(1)) else ""
+            )
+
+        template = "\n".join(map(str.rstrip, template.splitlines(keepends=False)))
+
+        return template
 
     def set_config(self, config: dict):
         # Ensure config isn't empty
