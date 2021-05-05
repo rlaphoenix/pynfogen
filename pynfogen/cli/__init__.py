@@ -4,6 +4,7 @@ import click
 from appdirs import user_data_dir
 from dunamai import Version, Style
 
+from pynfogen import __version__
 from pynfogen.cli.artwork import artwork
 from pynfogen.cli.config import config
 from pynfogen.cli.generate import generate
@@ -40,7 +41,11 @@ def about():
 @cli.command()
 def version():
     """Shows the version of the project."""
-    print("pynfogen", Version.from_git().serialize(style=Style.SemVer))
+    try:
+        v = Version.from_git().serialize(style=Style.SemVer)
+    except RuntimeError:
+        v = __version__
+    print("pynfogen", v)
 
 
 cli.add_command(artwork)
