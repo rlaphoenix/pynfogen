@@ -32,6 +32,9 @@ pymediainfo = "^5.1.0"
 pvsfunc = "^3.16.1"
 pycountry = "^20.7.3"
 requests = "^2.25.1"
+appdirs = "^1.4.4"
+click = "^7.1.2"
+dunamai = "^1.5.5"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -39,7 +42,7 @@ style = "semver"
 latest-tag = true
 
 [tool.poetry.scripts]
-nfogen = "pynfogen.pynfogen:cli"
+nfo = "pynfogen.cli:cli"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
