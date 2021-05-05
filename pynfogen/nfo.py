@@ -4,7 +4,7 @@ import re
 import html
 import textwrap
 import json
-from typing import List
+from typing import List, Union, Tuple
 
 import pycountry
 from pvsfunc.helpers import anti_file_prefix, get_d2v
@@ -25,16 +25,14 @@ class NFO:
         self.media_info = None
         self.art = None
         self.file = None
-        self.imdb = None
-        self.tmdb = None
-        self.tvdb = None
-        self.title_type = None
-        self.title_type_name = None
-        self.title_name = None
-        self.title_year = None
         self.season = None
         self.episode = None
         self.episode_name = None
+        self.imdb = None
+        self.tmdb = None
+        self.tvdb = None
+        self.title_name = None
+        self.title_year = None
         self.episodes = None
         self.release_name = None
         self.preview_url = None
@@ -82,11 +80,14 @@ class NFO:
 
         return template
 
-    def set_config(self, file: str, **config):
+    def set_config(self, file: str, season: Union[int, str], episode: Tuple[int, str], **config):
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
         self.file = anti_file_prefix(file)
+        self.season = season
+        self.episode, self.episode_name = self.episode
+
         self.media_info = MediaInfo.parse(self.file)
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
@@ -103,10 +104,8 @@ class NFO:
 
         self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
 
-        self.title_type, self.title_type_name = self.get_title_type(config)
         self.title_name, self.title_year = self.get_title_name_year()
 
-        self.season, self.episode, self.episode_name = self.get_tv_info(config)
         self.episodes = self.get_tv_episodes()
 
         self.release_name = self.get_release_name()
@@ -138,16 +137,6 @@ class NFO:
                 print(f"Warning: No {k} ID was found...")
         return dbs.values()
 
-    def get_title_type(self, config) -> tuple:
-        name_map = {
-            "season": "TV Series",
-            "episode": "TV Series",
-            "movie": "Movie"
-        }
-        if self.imdb and self.tmdb and not self.tvdb:
-            return "movie", name_map["movie"]
-        return config["type"], name_map[config["type"]]
-
     def get_title_name_year(self) -> tuple:
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
@@ -159,43 +148,8 @@ class NFO:
             raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
         return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
-    def get_tv_info(self, config) -> tuple:
-        general = self.media_info.general_tracks[0]
-        if general.title:
-            tv_title = re.search("^.*? S(\\d+)E(\\d+) (.*)$", general.title)
-            if tv_title:
-                season, episode, episode_name = tv_title.groups()
-                return int(season), int(episode), episode_name
-        if self.title_type == "season":
-            season = None
-            if "season" in config and config["season"]:
-                season = config["season"]
-            while not season:
-                input("What Season is this release for? e.g. `5`, `V01`, `1-4`, `0`, `Specials`:\n")
-            return season, None, None
-        if self.title_type == "episode":
-            season = None
-            if "season" in config and config["season"]:
-                season = config["season"]
-            while not season:
-                season = input("What Season is this release for? e.g. `5`, `V01`, `1-4`, `0`, `Specials`:\n")
-            episode = None
-            if "episode" in config and config["episode"]:
-                episode = config["episode"]
-            while not episode:
-                episode = int(input("Ok great, what Episode?:\n"))
-            episode_name = None
-            if "episode-name" in config and config["episode-name"]:
-                episode_name = config["episode-name"]
-            while not episode_name:
-                episode_name = input("Alright, what's the Episode Name/Title?:\n")
-            return season, episode, episode_name
-        return None, None, None
-
     def get_tv_episodes(self) -> int:
-        # Calculate total episode count (presumably of the season) by counting neighbouring media files
-        if self.title_type != "season":
-            return 0
+        """Calculate total episode count based on neighbouring same-extension files."""
         return len(glob.glob(os.path.join(
             os.path.dirname(self.file),
             f"*{os.path.splitext(self.file)[-1]}"
@@ -203,13 +157,13 @@ class NFO:
 
     def get_release_name(self) -> str:
         # Retrieve the release name based on the input file or parent folder
-        if self.title_type == "season":
+        if self.season is not None and self.episode is None:
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
 
     def get_banner_image(self, tvdb_id: int):
-        if self.title_type not in ("season", "episode"):
-            return None  # I don't have a source for movie banners
+        if not tvdb_id:
+            return None
         if not self.fanart_api_key:
             raise ValueError("Need Fanart.tv api key for TV titles!")
         res = scrape(f"http://webservice.fanart.tv/v3/tv/{tvdb_id}?api_key={self.fanart_api_key}")

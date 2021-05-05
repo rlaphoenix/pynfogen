@@ -14,7 +14,7 @@
 ?>
 Release: {release_name}
 Title: {title_name}
-Type: {title_type_name} ({title_year})
+Type: Movie ({title_year})
 IMDb: https://imdb.com/title/{imdb}
 TMDB: https://themoviedb.org/{tmdb}
 Preview: {preview_url}

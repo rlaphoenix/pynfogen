@@ -14,7 +14,7 @@
 ?>
 Release: {release_name}
 Title: {title_name}
-Type: {title_type_name} ({title_year})
+Type: TV ({title_year})
 Episode: {season}x{episode} "{episode_name}"
 IMDb: https://imdb.com/title/{imdb}
 TMDB: https://themoviedb.org/{tmdb}
