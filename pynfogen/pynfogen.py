@@ -1,9 +1,7 @@
 import os
-import re
 
 import yaml
 
-from pynfogen.formatter import CustomFormats
 from pynfogen.nfo import NFO
 
 
@@ -46,35 +44,18 @@ def main():
         art = f.read()
 
     with open(f"templates/{nfo.title_type}.nfo", "rt") as f:
-        template = parse_template(f.read(), art=art, **template_data)
+        template = nfo.run(f.read(), art=art, **template_data)
     print(template)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
         f.write(template)
     print(f"Generated NFO for {nfo.release_name}")
 
     with open(f"templates/{nfo.title_type}.txt", "rt") as f:
-        template = parse_template(f.read(), **template_data)
+        template = nfo.run(f.read(), **template_data)
     print(template)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
         f.write(template)
     print(f"Generated BBCode Description for {nfo.release_name}")
-
-
-def parse_template(template: str, art: str = None, **kwargs) -> str:
-    template = CustomFormats().format(template, **kwargs)
-    if art:
-        art = art.format(nfo=template)
-        template = art
-
-    for m in re.finditer(r"<\?([01])\?([\D\d]*?)\?>", template):
-        template = template.replace(
-            m.group(0),
-            m.group(2) if int(m.group(1)) else ""
-        )
-
-    template = "\n".join([line.rstrip() for line in template.splitlines()])
-
-    return template
 
 
 def cli():
