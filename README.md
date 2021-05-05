@@ -55,3 +55,9 @@ However, the Artwork files are copyright to whomever committed them where-as the
 The copyrighted files may not be used, even under the conditions of the License, except for viewing as examples.
 No derivative work is permitted based on their general concept.
 Simply remember that artwork files are themselves pieces of Art, and should be treated as such.
+
+### Text-encoding
+
+Traditional NFOs expect to use the codepage 437 (cp437) "ascii" text-encoding.
+pynfogen generally doesn't care what you use, but may not respect you're choice correctly in the NFO output.
+It has not been set up for specific text-encoding choice and generally speaking UTF-8 is expected.
