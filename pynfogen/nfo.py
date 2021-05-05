@@ -122,9 +122,9 @@ class NFO:
                 dbs[db] = config[db]
         if not dbs["imdb"]:
             while not dbs["imdb"]:
-                dbs["imdb"] = input("An IMDB ID is required but wasn't found, what's it's IMDb ID?\n")
-            dbs["tmdb"] = input("While we're at it, does this title have a TMDB ID?\n") or None
-            dbs["tvdb"] = input("What about a TVDB ID?\n") or None
+                dbs["imdb"] = input("IMDB ID: ")
+            dbs["tmdb"] = input("TMDB ID (optional): ") or None
+            dbs["tvdb"] = input("TVDB ID (optional): ") or None
         for k, v in dbs.items():
             if not v:
                 print(f"Warning: No {k} ID was found...")
