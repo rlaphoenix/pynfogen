@@ -16,8 +16,12 @@ from pynfogen.nfo import NFO
               help="TV Show Season Number (or name).")
 @click.option("-e", "--episode", type=(int, str), default=[None] * 2,
               help="TV Show Episode Number and Title.")
+@click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
+@click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
+@click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
 @click.pass_obj
-def generate(obj, file: str, template: str, artwork: str, season: str, episode: Tuple[int, str]):
+def generate(obj, file: str, template: str, artwork: str = None, season: str = None, episode: Tuple[int, str] = None,
+             imdb: str = None, tmdb: str = None, tvdb: int = None):
     """
     Generate an NFO for a file.
     It's recommended to specify both -e and -et if not a season.
@@ -31,7 +35,15 @@ def generate(obj, file: str, template: str, artwork: str, season: str, episode: 
     config = obj["config_path"]
     if config.exists():
         with config.open() as f:
-            nfo.set_config(file, season, episode, **yaml.load(f, Loader=yaml.FullLoader))
+            nfo.set_config(
+                file, season, episode,
+                **dict(
+                    imdb=imdb,
+                    tmdb=tmdb,
+                    tvdb=tvdb,
+                    **yaml.load(f, Loader=yaml.FullLoader)
+                )
+            )
 
     template_data = {
         "videos": nfo.get_video_print(nfo.videos),
