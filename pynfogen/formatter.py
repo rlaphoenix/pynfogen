@@ -44,6 +44,8 @@ class CustomFormats(Formatter):
     @staticmethod
     def layout(value: Union[List[str], str], width: int, height: int, spacing: int) -> str:
         """Lay out data in a grid with specific lengths, heights, and spacing."""
+        if not value:
+            return ""
         if not isinstance(value, list):
             value = [value]
         if len(value) != width * height:
