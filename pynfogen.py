@@ -2,8 +2,8 @@ import os
 import re
 import yaml
 
-from formatter import CustomFormats
-from nfo import NFO
+from pynfogen.formatter import CustomFormats
+from pynfogen.nfo import NFO
 
 
 # Create NFO object

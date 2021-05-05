@@ -11,7 +11,7 @@ from pvsfunc.helpers import anti_file_prefix, get_d2v
 from pyd2v import D2V
 from pymediainfo import MediaInfo
 
-from helpers import scrape
+from pynfogen.helpers import scrape
 
 
 class NFO:
