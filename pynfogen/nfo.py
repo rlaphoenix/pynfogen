@@ -83,34 +83,31 @@ class NFO:
         return template
 
     def set_config(self, config: dict):
-        # Ensure config isn't empty
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
-        # Set Fanart.tv API Key
-        self.fanart_api_key = config.get("fanart_api_key")
-        # Get Art Template
-        self.art = config["art"]
-        # Get input file path
+
         self.file = anti_file_prefix(config["file"])
-        # Get Database ID's
+        self.art = config["art"]
+
+        self.fanart_api_key = config.get("fanart_api_key")
+
         self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
-        # Get Title Type, Name, and Year
+
         self.title_type, self.title_type_name = self.get_title_type(config)
         self.title_name, self.title_year = self.get_title_name_year()
-        # Get TV Season, Episode, and Episode Name information
+
         self.season, self.episode, self.episode_name = self.get_tv_info(config)
         self.episodes = self.get_tv_episodes()
-        # Get Release Name
+
         self.release_name = self.get_release_name()
-        # Get Preview Url
+
         self.preview_url = config["preview-url"]
         self.preview_images = self.get_preview_images(self.preview_url)
-        # Get Banner Image
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
-        # Get Source and Note
+
         self.source = config["source"]
         self.note = config["note"]
-        # Get Tracks
+
         self.media_info = MediaInfo.parse(self.file)
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
@@ -120,6 +117,7 @@ class NFO:
         self.chapters_numbered = 0 if not self.chapters else sum(
             1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
         ) == len(self.chapters)
+
         print(self)
 
     def get_database_ids(self, config):
