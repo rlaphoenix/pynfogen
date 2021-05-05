@@ -12,22 +12,6 @@ def main():
         nfo.set_config(yaml.load(f, Loader=yaml.FullLoader))
 
     template_data = {
-        "release_name": nfo.release_name,
-        "title_name": nfo.title_name,
-        "title_type_name": nfo.title_type_name,
-        "title_year": nfo.title_year,
-        "season": nfo.season,
-        "episodes": nfo.episodes,
-        "episode": nfo.episode,
-        "episode_name": nfo.episode_name,
-        "imdb": nfo.imdb,
-        "tmdb": nfo.tmdb,
-        "tvdb": nfo.tvdb,
-        "preview_url": nfo.preview_url,
-        "preview_images": nfo.preview_images,
-        "banner_image": nfo.banner_image,
-        "source": nfo.source,
-        "note": nfo.note,
         "videos": nfo.get_video_print(nfo.videos),
         "videos_count": len(nfo.videos),
         "audios": nfo.get_audio_print(nfo.audio),
