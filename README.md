@@ -47,3 +47,11 @@ using pymediainfo and use that information in the output NFO wherever the templa
 - Template files (`/templates`): These are the main scriptable files. You can make templates for specific scenarios
   like TV, Movies, Episodes, etc. If you are changing a template often, consider putting the changes as a new template
   instead, or perhaps as part of the artwork.
+
+### Copyright Agreement for included Artwork and Template files
+
+There's already example template files and artwork files for you to look at.
+However, the Artwork files are copyright to whomever committed them where-as the templates are not copyright.
+The copyrighted files may not be used, even under the conditions of the License, except for viewing as examples.
+No derivative work is permitted based on their general concept.
+Simply remember that artwork files are themselves pieces of Art, and should be treated as such.
