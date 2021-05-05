@@ -26,14 +26,14 @@ def main():
         with open(f"art/{config['art']}.nfo", "rt") as f:
             art = f.read()
 
-    with open(f"templates/{nfo.title_type}.nfo", "rt") as f:
+    with open(f"templates/{config['type']}.nfo", "rt") as f:
         template = f.read()
     nfo_txt = nfo.run(template, art=art, **template_data)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
         f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
 
-    with open(f"templates/{nfo.title_type}.txt", "rt") as f:
+    with open(f"templates/{config['type']}.txt", "rt") as f:
         template = f.read()
     bb_txt = nfo.run(template, **template_data)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
