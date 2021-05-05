@@ -9,7 +9,8 @@ def main():
     nfo = NFO()
 
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
-        nfo.set_config(**yaml.load(f, Loader=yaml.FullLoader))
+        config = yaml.load(f, Loader=yaml.FullLoader)
+        nfo.set_config(**config)
 
     template_data = {
         "videos": nfo.get_video_print(nfo.videos),
@@ -21,8 +22,8 @@ def main():
     }
 
     art = None
-    if nfo.art and os.path.exists(f"art/{nfo.art}.nfo"):
-        with open(f"art/{nfo.art}.nfo", "rt") as f:
+    if config.get("art") and os.path.exists(f"art/{config['art']}.nfo"):
+        with open(f"art/{config['art']}.nfo", "rt") as f:
             art = f.read()
 
     with open(f"templates/{nfo.title_type}.nfo", "rt") as f:

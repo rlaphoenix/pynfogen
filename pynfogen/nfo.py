@@ -23,7 +23,6 @@ class NFO:
 
     def __init__(self):
         self.media_info = None
-        self.art = None
         self.file = None
         self.season = None
         self.episode = None
@@ -100,8 +99,6 @@ class NFO:
 
         self.fanart_api_key = config.get("fanart_api_key")
         self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
-
-        self.art = config["art"]
 
         self.title_name, self.title_year = self.get_title_name_year()
 
