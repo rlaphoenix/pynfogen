@@ -55,10 +55,10 @@ class NFO:
             attrs=" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()),
         )
 
-    def setConfig(self, config: dict):
+    def set_config(self, config: dict):
         # Ensure config isn't empty
         if not config or not isinstance(config, dict):
-            raise ValueError("NFO.setConfig: Parameter config is empty or not a dictionary...")
+            raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
         # Set Fanart.tv API Key
         self.fanart_api_key = config.get("fanart_api_key")
         # Get Art Template
@@ -66,36 +66,36 @@ class NFO:
         # Get input file path
         self.file = anti_file_prefix(config["file"])
         # Get Database ID's
-        self.imdb, self.tmdb, self.tvdb = self.getDatabaseIds(config)
+        self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
         # Get Title Type, Name, and Year
-        self.title_type, self.title_type_name = self.getTitleType(config)
-        self.title_name, self.title_year = self.getTitleNameYear()
+        self.title_type, self.title_type_name = self.get_title_type(config)
+        self.title_name, self.title_year = self.get_title_name_year()
         # Get TV Season, Episode, and Episode Name information
-        self.season, self.episode, self.episode_name = self.getTvInfo(config)
-        self.episodes = self.getTvEpisodes()
+        self.season, self.episode, self.episode_name = self.get_tv_info(config)
+        self.episodes = self.get_tv_episodes()
         # Get Release Name
-        self.release_name = self.getReleaseName()
+        self.release_name = self.get_release_name()
         # Get Preview Url
         self.preview_url = config["preview-url"]
-        self.preview_images = self.getPreviewImages(self.preview_url)
+        self.preview_images = self.get_preview_images(self.preview_url)
         # Get Banner Image
-        self.banner_image = self.getBannerImage(self.tvdb) if self.tvdb else None
+        self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
         # Get Source and Note
         self.source = config["source"]
         self.note = config["note"]
         # Get Tracks
-        self.videos = self.getTracks("Video")
-        self.audio = self.getTracks("Audio")
-        self.subtitles = self.getTracks("Text")
-        self.chapters = self.getTracks("Menu")
+        self.videos = self.get_tracks("Video")
+        self.audio = self.get_tracks("Audio")
+        self.subtitles = self.get_tracks("Text")
+        self.chapters = self.get_tracks("Menu")
         self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
         self.chapters_numbered = 0 if not self.chapters else sum(
             1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
         ) == len(self.chapters)
         print(self)
 
-    def getDatabaseIds(self, config):
-        general = self.getTracks("General")[0].to_data()
+    def get_database_ids(self, config):
+        general = self.get_tracks("General")[0].to_data()
         dbs = {"imdb": None, "tmdb": None, "tvdb": None}
         for db in dbs.keys():
             if db in general and general[db]:
@@ -112,7 +112,7 @@ class NFO:
                 print(f"Warning: No {k} ID was found...")
         return dbs.values()
 
-    def getTitleType(self, config) -> tuple:
+    def get_title_type(self, config) -> tuple:
         name_map = {
             "season": "TV Series",
             "episode": "TV Series",
@@ -122,7 +122,7 @@ class NFO:
             return "movie", name_map["movie"]
         return config["type"], name_map[config["type"]]
 
-    def getTitleNameYear(self) -> tuple:
+    def get_title_name_year(self) -> tuple:
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/dRpT6g/3
@@ -133,8 +133,8 @@ class NFO:
             raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
         return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
-    def getTvInfo(self, config) -> tuple:
-        general = self.getTracks("General")[0]
+    def get_tv_info(self, config) -> tuple:
+        general = self.get_tracks("General")[0]
         if general.title:
             tv_title = re.search("^.*? S(\\d+)E(\\d+) (.*)$", general.title)
             if tv_title:
@@ -166,7 +166,7 @@ class NFO:
             return season, episode, episode_name
         return None, None, None
 
-    def getTvEpisodes(self) -> int:
+    def get_tv_episodes(self) -> int:
         # Calculate total episode count (presumably of the season) by counting neighbouring media files
         if self.title_type != "season":
             return 0
@@ -175,13 +175,13 @@ class NFO:
             f"*{os.path.splitext(self.file)[-1]}"
         )))
 
-    def getReleaseName(self) -> str:
+    def get_release_name(self) -> str:
         # Retrieve the release name based on the input file or parent folder
         if self.title_type == "season":
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
 
-    def getBannerImage(self, tvdb_id: int):
+    def get_banner_image(self, tvdb_id: int):
         if self.title_type not in ("season", "episode"):
             return None  # I don't have a source for movie banners
         if not self.fanart_api_key:
@@ -196,23 +196,23 @@ class NFO:
             return None
         return res["tvbanner"][0]["url"]
 
-    def getMediaInfo(self):
+    def get_media_info(self):
         self.media_info = MediaInfo.parse(self.file)
         """
-        general = self.getTracks("General")[0]
-        videos = self.getTracks("Video")
-        audios = self.getTracks("Audio")
-        subtitles = self.getTracks("Text")
-        chapters = self.getTracks("Menu")
+        general = self.get_tracks("General")[0]
+        videos = self.get_tracks("Video")
+        audios = self.get_tracks("Audio")
+        subtitles = self.get_tracks("Text")
+        chapters = self.get_tracks("Menu")
         chapters_numbered = False
         """
 
-    def getTracks(self, type=None):
+    def get_tracks(self, type=None):
         if not self.media_info:
-            self.getMediaInfo()
+            self.get_media_info()
         return [track for track in self.media_info.tracks if not type or track.track_type == type]
 
-    def getVideoPrint(self, videos) -> list:
+    def get_video_print(self, videos) -> list:
         if not videos:
             return ["--"]
         data = []
@@ -251,7 +251,7 @@ class NFO:
             data.append([l1, l2])
         return data
 
-    def getAudioPrint(self, audio) -> list:
+    def get_audio_print(self, audio) -> list:
         if not audio:
             return ["--"]
         data = []
@@ -270,7 +270,7 @@ class NFO:
         return data
 
     @staticmethod
-    def getPreviewImages(url: str) -> List[dict]:
+    def get_preview_images(url: str) -> List[dict]:
         if not url:
             return []
         images = []
@@ -294,7 +294,7 @@ class NFO:
         return images
 
     @staticmethod
-    def getSubtitlePrint(subs):
+    def get_subtitle_print(subs):
         if not subs:
             return ["--"]
         data = []
@@ -305,12 +305,12 @@ class NFO:
         return data
 
     @staticmethod
-    def getChapterPrint(chapters):
+    def get_chapter_print(chapters):
         return ["--"] if not chapters else [[
             f"- {v}"
         ] for v in chapters]
 
-    def getChapterPrintShort(self, chapters):
+    def get_chapter_print_short(self, chapters):
         if not chapters:
             return "No"
         if self.chapters_numbered:

@@ -11,7 +11,7 @@ def main():
     nfo = NFO()
 
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
-        nfo.setConfig(yaml.load(f, Loader=yaml.FullLoader))
+        nfo.set_config(yaml.load(f, Loader=yaml.FullLoader))
 
     template_data = {
         "release_name": nfo.release_name,
@@ -30,16 +30,16 @@ def main():
         "banner_image": nfo.banner_image,
         "source": nfo.source,
         "note": nfo.note,
-        "videos": nfo.getVideoPrint(nfo.videos),
+        "videos": nfo.get_video_print(nfo.videos),
         "videos_count": len(nfo.videos),
-        "audios": nfo.getAudioPrint(nfo.audio),
+        "audios": nfo.get_audio_print(nfo.audio),
         "audios_count": len(nfo.audio),
-        "subtitles": nfo.getSubtitlePrint(nfo.subtitles),
+        "subtitles": nfo.get_subtitle_print(nfo.subtitles),
         "subtitles_count": len(nfo.subtitles),
-        "chapters": nfo.getChapterPrintShort(nfo.chapters),
+        "chapters": nfo.get_chapter_print_short(nfo.chapters),
         "chapters_count": len(nfo.chapters) if nfo.chapters else 0,
         "chapters_named": nfo.chapters and not nfo.chapters_numbered,
-        "chapter_entries": nfo.getChapterPrint(nfo.chapters)
+        "chapter_entries": nfo.get_chapter_print(nfo.chapters)
     }
 
     with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
