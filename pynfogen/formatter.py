@@ -12,8 +12,8 @@ class CustomFormats(Formatter):
         return value
 
     @staticmethod
-    def boolean(value: Any, spec: str) -> str:
-        """Return evaluated boolean value of input as a bool-int cast as string."""
+    def boolean(value: Any, spec: str) -> int:
+        """Return evaluated boolean value of input as a bool-int."""
         true = spec in ("true", "!false")
         false = spec in ("false", "!true")
         if not true and not false:
@@ -21,7 +21,7 @@ class CustomFormats(Formatter):
         b = bool(value)
         if false:
             b = not b
-        return str(int(b))
+        return int(b)
 
     @staticmethod
     def length(value: Any) -> int:
@@ -67,14 +67,14 @@ class CustomFormats(Formatter):
         """Center data at a specific width, while also text-wrapping at a specific width."""
         return "\n".join([x.center(center_width) for x in textwrap.wrap(value or "", wrap_width)])
 
-    def format_field(self, value: Any, format_spec: str):
+    def format_field(self, value: Any, format_spec: str) -> str:
         """Apply both standard formatters along with custom formatters to value."""
         if ":" in format_spec:
             return self.chain(value, format_spec)
         if format_spec in ("true", "!false", "false", "!true"):
-            return self.boolean(value, format_spec)
+            return str(self.boolean(value, format_spec))
         if format_spec == "len":
-            return self.length(value)
+            return str(self.length(value))
         if format_spec == "bbimg":
             return self.bbimg(value)
         if re.match(r"^layout,\d+x\d+x\d+$", format_spec):
