@@ -42,20 +42,20 @@ def main():
         "chapter_entries": nfo.get_chapter_print(nfo.chapters)
     }
 
-    with open(f"art/{nfo.art}.nfo", "rt", encoding="utf-8") as f:
+    with open(f"art/{nfo.art}.nfo", "rt") as f:
         art = f.read()
 
-    with open(f"templates/{nfo.title_type}.nfo", "rt", encoding="utf-8") as f:
+    with open(f"templates/{nfo.title_type}.nfo", "rt") as f:
         template = parse_template(f.read(), art=art, **template_data)
     print(template)
-    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf-8") as f:
+    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
         f.write(template)
     print(f"Generated NFO for {nfo.release_name}")
 
-    with open(f"templates/{nfo.title_type}.txt", "rt", encoding="utf-8") as f:
+    with open(f"templates/{nfo.title_type}.txt", "rt") as f:
         template = parse_template(f.read(), **template_data)
     print(template)
-    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf-8") as f:
+    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
         f.write(template)
     print(f"Generated BBCode Description for {nfo.release_name}")
 
