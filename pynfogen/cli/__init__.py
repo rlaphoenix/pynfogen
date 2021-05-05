@@ -4,6 +4,8 @@ import click
 from appdirs import user_data_dir
 from dunamai import Version, Style
 
+from pynfogen.cli.config import config
+
 
 @click.group(context_settings=dict(
     help_option_names=["-?", "-h", "--help"],
@@ -35,3 +37,6 @@ def about():
 def version():
     """Shows the version of the project."""
     print("pynfogen", Version.from_git().serialize(style=Style.SemVer))
+
+
+cli.add_command(config)
