@@ -19,7 +19,17 @@ Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 Note: Step 1 is recommended as it creates the virtual environment in one unified location per-project instead of
 hidden away somewhere in Poetry's Cache directory.
 
-
   [pip]: <https://pip.pypa.io/en/stable/installing>
   [poetry]: <https://python-poetry.org/docs>
   [Poetry Docs: Using your virtual environment]: <https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment>
+
+## Usage
+
+### Requirements
+
+This project uses [VapourSynth] and [pvsfunc] for various functions and purposes.
+Make sure to check [pvsfunc's dependencies] as they cannot be installed automatically.
+
+  [VapourSynth]: <https://vapoursynth.com>
+  [pvsfunc]: <https://github.com/rlaphoenix/pvsfunc>
+  [pvsfunc's dependencies]: <https://github.com/rlaPHOENiX/pvsfunc#dependencies>
