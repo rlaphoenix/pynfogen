@@ -86,7 +86,7 @@ class NFO:
 
         self.file = anti_file_prefix(file)
         self.season = season
-        self.episode, self.episode_name = self.episode
+        self.episode, self.episode_name = episode
 
         self.media_info = MediaInfo.parse(self.file)
         self.videos = self.media_info.video_tracks
