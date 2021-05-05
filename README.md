@@ -33,3 +33,17 @@ Make sure to check [pvsfunc's dependencies] as they cannot be installed automati
   [VapourSynth]: <https://vapoursynth.com>
   [pvsfunc]: <https://github.com/rlaphoenix/pvsfunc>
   [pvsfunc's dependencies]: <https://github.com/rlaPHOENiX/pvsfunc#dependencies>
+
+### Introduction
+
+Using pynfogen is fairly simple. You have a configuration file ([config.yml](config.yml)) which holds external
+information about the file(s) you are feeding to the output NFO, including templates and artwork.
+
+When generating an NFO (by running [pynfogen.py](pynfogen.py)) it reads the primary input file for mediainfo (metadata)
+using pymediainfo and use that information in the output NFO wherever the template asks.
+
+- Artwork files (`/art`): Should only contain artwork that goes around the template contents.
+  Generally no scripting should be made.
+- Template files (`/templates`): These are the main scriptable files. You can make templates for specific scenarios
+  like TV, Movies, Episodes, etc. If you are changing a template often, consider putting the changes as a new template
+  instead, or perhaps as part of the artwork.
