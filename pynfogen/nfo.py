@@ -87,6 +87,16 @@ class NFO:
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
         self.file = anti_file_prefix(file)
+        self.media_info = MediaInfo.parse(self.file)
+        self.videos = self.media_info.video_tracks
+        self.audio = self.media_info.audio_tracks
+        self.subtitles = self.media_info.text_tracks
+        self.chapters = self.media_info.menu_tracks
+        self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
+        self.chapters_numbered = 0 if not self.chapters else sum(
+            1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
+        ) == len(self.chapters)
+
         self.art = config["art"]
 
         self.fanart_api_key = config.get("fanart_api_key")
@@ -107,16 +117,6 @@ class NFO:
 
         self.source = config["source"]
         self.note = config["note"]
-
-        self.media_info = MediaInfo.parse(self.file)
-        self.videos = self.media_info.video_tracks
-        self.audio = self.media_info.audio_tracks
-        self.subtitles = self.media_info.text_tracks
-        self.chapters = self.media_info.menu_tracks
-        self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
-        self.chapters_numbered = 0 if not self.chapters else sum(
-            1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
-        ) == len(self.chapters)
 
         print(self)
 
