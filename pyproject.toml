@@ -27,6 +27,10 @@ include = ["LICENSE", "README.md"]
 [tool.poetry.dependencies]
 python = ">=3.6,<4.0"
 poetry-dynamic-versioning = "^0.12.6"
+PyYAML = "^5.4.1"
+pymediainfo = "^5.1.0"
+pvsfunc = "^3.16.1"
+pycountry = "^20.7.3"
 
 [tool.poetry-dynamic-versioning]
 enable = true
