@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Union, Tuple
+from typing import Tuple
 
 import click
 import yaml
@@ -19,9 +19,11 @@ from pynfogen.nfo import NFO
 @click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
 @click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
+@click.option("-S", "--source", type=str, default=None, help="Source information.")
+@click.option("-N", "--notes", type=str, default=None, help="Notes/special information.")
 @click.pass_obj
 def generate(obj, file: str, template: str, artwork: str = None, season: str = None, episode: Tuple[int, str] = None,
-             imdb: str = None, tmdb: str = None, tvdb: int = None):
+             imdb: str = None, tmdb: str = None, tvdb: int = None, source: str = None, notes: str = None):
     """
     Generate an NFO for a file.
     It's recommended to specify both -e and -et if not a season.
@@ -41,6 +43,8 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
                     imdb=imdb,
                     tmdb=tmdb,
                     tvdb=tvdb,
+                    source=source,
+                    notes=notes,
                     **yaml.load(f, Loader=yaml.FullLoader)
                 )
             )
