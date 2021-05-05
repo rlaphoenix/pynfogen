@@ -40,10 +40,5 @@ def main():
     print(f"Generated BBCode Description for {nfo.release_name}")
 
 
-def cli():
-    # cli will just do what main does for now
-    main()
-
-
 if __name__ == "__main__":
     main()
