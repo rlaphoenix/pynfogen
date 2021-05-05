@@ -42,11 +42,11 @@ information about the file(s) you are feeding to the output NFO, including templ
 When generating an NFO (by running [pynfogen.py](pynfogen.py)) it reads the primary input file for mediainfo (metadata)
 using pymediainfo and use that information in the output NFO wherever the template asks.
 
-- Artwork files (`/art`): Should only contain artwork that goes around the template contents.
+- Artwork files ([/art](/art)): Should only contain artwork that goes around the template contents.
   Generally no scripting should be made.
-- Template files (`/templates`): These are the main scriptable files. You can make templates for specific scenarios
-  like TV, Movies, Episodes, etc. If you are changing a template often, consider putting the changes as a new template
-  instead, or perhaps as part of the artwork.
+- Template files ([/templates](/templates)): These are the main scriptable files. You can make templates for specific
+  scenarios like TV, Movies, Episodes, etc. If you are changing a template often, consider putting the changes as a new
+  template instead, or perhaps as part of the artwork.
 
 ### Copyright Agreement for included Artwork and Template files
 
