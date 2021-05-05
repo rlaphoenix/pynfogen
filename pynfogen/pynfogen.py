@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import yaml
 
@@ -8,7 +9,7 @@ from pynfogen.nfo import NFO
 def main():
     nfo = NFO()
 
-    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
+    with open(Path(os.path.realpath(__file__)).parent.parent / "config.yml") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         nfo.set_config(**config)
 
