@@ -1,44 +1,31 @@
-# make sure you change this filename to config.yml after reading
-# Make sure you have the file be 100% ready for release, including global tags, container title, track names, filenames e.t.c
-# don't worry about `file://` in the path for "file" below, the script deals with that.
-# Meaning you can copy a file, and paste it in here, no grabbing paths from tons of right clicks and select alls and shit
+# Instructions:
+# - Read the options, get to know them.
+# - Once options are edited, rename this file to config.yml
+# - Make sure this is only run when you are fully finished preparing your files for release.
+#   This includes stuff like preparing global tags, container metadata, folder structure, file and folder names.
+# - Take a small quick crash course on YAML to make sure you don't mess up the values mistakenly.
 
-# Instructions for Movies and TV Episodes:
-# Simply configure all the options, and run `python pynfogen.py` (>= python v3.6)
+file: C:/path/to/the/release/and-its-file.mkv
+art: rpg  # artwork template
+template: season  # nfo template
+preview: https://imgbox.com/g/.....  # I recommend 4 screens, 350x350 resized, release-name for gallery name
+source: R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)  # source, try give credit
+note: ~  # special information, notices, etc.
 
-# Instructions for TV Seasons:
-# Make sure all episodes your releasing is in a folder, and the folder name is the release name
-# Then, configure all the options, and run `python pynfogen.py` (>= python v3.6)
-
-fanart_api_key: ~  # key is needed for TV titles
-
-file: file:///path/to/the/file.mkv
-# rpg, phoenix. This is the ascii art added around the NFO information
-art: rpg
-# season, episode, movie. Movies will automatically set this, but for tv you need to specify season or episode
-type: season
-# recommended to be 4 screenshots, 350x350 resized, disable comments, and set the gallery name as the release name
-# if using something other than imgbox, do note only imgbox and beyondhd.co are automated for description
-preview-url: https://imgbox.com/g/.....
-# the source of this remux, try give credit, if you cant, end it with -???
-source: R2 GBR Anchor Bay Ent. DVD-PHOENiX (Thanks!!)
-# note, if empty, it will be ignored, ~ means null/empty
-note: ~
-
-
-####
-
-# the following entries will be attempted to auto-set based on information in the mkv container
-# these will only ever be used if the info wasn't found
-
+# db ids are attempted to be fetched from meta tags, set values will be ignored if found
 imdb: tt0439341
 tmdb: tv/4355
-
-# for `type: season` and `episode`
 tvdb: 75444
+
+# TV only:
+fanart_api_key: ~  # key is needed for TV titles, probably won't do anything for Movies
 season: 1
 episodes: 12
-
-# for `type: episode`
 episode: 1
 episode-name: Don Giovanni, Dramma giocoso en deux actes
+
+# Important information for TV:
+# - Release name is gotten from the parent folder name, not the file name.
+# - The code automatically gets episode count by counting neighbouring files of the same file-ext.
+# - Episode and Episode-name should *NOT* be set if it's a Season/TV Pack.
+# - If it's a TV pack of no specific season, you may change season from a number to e.g. "Pack".
