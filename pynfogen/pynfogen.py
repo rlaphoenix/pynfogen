@@ -46,17 +46,17 @@ def main():
             art = f.read()
 
     with open(f"templates/{nfo.title_type}.nfo", "rt") as f:
-        template = nfo.run(f.read(), art=art, **template_data)
-    print(template)
+        template = f.read()
+    nfo_txt = nfo.run(template, art=art, **template_data)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt") as f:
-        f.write(template)
+        f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
 
     with open(f"templates/{nfo.title_type}.txt", "rt") as f:
-        template = nfo.run(f.read(), **template_data)
-    print(template)
+        template = f.read()
+    bb_txt = nfo.run(template, **template_data)
     with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt") as f:
-        f.write(template)
+        f.write(bb_txt)
     print(f"Generated BBCode Description for {nfo.release_name}")
 
 
