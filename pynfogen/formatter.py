@@ -24,6 +24,11 @@ class CustomFormats(Formatter):
         return str(int(b))
 
     @staticmethod
+    def length(value: Any) -> int:
+        """Return object length."""
+        return len(value)
+
+    @staticmethod
     def bbimg(value: Union[List[Union[dict, str]], Union[dict, str]]) -> Union[List[str], str]:
         """Convert a list of values into a list of BBCode [LIST][IMG] strings."""
         if not value:
@@ -66,6 +71,8 @@ class CustomFormats(Formatter):
             return self.chain(value, format_spec)
         if format_spec in ("true", "!false", "false", "!true"):
             return self.boolean(value, format_spec)
+        if format_spec == "len":
+            return self.length(value)
         if format_spec == "bbimg":
             return self.bbimg(value)
         if re.match(r"^layout,\d+x\d+x\d+$", format_spec):
