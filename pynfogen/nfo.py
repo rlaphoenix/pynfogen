@@ -113,6 +113,7 @@ class NFO:
         print(self)
 
     def get_database_ids(self, config):
+        """Get IMDB, TMDB, TVDB IDs from Media Tags or config."""
         general = self.media_info.general_tracks[0].to_data()
         dbs = {"imdb": None, "tmdb": None, "tvdb": None}
         for db in dbs.keys():
@@ -131,6 +132,7 @@ class NFO:
         return dbs.values()
 
     def get_title_name_year(self) -> tuple:
+        """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/dRpT6g/3
@@ -150,12 +152,17 @@ class NFO:
         )))
 
     def get_release_name(self) -> str:
-        # Retrieve the release name based on the input file or parent folder
+        """
+        Retrieve the release name based on the file used during MediaInfo.
+        If a season was specified, but an episode number was not, it presumes the release is a Pack.
+        Hence when pack, it uses the parent folder's name as the release name.
+        """
         if self.season is not None and self.episode is None:
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
 
     def get_banner_image(self, tvdb_id: int):
+        """Get a wide banner image from fanart.tv."""
         if not tvdb_id:
             return None
         if not self.fanart_api_key:
