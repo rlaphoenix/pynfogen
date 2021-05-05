@@ -23,13 +23,13 @@ Source: {source:>>0x100}?>
 
 [HR][/HR]
 
-Video Tracks ({videos_count}):
+Video Tracks ({videos:len}):
 {videos:>>0x68}
 
-Audio Tracks ({audios_count}):
+Audio Tracks ({audio:len}):
 {audios:>>0x68}
 
-Subtitle Tracks ({subtitles_count}):
+Subtitle Tracks ({subtitles:len}):
 {subtitles:>>0x68}
 
 [HR][/HR]

@@ -13,13 +13,9 @@ def main():
 
     template_data = {
         "videos": nfo.get_video_print(nfo.videos),
-        "videos_count": len(nfo.videos),
         "audios": nfo.get_audio_print(nfo.audio),
-        "audios_count": len(nfo.audio),
         "subtitles": nfo.get_subtitle_print(nfo.subtitles),
-        "subtitles_count": len(nfo.subtitles),
         "chapters": nfo.get_chapter_print_short(nfo.chapters),
-        "chapters_count": len(nfo.chapters) if nfo.chapters else 0,
         "chapters_named": nfo.chapters and not nfo.chapters_numbered,
         "chapter_entries": nfo.get_chapter_print(nfo.chapters)
     }
