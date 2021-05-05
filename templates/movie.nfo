@@ -4,7 +4,7 @@
   Type     : Movie ({title_year})
   IMDb     : https://imdb.com/title/{imdb}
   TMDB     : https://themoviedb.org/{tmdb}
-  Preview  : {preview_url}
+  Preview  : {preview}
   Chapters : {chapters}
 <?{source:true}?
   Source :

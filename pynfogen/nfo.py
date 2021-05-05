@@ -34,7 +34,7 @@ class NFO:
         self.title_year = None
         self.episodes = None
         self.release_name = None
-        self.preview_url = None
+        self.preview = None
         self.preview_images = []
         self.banner_image = None
         self.source = None
@@ -106,9 +106,9 @@ class NFO:
         self.episodes = self.get_tv_episodes()
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
 
-        self.preview_url = config.get("preview-url")
+        self.preview = config.get("preview")
         self.release_name = self.get_release_name()
-        self.preview_images = self.get_preview_images(self.preview_url)
+        self.preview_images = self.get_preview_images(self.preview)
 
         print(self)
 

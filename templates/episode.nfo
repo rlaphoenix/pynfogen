@@ -6,7 +6,7 @@
   IMDb     : https://imdb.com/title/{imdb}
   TMDB     : https://themoviedb.org/{tmdb}
   TVDB     : https://thetvdb.com/?tab=series&id={tvdb}
-  Preview  : {preview_url}
+  Preview  : {preview}
   Chapters : {chapters}
 <?{source:true}?
   Source :
