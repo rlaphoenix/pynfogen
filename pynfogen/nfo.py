@@ -98,15 +98,15 @@ class NFO:
         ) == len(self.chapters)
 
         self.fanart_api_key = config.get("fanart_api_key")
-        self.source = config["source"]
-        self.note = config["note"]
+        self.source = config.get("source")
+        self.note = config.get("note")
 
         self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
         self.title_name, self.title_year = self.get_title_name_year()
         self.episodes = self.get_tv_episodes()
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
 
-        self.preview_url = config["preview-url"]
+        self.preview_url = config.get("preview-url")
         self.release_name = self.get_release_name()
         self.preview_images = self.get_preview_images(self.preview_url)
 
