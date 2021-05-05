@@ -12,17 +12,20 @@ from pynfogen.nfo import NFO
 @click.argument("template", type=str)
 @click.argument("file", type=str)
 @click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
-@click.option("-s", "--season", type=click.Tuple([int, str]), default=None,
+@click.option("-s", "--season", type=str, default=None,
               help="TV Show Season Number (or name).")
-@click.option("-e", "--episode", type=click.Tuple([int, str]), default=None, nargs=2,
+@click.option("-e", "--episode", type=(int, str), default=[None] * 2,
               help="TV Show Episode Number and Title.")
 @click.pass_obj
-def generate(obj, file: str, template: str, artwork: str, season: Union[int, str], episode: Tuple[int, str]):
+def generate(obj, file: str, template: str, artwork: str, season: str, episode: Tuple[int, str]):
     """
     Generate an NFO for a file.
     It's recommended to specify both -e and -et if not a season.
     Whether the values get used is up to the template to decide.
     """
+    if season.isdigit():
+        season = int(season)
+
     nfo = NFO()
 
     config = obj["config_path"]
