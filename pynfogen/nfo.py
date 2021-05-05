@@ -56,13 +56,16 @@ class NFO:
             attrs=" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()),
         )
 
-    @staticmethod
-    def run(template: str, art: str = None, **kwargs) -> str:
+    def run(self, template: str, art: str = None, **kwargs) -> str:
         """
         Evaluate and apply formatting on template, apply any art if provided.
-        Any additional parameters are passed as variables to the template.
+        Any additional parameters are passed as extra variables to the template.
+        The extra variables have priority when there's conflicting variable names.
         """
-        template = CustomFormats().format(template, **kwargs)
+        variables = self.__dict__
+        variables.update(kwargs)
+
+        template = CustomFormats().format(template, **variables)
         if art:
             art = art.format(nfo=template)
             template = art
