@@ -5,6 +5,7 @@ from appdirs import user_data_dir
 from dunamai import Version, Style
 
 from pynfogen.cli.config import config
+from pynfogen.cli.template import template
 
 
 @click.group(context_settings=dict(
@@ -40,3 +41,4 @@ def version():
 
 
 cli.add_command(config)
+cli.add_command(template)
