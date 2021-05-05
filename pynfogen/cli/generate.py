@@ -19,10 +19,7 @@ def generate(obj, file: str, template: str, artwork: str = None):
     config = obj["config_path"]
     if config.exists():
         with config.open() as f:
-            nfo.set_config(dict(
-                **yaml.load(f, Loader=yaml.FullLoader),
-                file=file
-            ))
+            nfo.set_config(file, **yaml.load(f, Loader=yaml.FullLoader))
 
     template_data = {
         "videos": nfo.get_video_print(nfo.videos),

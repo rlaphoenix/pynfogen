@@ -82,11 +82,11 @@ class NFO:
 
         return template
 
-    def set_config(self, config: dict):
+    def set_config(self, file: str, **config):
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
-        self.file = anti_file_prefix(config["file"])
+        self.file = anti_file_prefix(file)
         self.art = config["art"]
 
         self.fanart_api_key = config.get("fanart_api_key")

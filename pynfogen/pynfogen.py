@@ -9,7 +9,7 @@ def main():
     nfo = NFO()
 
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")) as f:
-        nfo.set_config(yaml.load(f, Loader=yaml.FullLoader))
+        nfo.set_config(**yaml.load(f, Loader=yaml.FullLoader))
 
     template_data = {
         "videos": nfo.get_video_print(nfo.videos),
