@@ -28,8 +28,12 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
              preview: str = None):
     """
     Generate an NFO for a file.
-    It's recommended to specify both -e and -et if not a season.
-    Whether the values get used is up to the template to decide.
+
+    \b
+    The content type is detected based on which values are set.
+    - Movie: Neither -s nor -e is set.
+    - Season: -s is set and -e is not.
+    - Episode: -e is set. -s can be set or not though it's recommended.
     """
     if season.isdigit():
         season = int(season)
