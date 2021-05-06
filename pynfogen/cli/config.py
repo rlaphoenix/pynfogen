@@ -9,12 +9,15 @@ import yaml
 @click.argument("value", type=str, required=False)
 @click.option("--unset", is_flag=True, default=False, help="Unset/remove the configuration value.")
 @click.option("--list", "list_", is_flag=True, default=False, help="List all set configuration values.")
-@click.pass_obj
-def config(obj, key: str, value: str, unset: bool, list_: bool):
+@click.pass_context
+def config(ctx, key: str, value: str, unset: bool, list_: bool):
     """Manage configuration."""
+    if not key and not value and not list_:
+        return click.echo(config.get_help(ctx))
+
     log = logging.getLogger("config")
 
-    config_path = obj["config_path"]
+    config_path = ctx.obj["config_path"]
     if config_path.exists():
         with config_path.open() as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
