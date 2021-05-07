@@ -1,5 +1,18 @@
 # Release History
 
+## 0.3.1
+
+**Bug fixes**
+
+### `nfo config`
+
+- Fix crash when no valid commands and/or options are used. Return help information in those cases.
+
+### `nfo generate`
+
+- Fix/Update the doc-string information for `nfo generate`.
+- Use -N/--note not -N/--notes as to match the already defined `note` variable used by NFO object.
+
 ## 0.3.0
 
 **Additions**
