@@ -20,11 +20,11 @@ from pynfogen.nfo import NFO
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
 @click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
 @click.option("-S", "--source", type=str, default=None, help="Source information.")
-@click.option("-N", "--notes", type=str, default=None, help="Notes/special information.")
+@click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
 @click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
 @click.pass_obj
 def generate(obj, file: str, template: str, artwork: str = None, season: str = None, episode: Tuple[int, str] = None,
-             imdb: str = None, tmdb: str = None, tvdb: int = None, source: str = None, notes: str = None,
+             imdb: str = None, tmdb: str = None, tvdb: int = None, source: str = None, note: str = None,
              preview: str = None):
     """
     Generate an NFO for a file.
@@ -50,7 +50,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
                     tmdb=tmdb,
                     tvdb=tvdb,
                     source=source,
-                    notes=notes,
+                    note=note,
                     preview=preview,
                     **yaml.load(f, Loader=yaml.FullLoader)
                 )
