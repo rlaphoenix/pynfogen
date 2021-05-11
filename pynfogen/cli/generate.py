@@ -44,7 +44,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     if config.exists():
         with config.open() as f:
             nfo.set_config(
-                file, season, episode,
+                str(Path(file).resolve()), season, episode,
                 **dict(
                     imdb=imdb,
                     tmdb=tmdb,
