@@ -1,5 +1,13 @@
 # Release History
 
+## 0.3.2
+
+**Bug fixes**
+
+### `nfo generate`
+
+- Ensure file path is absolute so `release_name` can be correctly retrieved in some scenarios.
+
 ## 0.3.1
 
 **Bug fixes**
