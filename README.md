@@ -70,16 +70,20 @@ It has not been set up for specific text-encoding choice and generally speaking 
 
 The scripting system used by pynfogen is by no means ideal. It is however, consistent.
 It's mostly a mix of python's normal new-style string formatting, with custom formatters.
-It also uses a PHP-like `<?{x:y}?..?>` custom syntax for if statements.
+It also uses a PHP-like `<?{x:y}..?>` custom syntax for if statements.
 
 #### If statement
 
-For example the following will check if the `{note}` variable (python new-style formatting) is a truthy value
-(so not none or empty), and only if so, print it:
+For example the following will check if the `{note}` variable (python new-style formatting) is a truthy value,
+and only if so, print it:
 
     # note = "Hello World!"
-    <?{note:true}Has note: {note}?
+    <?{note:true}Has note: {note}?>
     # returns: `Has note: Hello World!`
+
+    # note = ""  # or None, 0, False, 1==2, e.t.c
+    <?{note:true}Has note: {note}?>
+    # returns: ``
 
 It's obvious this is in no way good syntax for `if` statements (no `else` or `elif` support either), but it works.
 
