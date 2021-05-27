@@ -35,7 +35,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     - Season: -s is set and -e is not.
     - Episode: -e is set. -s can be set or not though it's recommended.
     """
-    if season.isdigit():
+    if season is not None and season.isdigit():
         season = int(season)
 
     nfo = NFO()
@@ -44,7 +44,9 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     if config.exists():
         with config.open() as f:
             nfo.set_config(
-                str(Path(file).resolve()), season, episode,
+                str(Path(file).resolve()),
+                season,
+                episode,
                 **dict(
                     imdb=imdb,
                     tmdb=tmdb,
