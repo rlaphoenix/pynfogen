@@ -1,5 +1,13 @@
 # Release History
 
+## 0.3.3
+
+**Bug fixes**
+
+### `nfo generate`
+
+- Ensure `-s` is optional by checking `-s` has a value before using it for the int cast check.
+
 ## 0.3.2
 
 **Bug fixes**
