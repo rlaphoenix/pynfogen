@@ -5,7 +5,7 @@
   IMDb     : https://imdb.com/title/{imdb}
   TMDB     : https://themoviedb.org/{tmdb}
   Preview  : {preview}
-  Chapters : {chapters}
+  Chapters : {chapters_yes_no}
 <?{source:true}?
   Source :
   {source:>>2x65}
@@ -17,19 +17,19 @@
 
   Video :
 
-  {videos:>>2x65}
+  {videos_pretty:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Audio :
 
-  {audios:>>2x65}
+  {audio_pretty:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Subtitles :
   
-  {subtitles:>>2x65}<?{chapters_named:true}?
+  {subtitles_pretty:>>2x65}<?{chapters_named:true}?
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 

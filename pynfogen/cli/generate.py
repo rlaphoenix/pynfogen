@@ -59,10 +59,10 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
             )
 
     template_vars = {
-        "videos": nfo.get_video_print(nfo.videos),
-        "audios": nfo.get_audio_print(nfo.audio),
-        "subtitles": nfo.get_subtitle_print(nfo.subtitles),
-        "chapters": nfo.get_chapter_print_short(nfo.chapters),
+        "videos_pretty": nfo.get_video_print(nfo.videos),
+        "audio_pretty": nfo.get_audio_print(nfo.audio),
+        "subtitles_pretty": nfo.get_subtitle_print(nfo.subtitles),
+        "chapters_yes_no": nfo.get_chapter_print_short(nfo.chapters),
         "chapters_named": nfo.chapters and not nfo.chapters_numbered,
         "chapter_entries": nfo.get_chapter_print(nfo.chapters)
     }

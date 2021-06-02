@@ -7,7 +7,7 @@
   TMDB     : https://themoviedb.org/{tmdb}
   TVDB     : https://thetvdb.com/?tab=series&id={tvdb}
   Preview  : {preview}
-  Chapters : {chapters}
+  Chapters : {chapters_yes_no}
 <?{source:true}?
   Source :
   {source:>>2x65}
@@ -19,16 +19,16 @@
 
   Video :
 
-  {videos:>>2x65}
+  {videos_pretty:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Audio :
 
-  {audios:>>2x65}
+  {audio_pretty:>>2x65}
 
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   
 
   Subtitles :
   
-  {subtitles:>>2x65}
+  {subtitles_pretty:>>2x65}

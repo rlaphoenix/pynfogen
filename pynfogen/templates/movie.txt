@@ -18,19 +18,19 @@ Type: Movie ({title_year})
 IMDb: https://imdb.com/title/{imdb}
 TMDB: https://themoviedb.org/{tmdb}
 Preview: {preview}
-Chapters: {chapters}<?{source:true}?
+Chapters: {chapters_yes_no}<?{source:true}?
 Source: {source:>>0x100}?>
 
 [HR][/HR]
 
 Video Tracks ({videos:len}):
-{videos:>>0x68}
+{videos_pretty:>>0x68}
 
 Audio Tracks ({audio:len}):
-{audios:>>0x68}
+{audio_pretty:>>0x68}
 
 Subtitle Tracks ({subtitles:len}):
-{subtitles:>>0x68}
+{subtitles_pretty:>>0x68}
 
 [HR][/HR]
 
