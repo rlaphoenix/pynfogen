@@ -34,7 +34,7 @@ def edit(obj, name: str, bbcode: bool):
 @click.option("--bbcode", is_flag=True, default=False, help="Specify template as a BBCode Description template.")
 @click.confirmation_option(prompt="Are you sure you want to delete the template?")
 @click.pass_obj
-def delete(obj, name: str):
+def delete(obj, name: str, bbcode: bool):
     """Delete a template file."""
     log = logging.getLogger("template")
     location = Path(obj["templates"] / f"{name}.{'txt' if bbcode else 'nfo'}")
