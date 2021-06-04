@@ -1,5 +1,40 @@
 # Release History
 
+## 0.4.0
+
+### ⚠️Breaking Changes
+
+- Delete `pynfogen.py` to move away from a split use-case project to a unified CLI-only project.
+
+#### nfo generate
+
+- Fix extra template variable name conflicts with base NFO class variable names. Requires template file updates,
+  see commit ID [15c66d8] for more information, and see it's changes to the example template files to know what to
+  change.
+
+  [15c66d8]: <https://github.com/rlaphoenix/pynfogen/commit/15c66d8d6767abb04fc26a354aec3bac09f1b542>
+
+### Improvements
+
+#### NFO
+
+- Add support for IMDB `Short` IDs in `get_title_name_year`.
+
+#### README
+
+- Advertise that PyPI/PIP is a valid installation method.
+- Clarify `poetry config virtualenvs.in-project true` as being recommended, yet optional.
+
+### Bug fixes
+
+#### nfo template
+
+- Fix `delete` subcommand's use of it's missing `bbcode` argument.
+
+#### README
+
+- Fix the syntax and semantics of the custom formatter If statement examples.
+
 ## 0.3.3
 
 ### Bug fixes
