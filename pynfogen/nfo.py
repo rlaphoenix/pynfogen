@@ -7,7 +7,7 @@ import json
 from typing import List, Union, Tuple
 
 import pycountry
-from pvsfunc.helpers import anti_file_prefix, get_d2v
+from pvsfunc.helpers import get_d2v
 from pyd2v import D2V
 from pymediainfo import MediaInfo
 
@@ -83,7 +83,7 @@ class NFO:
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
-        self.file = anti_file_prefix(file)
+        self.file = file
         self.season = season
         self.episode, self.episode_name = episode
 
