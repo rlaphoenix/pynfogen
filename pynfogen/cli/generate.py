@@ -43,20 +43,24 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     config = obj["config_path"]
     if config.exists():
         with config.open() as f:
-            nfo.set_config(
-                str(Path(file).resolve()),
-                season,
-                episode,
-                **dict(
-                    imdb=imdb,
-                    tmdb=tmdb,
-                    tvdb=tvdb,
-                    source=source,
-                    note=note,
-                    preview=preview,
-                    **yaml.load(f, Loader=yaml.FullLoader)
-                )
-            )
+            config = yaml.load(f, Loader=yaml.FullLoader)
+    else:
+        config = {}
+
+    nfo.set_config(
+        str(Path(file).resolve()),
+        season,
+        episode,
+        **dict(
+            imdb=imdb,
+            tmdb=tmdb,
+            tvdb=tvdb,
+            source=source,
+            note=note,
+            preview=preview,
+            **config
+        )
+    )
 
     template_vars = {
         "videos_pretty": nfo.get_video_print(nfo.videos),
