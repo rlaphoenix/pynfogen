@@ -135,8 +135,8 @@ class NFO:
         """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
-            # testing ground: https://regex101.com/r/RDjhs7/1
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini-Series|Short|Episode) |Video |Short |)"
+            # testing ground: https://regex101.com/r/bEoEDn/1
+            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini[- ]Series|Short|Episode) |Video |Short |)"
             r"(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb</title>",
             imdb_page
         )
