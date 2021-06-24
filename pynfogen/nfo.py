@@ -4,6 +4,7 @@ import re
 import html
 import textwrap
 import json
+from pathlib import Path
 from typing import List, Union, Tuple
 
 import pycountry
@@ -190,7 +191,7 @@ class NFO:
             if codec in ["MPEG-1", "MPEG-2"]:
                 # make sure a d2v file for this video exists
                 # noinspection PyProtectedMember
-                self.file = PD2V._get_d2v(self.file)
+                self.file = PD2V._get_d2v(Path(self.file))
                 # parse d2v file with pyd2v
                 d2v = D2V.load(self.file)
                 # get every frames' flag data, this contains information on displaying frames
