@@ -1,5 +1,13 @@
 # Release History
 
+## 0.4.1
+
+- New: Add support for `Mini Series` IMDB titles. Previously I only knew of `Mini-Series` titles (note the `-`).
+- Remove: config.example.yml file remnant that isn't needed due to breaking changes in v0.4.0.
+- Update: pyd2v, pvsfunc, click, poetry-dynamic-versioning, and their dependencies.
+- Fix: Run nfo.set_config even if there's no config or no data in the config.
+- Fix: Ensure sure the input file or folder path exists before running generate code.
+
 ## 0.4.0
 
 ### ⚠️Breaking Changes
