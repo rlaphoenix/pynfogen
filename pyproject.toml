@@ -26,14 +26,15 @@ include = ["LICENSE", "README.md"]
 
 [tool.poetry.dependencies]
 python = ">=3.6,<4.0"
-poetry-dynamic-versioning = "^0.12.6"
+poetry-dynamic-versioning = "^0.12.7"
 PyYAML = "^5.4.1"
 pymediainfo = "^5.1.0"
-pvsfunc = "^3.16.1"
+pvsfunc = "^4.0.3"
+pyd2v = "^1.2.0"
 pycountry = "^20.7.3"
 requests = "^2.25.1"
 appdirs = "^1.4.4"
-click = "^7.1.2"
+click = "^8.0.0"
 dunamai = "^1.5.5"
 
 [tool.poetry-dynamic-versioning]

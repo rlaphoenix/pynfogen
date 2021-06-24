@@ -7,7 +7,7 @@ import json
 from typing import List, Union, Tuple
 
 import pycountry
-from pvsfunc.helpers import get_d2v
+from pvsfunc import PD2V
 from pyd2v import D2V
 from pymediainfo import MediaInfo
 
@@ -189,9 +189,10 @@ class NFO:
             vst = False
             if codec in ["MPEG-1", "MPEG-2"]:
                 # make sure a d2v file for this video exists
-                self.file = get_d2v(self.file)
+                # noinspection PyProtectedMember
+                self.file = PD2V._get_d2v(self.file)
                 # parse d2v file with pyd2v
-                d2v = D2V(self.file)
+                d2v = D2V.load(self.file)
                 # get every frames' flag data, this contains information on displaying frames
                 # add vob and cell number to each frames flag data as well
                 flags = [f for line in [
