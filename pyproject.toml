@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pynfogen"
-version = "0.1.0"
+version = "0.4.2"
 description = "Scriptable MediaInfo-fed NFO Generator for Movies and TV"
 license = "MIT"
 authors = ["PHOENiX <rlaphoenix@pm.me>"]
@@ -26,7 +26,6 @@ include = ["LICENSE", "README.md"]
 
 [tool.poetry.dependencies]
 python = ">=3.6,<4.0"
-poetry-dynamic-versioning = "^0.13.0"
 PyYAML = "^5.4.1"
 pymediainfo = "^5.1.0"
 pvsfunc = "^4.0.3"
@@ -36,11 +35,6 @@ requests = "^2.25.1"
 appdirs = "^1.4.4"
 click = "^8.0.0"
 dunamai = "^1.5.5"
-
-[tool.poetry-dynamic-versioning]
-enable = true
-style = "semver"
-latest-tag = true
 
 [tool.poetry.scripts]
 nfo = "pynfogen.cli:cli"
