@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.2
+
+- Remove: pvsfunc as it's highly integrated with VapourSynth use-cases causing unnecessary VapourSynth installation
+  requirements which can be a pain in the a--! I only ever used it for one small function which I moved to pyd2v.
+- Remove: poetry-dynamic-versioning as it's caused some problems in some pip related nonsense, and this project
+  isn't often updated enough to justify its pros vs. it's current cons.
+- Improvement: Update pyd2v to v1.3.0 to use the `_get_d2v()` which was originally part of pvsfunc, hence why it's
+  removal is now possible.
+
+- All removed top-root dependencies: jinja2, markupsafe, more-itertools, poetry-dynamic-versioning, pvsfunc, tomlkit,
+  vapoursynth
+
 ## 0.4.1
 
 - New: Add support for `Mini Series` IMDB titles. Previously I only knew of `Mini-Series` titles (note the `-`).
