@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import List, Union, Tuple
 
 import pycountry
-from pvsfunc import PD2V
 from pyd2v import D2V
 from pymediainfo import MediaInfo
 
@@ -189,11 +188,9 @@ class NFO:
             interlaced_percent = None
             vst = False
             if codec in ["MPEG-1", "MPEG-2"]:
-                # make sure a d2v file for this video exists
-                # noinspection PyProtectedMember
-                self.file = PD2V._get_d2v(Path(self.file))
-                # parse d2v file with pyd2v
-                d2v = D2V.load(self.file)
+                # parse d2v file with pyd2v, generates D2V if needed
+                d2v = D2V.load(Path(self.file))
+                self.file = d2v.path
                 # get every frames' flag data, this contains information on displaying frames
                 # add vob and cell number to each frames flag data as well
                 flags = [f for line in [

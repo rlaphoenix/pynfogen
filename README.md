@@ -29,15 +29,6 @@ hidden away somewhere in Poetry's Cache directory.
 
 ## Usage
 
-### Requirements
-
-This project uses [VapourSynth] and [pvsfunc] for various functions and purposes.
-Make sure to check [pvsfunc's dependencies] as they cannot be installed automatically.
-
-  [VapourSynth]: <https://vapoursynth.com>
-  [pvsfunc]: <https://github.com/rlaphoenix/pvsfunc>
-  [pvsfunc's dependencies]: <https://github.com/rlaPHOENiX/pvsfunc#dependencies>
-
 ### Introduction
 
 Using pynfogen is fairly simple. You have a configuration file ([config.yml](config.yml)) which holds external
