@@ -1,5 +1,11 @@
 # pynfogen
 
+[![License](https://img.shields.io/github/license/rlaphoenix/pynfogen)](https://github.com/rlaphoenix/pynfogen/blob/master/LICENSE)
+[![Python versions](https://img.shields.io/pypi/pyversions/pynfogen)](https://pypi.python.org/pypi/pynfogen)
+[![PyPI version](https://img.shields.io/pypi/v/pynfogen)](https://pypi.python.org/pypi/pynfogen)
+[![GitHub issues](https://img.shields.io/github/issues/rlaphoenix/pynfogen)](https://github.com/rlaphoenix/pynfogen/issues)
+[![DeepSource issues](https://deepsource.io/gh/rlaphoenix/pynfogen.svg/?label=active+issues)](https://deepsource.io/gh/rlaphoenix/pynfogen)
+
 Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 
 ## Installation
