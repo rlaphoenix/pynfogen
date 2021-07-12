@@ -49,7 +49,7 @@ def delete(obj, name: str, bbcode: bool):
 def list_(obj):
     """List all available templates."""
     location = Path(obj["templates"])
-    if not location.is_dir():
+    if not location.is_dir() or not sum(location.iterdir()):
         raise click.ClickException("No templates exist.")
     for file in location.iterdir():
         print(file.stem, "-", {".nfo": "NFO", ".txt": "BBCode"}[file.suffix.lower()], "Template")
