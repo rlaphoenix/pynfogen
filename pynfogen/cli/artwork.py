@@ -47,10 +47,12 @@ def delete(obj, name: str):
 def list_(obj):
     """List all available artworks."""
     location = Path(obj["artwork"])
-    if not location.is_dir() or not sum(location.iterdir()):
-        raise click.ClickException("No artworks exist.")
-    for file in location.iterdir():
-        print(file.stem)
+    found = 0
+    for nfo in location.glob("*.nfo"):
+        print(nfo.stem)
+        found += 1
+    if not found:
+        raise click.ClickException("No artworks found.")
 
 
 @artwork.command()
