@@ -1,5 +1,15 @@
 # Release History
 
+## 0.4.3
+
+- Improvement(cli.artwork): Add nfo artwork explore with the same functionality as nfo template explore.
+- Fix(cli.artwork): Fix possibility of a no-print result if the directory exists but is empty.
+- Fix(cli.template): Fix possibility of a no-print result if the directory exists but is empty.
+- Fix(cli.config): Ensure the config directory exists before attempting to write to it.
+- Remove: Unnecessary `/__init__.py` file at root.
+- Actions: Add GitHub actions CI build and release workflows.
+- README: Add some Badges including new CI build status.
+
 ## 0.4.2
 
 - Remove: pvsfunc as it's highly integrated with VapourSynth use-cases causing unnecessary VapourSynth installation
