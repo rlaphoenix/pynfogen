@@ -49,5 +49,6 @@ def config(ctx, key: str, value: str, unset: bool, list_: bool):
         else:
             temp[tree[-1]] = value
             log.info(f"Set {key} to {repr(value)}")
+            config_path.parent.mkdir(parents=True, exist_ok=True)
             with config_path.open("wt") as f:
                 yaml.dump(data, f)
