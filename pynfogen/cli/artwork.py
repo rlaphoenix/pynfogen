@@ -51,3 +51,10 @@ def list_(obj):
         raise click.ClickException("No artworks exist.")
     for file in location.iterdir():
         print(file.stem)
+
+
+@artwork.command()
+@click.pass_obj
+def explore(obj):
+    """Open the artwork directory in your File Explorer."""
+    open_file(obj["artwork"])
