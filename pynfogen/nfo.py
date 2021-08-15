@@ -117,7 +117,7 @@ class NFO:
         """Get IMDB, TMDB, TVDB IDs from Media Tags or config."""
         general = self.media_info.general_tracks[0].to_data()
         dbs = {"imdb": None, "tmdb": None, "tvdb": None}
-        for db in dbs.keys():
+        for db in dbs:
             if db in general and general[db]:
                 dbs[db] = general[db]
             elif db in config and config[db]:
