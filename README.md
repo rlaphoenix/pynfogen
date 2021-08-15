@@ -70,6 +70,8 @@ The scripting system used by pynfogen is by no means ideal. It is however, consi
 It's mostly a mix of python's normal new-style string formatting, with custom formatters.
 It also uses a PHP-like `<?{x:y}..?>` custom syntax for if statements.
 
+Scripting is generally not recommended to be used within Artwork templates.
+
 #### If statement
 
 For example the following will check if the `{note}` variable (python new-style formatting) is a truthy value,
