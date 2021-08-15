@@ -46,7 +46,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     config = obj["config_path"]
     if config.exists():
         with config.open() as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
+            config = yaml.safe_load(f)
     else:
         config = {}
 
