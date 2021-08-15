@@ -20,7 +20,7 @@ def config(ctx, key: str, value: str, unset: bool, list_: bool):
     config_path = ctx.obj["config_path"]
     if config_path.exists():
         with config_path.open() as f:
-            data = yaml.load(f, Loader=yaml.FullLoader)
+            data = yaml.safe_load(f)
     else:
         data = None
     if not data:
