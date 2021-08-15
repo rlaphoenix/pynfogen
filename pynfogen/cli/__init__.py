@@ -48,7 +48,6 @@ def version():
     print("pynfogen", v)
 
 
-cli.add_command(artwork)
-cli.add_command(config)
-cli.add_command(generate)
-cli.add_command(template)
+command: click.Command
+for command in (artwork, config, generate, template):
+    cli.add_command(command)
