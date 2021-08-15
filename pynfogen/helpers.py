@@ -26,4 +26,5 @@ def open_file(path: str):
     elif platform.system() == "Darwin":
         subprocess.run(("open", path), check=True)
     else:
+        # TODO: What about systems that do not use a WM/GUI?
         subprocess.run(("xdg-open", path), check=True)
