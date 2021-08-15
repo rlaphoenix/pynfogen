@@ -280,4 +280,4 @@ class NFO:
             return "No"
         if self.chapters_numbered:
             return f"Yes (Numbered 01-{str(len(chapters)).zfill(2)})"
-        return f"Yes (Named)"
+        return "Yes (Named)"
