@@ -127,7 +127,7 @@ file, or via `nfo config` (see `nfo config -h`). All available config options ar
 | art            | string | The default artwork template to use, unless overridden by the `-a/--art` flag. |
 | fanart_api_key | string | A Fanart.tv API Key to use for the fanart banner image (if available).         |
 
-### Copyright Agreement for included Artwork and Template files
+## Copyright Agreement for included Artwork and Template files
 
 There's already example template files and artwork files for you to look at.
 However, the Artwork files are copyright to whomever committed them where-as the templates are not copyright.
@@ -135,13 +135,13 @@ The copyrighted files may not be used, even under the conditions of the License,
 No derivative work is permitted based on their general concept.
 Simply remember that artwork files are themselves pieces of Art, and should be treated as such.
 
-### Text-encoding
+## Text-encoding
 
 Traditional NFOs expect to use the codepage 437 (cp437) "ascii" text-encoding.
 pynfogen generally doesn't care what you use, but may not respect you're choice correctly in the NFO output.
 It has not been set up for specific text-encoding choice and generally speaking UTF-8 is expected.
 
-### Scripting
+## Scripting
 
 The scripting system used by pynfogen is by no means ideal. It is however, consistent.
 It's mostly a mix of python's normal new-style string formatting, with custom formatters.
@@ -149,7 +149,7 @@ It also uses a PHP-like `<?{x:y}..?>` custom syntax for if statements.
 
 Scripting is generally not recommended to be used within Artwork templates.
 
-#### If statement
+### If statement
 
 For example the following will check if the `{note}` variable (python new-style formatting) is a truthy value,
 and only if so, print it:
@@ -167,11 +167,11 @@ It's obvious this is in no way good syntax for `if` statements (no `else` or `el
 It uses `1` and `0` in the `<?{here}?...>` section to determine if it should print or not.
 Essentially speaking any time the If statement is used, you should be using the [Boolean custom formatter](#boolean).
 
-#### Custom Formatting
+### Custom Formatting
 
 The following custom additional formatting to pythons new-style formatting is available:
 
-##### Chaining
+#### Chaining
 
 Example: `{var:bbimg:layout,2x2x0}`
 
@@ -181,7 +181,7 @@ The previous value does not necessarily need to be used.
 For less confusion, since `:` is already used as standard in new-string formatting, look at the above example as
 `{(var:bbimg):(layout,2x2x0)}`
 
-##### Boolean
+#### Boolean
 
 Example: `{var:true}` or `{var:!false}`.  
 Type-hint: func(var: Any) -> Fixed\[1, 0]
@@ -190,7 +190,7 @@ Returns `1` if `var` is a truthy value, otherwise `0`.
 
 There's also `{var:false}` and `{var:!true}` which is the flip-reverse of the above result.
 
-##### BBCode Image Links
+#### BBCode Image Links
 
 Example: `{var:bbimg}`  
 Type-hint: bbimg(var: Union\[List\[dict], dict]) -> Union\[List\[str], str]  
@@ -201,7 +201,7 @@ Every dictionary is converted to BBCode `[IMG]` wrapped in `[URL]`. For example:
 
 Returns a list of converted bbcode strings, or a single string if only one dictionary was provided.
 
-##### Layout
+#### Layout
 
 Example: `{var:layout,3x2x1}`  
 Type-hint: layout(var: Union\[List\[Any], Any], width: int, height: int, spacing: int) -> str
@@ -209,14 +209,14 @@ Type-hint: layout(var: Union\[List\[Any], Any], width: int, height: int, spacing
 Lays out items in a grid-like layout, spacing out items using spaces (or new lines) as specified.
 New-lines are used when spacing vertically.
 
-##### Wrapping
+#### Wrapping
 
 Example: `{var:>>2x68}`  
 Type-hint: wrap(var: Any, indent: int, wrap: int)
 
 Text-wrap to a specific length. Each subsequent new-line caused by the wrapping can be intended (or not if 0).
 
-##### Centering
+#### Centering
 
 Example: `{var:^>70x68}`  
 Type-hint: center(var: Any, centering: int, wrap: int)
