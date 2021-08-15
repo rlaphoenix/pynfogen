@@ -1,9 +1,9 @@
 import glob
+import html
+import json
 import os
 import re
-import html
 import textwrap
-import json
 from pathlib import Path
 from typing import List, Union, Tuple
 
@@ -16,7 +16,6 @@ from pynfogen.helpers import scrape
 
 
 class NFO:
-
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
@@ -91,10 +90,12 @@ class NFO:
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
         self.subtitles = self.media_info.text_tracks
-        self.chapters = self.media_info.menu_tracks
-        self.chapters = None if not self.chapters else [v for k, v in self.chapters[0].to_data().items() if ("1" + k.replace("_", "")).isdigit()]
+        self.chapters = next(iter(self.media_info.menu_tracks), None)
+        if self.chapters:
+            self.chapters = [v for k, v in self.chapters.to_data().items() if f"1{k.replace('_', '')}".isdigit()]
         self.chapters_numbered = 0 if not self.chapters else sum(
-            1 for i, x in enumerate(self.chapters) if x.split(":", 1)[-1] in [f"Chapter {i+1}", f"Chapter {str(i+1).zfill(2)}"]
+            1 for i, x in enumerate(self.chapters)
+            if x.split(":", 1)[-1] in [f"Chapter {i + 1}", f"Chapter {str(i + 1).zfill(2)}"]
         ) == len(self.chapters)
 
         self.fanart_api_key = config.get("fanart_api_key")
@@ -207,8 +208,8 @@ class NFO:
                     if os.path.exists(fp):
                         os.unlink(fp)
             l1 = f"- {pycountry.languages.get(alpha_2=t.language).name}, {codec} " + \
-                f"({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) " + \
-                f"@ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}"
+                 f"({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) " + \
+                 f"@ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}"
             l2 = f"  {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS " + \
                  f"({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}" + \
                  f"P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
