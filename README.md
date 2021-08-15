@@ -49,14 +49,13 @@ the forum thread or post instead.
 An NFO (aka .nfo, .NFO, a contraction of "Info" or "Information") is a commonly used filename extension for text files
 that accompany various releases with information about them.
 
-They are used to deliver release information about the media, such as the title, release data, authorship, etc. They
+They are used to deliver release information about the media, such as the title, release date, authorship, etc. They
 also commonly contain elaborate [ANSI art](https://en.wikipedia.org/wiki/ANSI_art).
 
-An NFO in general is archaic, do not think otherwise. Originally, NFO files would be shared through IRC, Usenet,
+An NFO is generally archaic, do not think otherwise. Originally, NFO files would be shared through IRC, Usenet,
 Email, etc. However, these days, most platforms do not allow NFO files to be shared with the release itself, but
-rather within a forum thread or post.
-
-NFOs are becoming more and more phased out in P2P sharing, but still remains in use in some cases.
+rather within a forum thread or post. NFOs are becoming more and more phased out in P2P sharing, but still remains
+in use in some cases.
 
 While there isn't any hard-rules, If you plan to create a modern-style NFO then the following is recommended:
 
@@ -65,7 +64,7 @@ While there isn't any hard-rules, If you plan to create a modern-style NFO then 
 - Text-encoding should be UTF-8 and not CP437. CP437 is far too restricted compared to UTF-8.
 
 Note that, elaborate ANSI art is no longer really used or wanted. Modern NFO files tend to be verbose with minimal
-ANSI art, rather than concise, with elaborate ANSI art.
+ANSI art, rather than concise with elaborate ANSI art.
 
 ### What should I do after installation?
 
