@@ -9,7 +9,6 @@ from pynfogen.helpers import open_file
 @click.group()
 def artwork():
     """Manages artwork files."""
-    pass
 
 
 @artwork.command()

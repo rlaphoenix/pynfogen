@@ -9,7 +9,6 @@ from pynfogen.helpers import open_file
 @click.group()
 def template():
     """Manages template files."""
-    pass
 
 
 @template.command()
