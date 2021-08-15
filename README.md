@@ -34,21 +34,104 @@ hidden away somewhere in Poetry's Cache directory.
   [poetry]: <https://python-poetry.org/docs>
   [Poetry Docs: Using your virtual environment]: <https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment>
 
-## Usage
+## F.A.Q
 
-### Introduction
+Using pynfogen is fairly simple, it's a multi-command CLI program. You can see up-to-date help information by
+running `nfo --help`, or reading the readme file.
 
-Using pynfogen is fairly simple. You have a configuration file ([config.yml](config.yml)) which holds external
-information about the file(s) you are feeding to the output NFO, including templates and artwork.
+The main command is `generate`, which will create NFO and description files based on *one* file. The description file
+is intended to be used for a forum or post, while the NFO file is intended to be shared alongside the release.
+However, modern day media sharing platforms do not allow either to be shared with the files, but allow them to be with
+the forum thread or post instead.
 
-When generating an NFO (by running [pynfogen.py](pynfogen.py)) it reads the primary input file for mediainfo (metadata)
-using pymediainfo and use that information in the output NFO wherever the template asks.
+### What is an NFO?
 
-- Artwork files ([/art](/art)): Should only contain artwork that goes around the template contents.
-  Generally no scripting should be made.
-- Template files ([/templates](/templates)): These are the main scriptable files. You can make templates for specific
-  scenarios like TV, Movies, Episodes, etc. If you are changing a template often, consider putting the changes as a new
-  template instead, or perhaps as part of the artwork.
+An NFO (aka .nfo, .NFO, a contraction of "Info" or "Information") is a commonly used filename extension for text files
+that accompany various releases with information about them.
+
+They are used to deliver release information about the media, such as the title, release data, authorship, etc. They
+also commonly contain elaborate [ANSI art](https://en.wikipedia.org/wiki/ANSI_art).
+
+An NFO in general is archaic, do not think otherwise. Originally, NFO files would be shared through IRC, Usenet,
+Email, etc. However, these days, most platforms do not allow NFO files to be shared with the release itself, but
+rather within a forum thread or post.
+
+NFOs are becoming more and more phased out in P2P sharing, but still remains in use in some cases.
+
+While there isn't any hard-rules, If you plan to create a modern-style NFO then the following is recommended:
+
+- Max line-length of 70 characters.
+- Text should not reach the edge of the file (col. 1 and 70), instead it should be padded by spacing or ANSI art.
+- Text-encoding should be UTF-8 and not CP437. CP437 is far too restricted compared to UTF-8.
+
+Note that, elaborate ANSI art is no longer really used or wanted. Modern NFO files tend to be verbose with minimal
+ANSI art, rather than concise, with elaborate ANSI art.
+
+### What should I do after installation?
+
+On initial installation, you won't have any [artwork](#templates) or [templates](#templates). You can take a
+look at some example artwork and template files within the git project.
+However, please see the [Copyright](#copyright-agreement-for-included-artwork-and-template-files) relating to the
+included artwork and template files before you start using them.
+
+You may also want to take a look at the [Configuration](#configuration) options.
+
+Once you have everything set up as much as you want, simply take a look at the available commands with `nfo --help`.
+The main command you want to take a look at would be `nfo generate -h`.
+
+### What file do I pass to `nfo generate`?
+
+It's simple actually. Pass whichever file you wish best describes the release, as in whichever gives the most
+appropriate metadata and such that will be used within the NFO.
+
+Let's say you're doing an NFO for a full season release, but the first episode has a problem and isn't representative
+of most of the season, then use the second episode.
+
+It's important to specify the appropriate `-s/--season`, `-e/--episode` parameters (or not!) as they clue in pynfogen
+what kind of media this release is (wheter it's a Movie, a Season, or a Episode). More information on this can be seen
+in `nfo generate -h`.
+
+Finally, if pynfogen get's clued in that it's a season release, then it takes the release name from the folder name
+of the parent folder of the file you passed. It's also important not to include any other file except the files you
+will be releasing within said folder. Otherwise it may cause mistakes with the season episode count.
+
+## Templates
+
+There are three kinds of templates to use. NFO Template, Description Template, and Artwork Templates.
+
+| Template             | Description                                                                        | File Extension |
+| -------------------- | ---------------------------------------------------------------------------------- | -------------- |
+| NFO Template         | Primary Scriptable, structural data, like the Title, Year, Media Information, etc. | .nfo           |
+| Description Template | Similar to NFO templates, but are used for the description output.                 | .desc.txt      |
+| Artwork Template     | Used for surrounding the template output with art, common text, etc.               | .nfo           |
+
+To give you an example scenerio. I would create an Artwork template named 'phoenix' with concise ASCII artwork placed
+above the NFO, and an NFO template for 'season', 'episode', and 'movie' releases. I would also make a corresponding
+Description template for each of those NFO templates. I now have the ability to create NFO files for a Full Season
+release, a Single Episode release, or a Single Movie release. E.g. `nfo generate movie Movie.2021.mkv -a phoenix`.
+
+If you notice you are copy pasting something between templates that is not structural or media information, then
+you should probably put it into the Artwork Template instead. Or, if you notice you are changing something in a
+template often, for a different kind of release, perhaps think of making a seperate template for those kinds of
+releases.
+
+Artwork templates are not applied to the Description output, they are only used for the NFO output.
+
+Description templates are intended to be the contents or body of your forum post, IRC message, Email, etc.
+Not the NFO to share alongside you're release directly.
+
+Where-as, NFO templates are intended to be shared alongside the release. However, not all platforms allow you to
+share the .NFO directly with the file, but may ask you to share it separately, e.g. a specific input field.
+
+## Configuration
+
+All configuration is optional, and currently quite minimal. Configuration can be done manually to the configuration
+file, or via `nfo config` (see `nfo config -h`). All available config options are listed below (with descriptions).
+
+| Key            | Type   | Description                                                                    |
+| -------------- | ------ | ------------------------------------------------------------------------------ |
+| art            | string | The default artwork template to use, unless overridden by the `-a/--art` flag. |
+| fanart_api_key | string | A Fanart.tv API Key to use for the fanart banner image (if available).         |
 
 ### Copyright Agreement for included Artwork and Template files
 
