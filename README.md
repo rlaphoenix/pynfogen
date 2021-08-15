@@ -13,26 +13,21 @@ Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 
     pip install --user pynfogen
 
-### Or, Install from Source
+## Development
 
-#### Requirements
+### Dependencies
 
-1. [pip], v19.0 or newer
-2. [poetry], latest recommended
+- [Python](https://python.org/downloads) (v3.6 or newer)
+- [PIP](https://pip.pypa.io/en/stable/installing) (v19.0 or newer)
+- [Poetry](https://python-poetry.org/docs) (latest recommended)
 
-#### Steps
+### Installation
 
-1. `poetry config virtualenvs.in-project true` (optional, but recommended)
-2. `poetry install`
-3. You now have a `.venv` folder in your project root directory. Python and dependencies are installed here.
-4. To use the venv, follow [Poetry Docs: Using your virtual environment]
-
-Note: Step 1 is recommended as it creates the virtual environment in one unified location per-project instead of
-hidden away somewhere in Poetry's Cache directory.
-
-  [pip]: <https://pip.pypa.io/en/stable/installing>
-  [poetry]: <https://python-poetry.org/docs>
-  [Poetry Docs: Using your virtual environment]: <https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment>
+1. `git clone https://github.com/rlaphoenix/pynfogen`
+2. `cd pynfogen`
+3. `poetry config virtualenvs.in-project true` (optional, but recommended)
+4. `poetry install`
+5. `nfo -h`
 
 ## F.A.Q
 
