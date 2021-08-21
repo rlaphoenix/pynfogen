@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.4] - 2021-08-21
+
+### Added
+
+- Created `.markdownlint.yaml` and `.editorconfig` files for cross-editor configuration.
+- Added the Contributor Covenant as `CODE_OF_CONDUCT.md`.
+- (readme) Mention that scripting is not recommended on artwork templates.
+
+### Changed
+
+- (changelog) Updated the changelog to use Keep a Changelog. This makes the changelog a lot easier to read and write.
+- (readme) Update the usage, installation, general layout, fixes. It was previously stating instructions for the old
+  non-cli versions.
+- (examples) Moved the artwork, nfo, and description templates from within the python-module directory to the new
+  `/examples` directory.
+- (license) Update year and username of the copyright line near the bottom of the file. The license is otherwise the
+  exact same.
+
+### Fixed
+
+- (nfo) Subtitle print list no longer skips printing the subtitle language if it isn't included in the subtitle track
+  title. It now supports scenarios in which the language is or isn't in the subtitle track title for compatibility.
+
+### Security
+
+- All YAML loads now use `yaml.safe_load` for extra security protection.
+
 ## [0.4.3] - 2021-07-12
 
 ### Added
@@ -136,7 +163,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release.
 
-[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v0.4.4...HEAD
+[0.4.4]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.4
 [0.4.3]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.3
 [0.4.2]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.2
 [0.4.1]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.1
