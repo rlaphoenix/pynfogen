@@ -92,10 +92,18 @@ class NFO:
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
         self.file = file
+        self.release_name = self.get_release_name()
+        self.media_info = MediaInfo.parse(self.file)
+
+        self.fanart_api_key = config.get("fanart_api_key")
+        self.source = config.get("source")
+        self.note = config.get("note")
+        self.preview = config.get("preview")
+
         self.season = season
         self.episode, self.episode_name = episode or (None, None)
+        self.episodes = self.get_tv_episodes()
 
-        self.media_info = MediaInfo.parse(self.file)
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
         self.subtitles = self.media_info.text_tracks
@@ -114,21 +122,13 @@ class NFO:
             self.chapters = []
             self.chapters_numbered = False
 
-        self.fanart_api_key = config.get("fanart_api_key")
-        self.source = config.get("source")
-        self.note = config.get("note")
-
         self.imdb = self.get_imdb_id(config)
         self.tmdb = self.get_tmdb_id(config)
         self.tvdb = self.get_tvdb_id(config)
 
         self.title_name, self.title_year = self.get_title_name_year()
-        self.episodes = self.get_tv_episodes()
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
-
-        self.preview = config.get("preview")
-        self.release_name = self.get_release_name()
-        self.preview_images = self.get_preview_images(self.preview)
+        self.preview_images = self.get_preview_images(self.preview) if self.preview else []
 
         print(self)
 
