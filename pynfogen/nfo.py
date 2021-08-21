@@ -247,6 +247,29 @@ class NFO:
 
         return banner
 
+    def get_preview_images(self, url: str) -> List[Dict[str, str]]:
+        if not url:
+            return []
+        images = []
+        for domain in ["imgbox.com", "beyondhd.co"]:
+            if domain not in url.lower():
+                continue
+            page = self.session.get(url).text
+            if domain == "imgbox.com":
+                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
+                    images.append({
+                        "url": f"https://imgbox.com/{m.group(2)}",
+                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
+                    })
+            elif domain == "beyondhd.co":
+                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
+                    images.append({
+                        "url": f"https://beyondhd.co/image/{m.group(1)}",
+                        "src": m.group(2)
+                    })
+            break
+        return images
+
     def get_video_print(self, videos: List[Track]) -> List[List[str]]:
         if not videos:
             return ["--"]
@@ -302,30 +325,6 @@ class NFO:
             l1 = f"- {title}, {t.format} {channels} @ {t.other_bit_rate[0]}{bit_rate_mode}"
             data += [("  " + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(l1, 64))]
         return data
-
-    @staticmethod
-    def get_preview_images(url: str) -> List[Dict[str, str]]:
-        if not url:
-            return []
-        images = []
-        for domain in ["imgbox.com", "beyondhd.co"]:
-            if domain not in url.lower():
-                continue
-            page = scrape(url)
-            if domain == "imgbox.com":
-                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
-                    images.append({
-                        "url": f"https://imgbox.com/{m.group(2)}",
-                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
-                    })
-            elif domain == "beyondhd.co":
-                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
-                    images.append({
-                        "url": f"https://beyondhd.co/image/{m.group(1)}",
-                        "src": m.group(2)
-                    })
-            break
-        return images
 
     @staticmethod
     def get_subtitle_print(subs: List[Track]) -> List[str]:
