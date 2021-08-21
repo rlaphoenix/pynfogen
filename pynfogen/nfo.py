@@ -5,7 +5,7 @@ import os
 import re
 import textwrap
 from pathlib import Path
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 
 import pycountry
 from pyd2v import D2V
@@ -19,6 +19,9 @@ class NFO:
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
+    IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
+    TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
+    TVDB_ID_T = re.compile(r"^\d+$")
 
     def __init__(self):
         self.media_info = None
@@ -102,7 +105,10 @@ class NFO:
         self.source = config.get("source")
         self.note = config.get("note")
 
-        self.imdb, self.tmdb, self.tvdb = self.get_database_ids(config)
+        self.imdb = self.get_imdb_id(config)
+        self.tmdb = self.get_tmdb_id(config)
+        self.tvdb = self.get_tvdb_id(config)
+
         self.title_name, self.title_year = self.get_title_name_year()
         self.episodes = self.get_tv_episodes()
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
@@ -113,24 +119,56 @@ class NFO:
 
         print(self)
 
-    def get_database_ids(self, config):
-        """Get IMDB, TMDB, TVDB IDs from Media Tags or config."""
-        general = self.media_info.general_tracks[0].to_data()
-        dbs = {"imdb": None, "tmdb": None, "tvdb": None}
-        for db in dbs:
-            if db in general and general[db]:
-                dbs[db] = general[db]
-            elif db in config and config[db]:
-                dbs[db] = config[db]
-        if not dbs["imdb"]:
-            while not dbs["imdb"]:
-                dbs["imdb"] = input("IMDB ID (include tt): ")
-            dbs["tmdb"] = input("TMDB ID (optional, include tv/ or movie/): ") or None
-            dbs["tvdb"] = input("TVDB ID (optional, 73244 not the-office-us): ") or None
-        for k, v in dbs.items():
-            if not v:
-                print(f"Warning: No {k} ID was found...")
-        return dbs.values()
+    def get_imdb_id(self, config: dict) -> str:
+        """
+        Get an IMDB ID from either the media's global tags, or the config.
+        Since IMDB IDs are required for this project, it will bug the user for
+        one interactively if not found.
+        """
+        general_track = self.media_info.general_tracks[0].to_data()
+        imdb_id = general_track.get("imdb") or config.get("imdb")
+        if not imdb_id:
+            print("No IMDB ID was provided but is required...")
+        while not imdb_id:
+            user_id = input("IMDB ID (e.g., 'tt0487831'): ")
+            if not self.IMDB_ID_T.match(user_id):
+                print(f"The provided IMDB ID '{user_id}' is not valid...")
+                print("Expected e.g., 'tt0487831', 'tt10810424', (include the 'tt').")
+            else:
+                imdb_id = user_id
+        return imdb_id
+
+    def get_tmdb_id(self, config: dict) -> Optional[str]:
+        """
+        Get a TMDB ID from either the media's global tags, or the config.
+        It will raise a ValueError if the provided ID is invalid.
+        """
+        general_track = self.media_info.general_tracks[0].to_data()
+        tmdb_id = general_track.get("tmdb") or config.get("tmdb") or None
+        if not tmdb_id:
+            print("Warning: No TMDB ID was provided...")
+            return None
+        if not self.TMDB_ID_T.match(tmdb_id):
+            print(f"The provided TMDB ID '{tmdb_id}' is not valid...")
+            print("Expected e.g., 'tv/2490', 'movie/14836', (include the 'tv/' or 'movie/').")
+            raise ValueError("Invalid TMDB ID")
+        return tmdb_id
+
+    def get_tvdb_id(self, config: dict) -> Optional[int]:
+        """
+        Get a TVDB ID from either the media's global tags, or the config.
+        It will raise a ValueError if the provided ID is invalid.
+        """
+        general_track = self.media_info.general_tracks[0].to_data()
+        tvdb_id = general_track.get("tvdb") or config.get("tvdb") or None
+        if not tvdb_id:
+            print("Warning: No TVDB ID was provided...")
+            return None
+        if not self.TVDB_ID_T.match(tvdb_id):
+            print(f"The provided TVDB ID '{tvdb_id}' is not valid...")
+            print("Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us').")
+            raise ValueError("Invalid TVDB ID")
+        return int(tvdb_id)
 
     def get_title_name_year(self) -> tuple:
         """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
