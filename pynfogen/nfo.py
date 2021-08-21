@@ -93,7 +93,7 @@ class NFO:
 
         self.file = file
         self.season = season
-        self.episode, self.episode_name = episode
+        self.episode, self.episode_name = episode or (None, None)
 
         self.media_info = MediaInfo.parse(self.file)
         self.videos = self.media_info.video_tracks
