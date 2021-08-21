@@ -188,7 +188,10 @@ class NFO:
 
     def get_title_name_year(self) -> Tuple[str, str]:
         """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
-        imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
+        r = self.session.get(f"https://www.imdb.com/title/{self.imdb}")
+        if r.status_code != 200:
+            raise ValueError(f"An unexpected error occurred getting IMDB Title Page [{r.status_code}]")
+        imdb_page = html.unescape(r.text)
         imdb_title = re.search(
             # testing ground: https://regex101.com/r/bEoEDn/1
             r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini[- ]Series|Short|Episode) |Video |Short |)"
