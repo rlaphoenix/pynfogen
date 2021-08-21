@@ -99,13 +99,20 @@ class NFO:
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
         self.subtitles = self.media_info.text_tracks
-        self.chapters = next(iter(self.media_info.menu_tracks), None)
-        if self.chapters:
-            self.chapters = [v for k, v in self.chapters.to_data().items() if f"1{k.replace('_', '')}".isdigit()]
-        self.chapters_numbered = 0 if not self.chapters else sum(
-            1 for i, x in enumerate(self.chapters)
-            if x.split(":", 1)[-1] in [f"Chapter {i + 1}", f"Chapter {str(i + 1).zfill(2)}"]
-        ) == len(self.chapters)
+
+        chapters = next(iter(self.media_info.menu_tracks), None)
+        if chapters:
+            self.chapters = [
+                v for k, v in chapters.to_data().items()
+                if f"1{k.replace('_', '')}".isdigit()
+            ]
+            self.chapters_numbered = all(
+                x.split(":", 1)[-1] in [f"Chapter {i + 1}", f"Chapter {str(i + 1).zfill(2)}"]
+                for i, x in enumerate(self.chapters)
+            )
+        else:
+            self.chapters = []
+            self.chapters_numbered = False
 
         self.fanart_api_key = config.get("fanart_api_key")
         self.source = config.get("source")
