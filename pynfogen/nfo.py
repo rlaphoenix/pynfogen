@@ -19,6 +19,8 @@ class NFO:
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
+    SEASON_T = Optional[Union[int, str]]
+    EPISODE_T = Optional[Union[Tuple[Optional[int], Optional[str]]]]
     IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
@@ -85,7 +87,7 @@ class NFO:
 
         return template
 
-    def set_config(self, file: str, season: Union[int, str] = None, episode: Tuple[int, str] = None, **config):
+    def set_config(self, file: str, season: SEASON_T, episode: EPISODE_T, **config):
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
