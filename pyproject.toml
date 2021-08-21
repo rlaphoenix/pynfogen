@@ -48,6 +48,9 @@ isort = "^5.9.3"
 [tool.poetry.scripts]
 nfo = "pynfogen.cli:cli"
 
+[tool.isort]
+line_length = 118  # 120-2 as I don't like imports right at the edge
+
 [tool.mypy]
 check_untyped_defs = true
 disallow_incomplete_defs = true
