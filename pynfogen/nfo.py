@@ -12,7 +12,6 @@ from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
 
 from pynfogen.formatter import CustomFormats
-from pynfogen.helpers import scrape
 
 
 class NFO:
