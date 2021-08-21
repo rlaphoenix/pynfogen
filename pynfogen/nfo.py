@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List, Union, Tuple, Optional, Any, Dict
 
 import pycountry
+import requests
 from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
 
@@ -54,6 +55,8 @@ class NFO:
         self.release_name: str
         self.preview_images: List[dict[str, str]]
         self.banner_image: Optional[str]
+
+        self.session = self.get_session()
 
     def __repr__(self) -> str:
         return "<{c} {attrs}>".format(
@@ -369,3 +372,15 @@ class NFO:
         if self.chapters_numbered:
             return f"Yes (Numbered 01-{str(len(chapters)).zfill(2)})"
         return "Yes (Named)"
+
+    @staticmethod
+    def get_session() -> requests.Session:
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:81.0) Gecko/20100101 Firefox/81.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "DNT": "1",
+            "UPGRADE-INSECURE-REQUESTS": "1"
+        })
+        return session
