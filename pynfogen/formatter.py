@@ -30,16 +30,32 @@ class CustomFormats(Formatter):
 
     @staticmethod
     def bbimg(value: Union[List[Union[dict, str]], Union[dict, str]]) -> Union[List[str], str]:
-        """Convert a list of values into a list of BBCode [LIST][IMG] strings."""
+        """
+        Convert a list of values into a list of BBCode [LIST][IMG] strings.
+        If only one item is provided, then a single BBCode string will be provided, not a list.
+
+        Example:
+            >>> f = CustomFormats()
+            >>> f.bbimg("https://source.unsplash.com/random")
+            '[URL=https://source.unsplash.com/random][IMG]https://source.unsplash.com/random[/IMG][/URL]'
+            >>> f.bbimg({'url': 'https://picsum.photos/id/237/info', 'src': 'https://picsum.photos/id/237/200/300'})
+            '[URL=https://picsum.photos/id/237/info][IMG]https://picsum.photos/id/237/200/300[/IMG][/URL]'
+            >>> f.bbimg([{'url': 'https://foo...', 'src': 'https://bar...'}, 'https://bizz...', ...])
+            ['[URL=https://foo...][IMG]https://bar...[/IMG][/URL]',
+            '[URL=https://bizz...][IMG]https://bizz...[/IMG][/URL]', ...]
+        """
         if not value:
             return ""
         if not isinstance(value, list):
             value = [value]
-        value = [({"url": x, "src": x} if not isinstance(x, dict) else x) for x in value]
-        value = [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in value]
-        if len(value) == 1:
-            return value[0]
-        return value
+        images = [
+            ({"url": x, "src": x} if not isinstance(x, dict) else x)
+            for x in value
+        ]
+        bb = [f"[URL={x['url']}][IMG]{x['src']}[/IMG][/URL]" for x in images]
+        if len(bb) == 1:
+            return bb[0]
+        return bb
 
     @staticmethod
     def layout(value: Union[List[str], str], width: int, height: int, spacing: int) -> str:
