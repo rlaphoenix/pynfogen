@@ -1,6 +1,5 @@
 import glob
 import html
-import json
 import os
 import re
 import textwrap
@@ -220,20 +219,33 @@ class NFO:
         return os.path.splitext(os.path.basename(self.file))[0]
 
     def get_banner_image(self, tvdb_id: int) -> Optional[str]:
-        """Get a wide banner image from fanart.tv."""
+        """
+        Get a wide banner image from fanart.tv.
+        Currently restricts banners to English-only.
+        """
         if not tvdb_id:
             return None
         if not self.fanart_api_key:
             raise ValueError("Need Fanart.tv api key for TV titles!")
-        res = scrape(f"http://webservice.fanart.tv/v3/tv/{tvdb_id}?api_key={self.fanart_api_key}")
-        res = json.loads(res)
-        if "error message" in res:
-            if res["error message"] == "Not found":
-                return None
-            raise ValueError(f"Fanart.tv spat out an error! {res}")
-        if "tvbanner" not in res or not any(x for x in res["tvbanner"] if x["lang"] == "en"):
+
+        r = self.session.get(f"http://webservice.fanart.tv/v3/tv/{tvdb_id}?api_key={self.fanart_api_key}")
+        if r.status_code == 404:
             return None
-        return res["tvbanner"][0]["url"]
+        res = r.json()
+
+        error = res.get("error message")
+        if error:
+            if error == "Not found":
+                return None
+            raise ValueError(f"An unexpected error occurred while calling Fanart.tv, {res}")
+
+        banner = next((
+            x["url"] for x in (res.get("tvbanner") or [])
+            # TODO: Support other languages, let user decide
+            if x["lang"] == "en"
+        ), None)
+
+        return banner
 
     def get_video_print(self, videos: List[Track]) -> List[List[str]]:
         if not videos:
