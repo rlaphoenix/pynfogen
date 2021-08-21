@@ -47,3 +47,9 @@ flake8 = "^3.9.2"
 [tool.poetry.scripts]
 nfo = "pynfogen.cli:cli"
 
+[tool.mypy]
+check_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
