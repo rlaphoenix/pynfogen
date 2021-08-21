@@ -5,7 +5,7 @@ import os
 import re
 import textwrap
 from pathlib import Path
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Any, Dict
 
 import pycountry
 from pyd2v import D2V
@@ -25,7 +25,7 @@ class NFO:
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.media_info: MediaInfo
 
         self.file: str
@@ -55,13 +55,13 @@ class NFO:
         self.preview_images: List[dict[str, str]]
         self.banner_image: Optional[str]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<{c} {attrs}>".format(
             c=self.__class__.__name__,
             attrs=" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()),
         )
 
-    def run(self, template: str, art: str = None, **kwargs) -> str:
+    def run(self, template: str, art: Optional[str] = None, **kwargs: Any) -> str:
         """
         Evaluate and apply formatting on template, apply any art if provided.
         Any additional parameters are passed as extra variables to the template.
@@ -87,7 +87,7 @@ class NFO:
 
         return template
 
-    def set_config(self, file: str, season: SEASON_T, episode: EPISODE_T, **config):
+    def set_config(self, file: str, season: SEASON_T, episode: EPISODE_T, **config: Any) -> None:
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
@@ -176,7 +176,7 @@ class NFO:
             raise ValueError("Invalid TVDB ID")
         return int(tvdb_id)
 
-    def get_title_name_year(self) -> tuple:
+    def get_title_name_year(self) -> Tuple[str, str]:
         """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
         imdb_page = html.unescape(scrape(f"https://www.imdb.com/title/{self.imdb}"))
         imdb_title = re.search(
@@ -206,7 +206,7 @@ class NFO:
             return os.path.basename(os.path.dirname(self.file))
         return os.path.splitext(os.path.basename(self.file))[0]
 
-    def get_banner_image(self, tvdb_id: int):
+    def get_banner_image(self, tvdb_id: int) -> Optional[str]:
         """Get a wide banner image from fanart.tv."""
         if not tvdb_id:
             return None
@@ -222,7 +222,7 @@ class NFO:
             return None
         return res["tvbanner"][0]["url"]
 
-    def get_video_print(self, videos) -> list:
+    def get_video_print(self, videos: List[Track]) -> List[List[str]]:
         if not videos:
             return ["--"]
         data = []
@@ -260,7 +260,7 @@ class NFO:
             data.append([l1, l2])
         return data
 
-    def get_audio_print(self, audio) -> list:
+    def get_audio_print(self, audio: List[Track]) -> List[str]:
         if not audio:
             return ["--"]
         data = []
@@ -279,7 +279,7 @@ class NFO:
         return data
 
     @staticmethod
-    def get_preview_images(url: str) -> List[dict]:
+    def get_preview_images(url: str) -> List[Dict[str, str]]:
         if not url:
             return []
         images = []
@@ -351,12 +351,12 @@ class NFO:
         return data
 
     @staticmethod
-    def get_chapter_print(chapters):
+    def get_chapter_print(chapters: List[str]) -> List[str]:
         return ["--"] if not chapters else [[
             f"- {v}"
         ] for v in chapters]
 
-    def get_chapter_print_short(self, chapters):
+    def get_chapter_print_short(self, chapters: List[str]) -> str:
         if not chapters:
             return "No"
         if self.chapters_numbered:
