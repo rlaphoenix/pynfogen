@@ -259,14 +259,37 @@ class NFO:
         return images
 
     @staticmethod
-    def get_subtitle_print(subs):
-        if not subs:
-            return ["--"]
+    def get_subtitle_print(subs: List[Track]):
         data = []
-        for t in subs:
-            title = t.title or pycountry.languages.get(alpha_2=t.language).name
-            l1 = f"- {title}, {t.format.replace('UTF-8', 'SubRip (SRT)')}"
-            data += [("  " + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(l1, 64))]
+        if not subs:
+            data.append("--")
+        for sub in subs:
+            line = []
+
+            # following sub.title tree checks and supports three different language and title scenarios
+            # The second scenario is the recommended option to choose if you are open to choosing any
+            # The third scenario should be used if you have nothing unique to state about the track
+            # | Language     | Track Title                   | Output                                        |
+            # | ------------ | ----------------------------- | --------------------------------------------- |
+            # | es / Spanish | Spanish (Latin American, SDH) | - Spanish (Latin American, SDH), SubRip (SRT) |
+            # | es / Spanish | Latin American (SDH)          | - Spanish, Latin American (SDH), SubRip (SRT) |
+            # | es / Spanish | None                          | - Spanish, SubRip (SRT)                       |
+            language = pycountry.languages.get(alpha_2=sub.language).name
+            if sub.title:
+                if language.lower() in sub.title.lower():
+                    line.append(sub.title)
+                else:
+                    line.append(f"{language}, {sub.title}")
+            else:
+                line.append(language)
+
+            line.append(sub.format.replace("UTF-8", "SubRip (SRT)"))
+
+            line = "- " + ", ".join(line)
+            data += [
+                ("  " + x if i > 0 else x)
+                for i, x in enumerate(textwrap.wrap(line, 64))
+            ]
         return data
 
     @staticmethod
