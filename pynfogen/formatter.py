@@ -116,7 +116,7 @@ class CustomFormats(Formatter):
             return self.center(value, *map(int, format_spec[2:].split("x")))
         return super().format_field(value, format_spec)
 
-    def list_to_indented_strings(self, value: list, indent: int = 0):
+    def list_to_indented_strings(self, value: list, indent: int = 0) -> str:
         """Recursively convert a list to an indented \n separated string."""
         if isinstance(value[0], list):
             return self.list_to_indented_strings(value[0], indent)
