@@ -271,13 +271,13 @@ class NFO:
 
     def get_video_print(self, videos: List[Track]) -> List[List[str]]:
         if not videos:
-            return ["--"]
+            return [["--"]]
         data = []
-        for t in videos:
+        for video in videos:
             codec = {
-                "MPEG Video": f"MPEG-{(t.format_version or '').replace('Version ', '')}"
-            }.get(t.format, t.format)
-            interlaced_percent = None
+                "MPEG Video": f"MPEG-{(video.format_version or '').replace('Version ', '')}"
+            }.get(video.format, video.format)
+            scan_overview = video.scan_type
             vst = False
             if codec in ["MPEG-1", "MPEG-2"]:
                 # parse d2v file with pyd2v, generates D2V if needed
@@ -290,21 +290,31 @@ class NFO:
                 ] for f in line]
                 interlaced_percent = (sum(1 for f in flags if not f["progressive_frame"]) / len(flags)) * 100
                 if interlaced_percent == 100:
-                    interlaced_percent = "Interlaced (CST)"
+                    scan_overview = "Interlaced (CST)"
                 else:
-                    interlaced_percent = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
+                    scan_overview = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
                     vst = True
                 for ext in ["log", "d2v", "mpg", "mpeg"]:
                     fp = os.path.splitext(self.file)[0] + "." + ext
                     if os.path.exists(fp):
                         os.unlink(fp)
-            l1 = f"- {pycountry.languages.get(alpha_2=t.language).name}, {codec} " + \
-                 f"({t.format_profile}) {t.width}x{t.height} ({t.other_display_aspect_ratio[0]}) " + \
-                 f"@ {t.other_bit_rate[0]}{f' ({t.bit_rate_mode})' if t.bit_rate_mode else ''}"
-            l2 = f"  {(f'{t.framerate_num}/{t.framerate_den}' if t.framerate_num else t.frame_rate)} FPS " + \
-                 f"({'VFR' if vst else t.frame_rate_mode}), {t.color_space}{t.chroma_subsampling.replace(':', '')}" + \
-                 f"P{t.bit_depth}, {interlaced_percent if interlaced_percent else t.scan_type}"
-            data.append([l1, l2])
+            line_1 = "- {language}, {codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}".format(
+                language=pycountry.languages.get(alpha_2=video.language).name,
+                codec=codec,
+                profile=video.format_profile,
+                width=video.width, height=video.height,
+                aspect=video.other_display_aspect_ratio[0],
+                bitrate=f"{video.other_bit_rate[0]}{f' ({video.bit_rate_mode})' if video.bit_rate_mode else ''}"
+            )
+            line_2 = "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {scan}".format(
+                fps=f"{video.framerate_num}/{video.framerate_den}" if video.framerate_num else video.frame_rate,
+                fps_mode="VFR" if vst else video.frame_rate_mode,
+                color_space=video.color_space,
+                subsampling=video.chroma_subsampling.replace(":", ""),
+                bit_depth=video.bit_depth,
+                scan=scan_overview
+            )
+            data.append([line_1, line_2])
         return data
 
     def get_audio_print(self, audio: List[Track]) -> List[str]:
