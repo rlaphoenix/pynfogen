@@ -107,7 +107,7 @@ class NFO:
                 if f"1{k.replace('_', '')}".isdigit()
             ]
             self.chapters_numbered = all(
-                x.split(":", 1)[-1] in [f"Chapter {i + 1}", f"Chapter {str(i + 1).zfill(2)}"]
+                x.split(":", 1)[-1].lower() in [f"chapter {i + 1}", f"chapter {str(i + 1).zfill(2)}"]
                 for i, x in enumerate(self.chapters)
             )
         else:
