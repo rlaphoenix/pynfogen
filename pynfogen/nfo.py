@@ -9,7 +9,7 @@ from typing import List, Union, Tuple
 
 import pycountry
 from pyd2v import D2V
-from pymediainfo import MediaInfo
+from pymediainfo import MediaInfo, Track
 
 from pynfogen.formatter import CustomFormats
 from pynfogen.helpers import scrape
@@ -38,9 +38,9 @@ class NFO:
         self.banner_image = None
         self.source = None
         self.note = None
-        self.videos = None
-        self.audio = None
-        self.subtitles = None
+        self.videos: List[Track] = []
+        self.audio: List[Track] = []
+        self.subtitles: List[Track] = []
         self.chapters = None
         self.chapters_numbered = None
 
