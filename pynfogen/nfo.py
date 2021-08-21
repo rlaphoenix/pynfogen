@@ -24,30 +24,34 @@ class NFO:
     TVDB_ID_T = re.compile(r"^\d+$")
 
     def __init__(self):
-        self.media_info = None
-        self.file = None
-        self.season = None
-        self.episode = None
-        self.episode_name = None
-        self.imdb = None
-        self.tmdb = None
-        self.tvdb = None
-        self.title_name = None
-        self.title_year = None
-        self.episodes = None
-        self.release_name = None
-        self.preview = None
-        self.preview_images = []
-        self.banner_image = None
-        self.source = None
-        self.note = None
-        self.videos: List[Track] = []
-        self.audio: List[Track] = []
-        self.subtitles: List[Track] = []
-        self.chapters = None
-        self.chapters_numbered = None
+        self.media_info: MediaInfo
 
-        self.fanart_api_key = None
+        self.file: str
+        self.season: Optional[Union[int, str]]
+        self.episode: Optional[int]
+        self.episode_name: Optional[str]
+
+        self.videos: List[Track]
+        self.audio: List[Track]
+        self.subtitles: List[Track]
+        self.chapters: List[str]
+        self.chapters_numbered: bool
+
+        self.fanart_api_key: Optional[str]
+        self.source: Optional[str]
+        self.note: Optional[str]
+        self.preview: Optional[str]
+
+        self.imdb: str
+        self.tmdb: Optional[str]
+        self.tvdb: Optional[int]
+
+        self.title_name: str
+        self.title_year: str
+        self.episodes: int
+        self.release_name: str
+        self.preview_images: List[dict[str, str]]
+        self.banner_image: Optional[str]
 
     def __repr__(self):
         return "<{c} {attrs}>".format(
