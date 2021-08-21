@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- (dependencies) Added `flake8`, `mypy`, `types-requests` and `isort` to dev-dependencies.
+
+### Changed
+
+- (pycharm) Disabled the AttributeOutsideInit Inspection. This is to follow a more modern approach of type-hinting
+  in the init function, instead of out-right initializing it with a value it probably doesn't need nor want.
+- (nfo) get_database_ids method has been replaced with separate methods for each database ID. The new methods and
+  code are more optimized too, with tightened checks on the ID values provided either by the user or the file metadata.
+- (nfo) Replaced the uses of the scrape function from helpers with a new `requests` session which is stored in the NFO
+  class directly.
+
+### Fixed
+
+- (nfo) The chapters_numbered check now checks case-insensitively.
+- (nfo) The get_banner_image method now correctly returns banner URLs in expected languages. Previously it would
+  return any. It now returns based on the primary audio tracks language (the first audio track).
+- (examples) Removed typo `%` from the end of the if check syntax in templates near the chapter_entries use.
+- (examples) Removed unnecessary trailing whitespace from some artwork and templates.
+
+### Removed
+
+- (dependencies) Dropped support for Python 3.6.0 due to bugs in it. Python 3.6.1 and above is still supported.
+
 ## [0.4.4] - 2021-08-21
 
 ### Added
