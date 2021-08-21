@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - (dependencies) Added `flake8`, `mypy`, `types-requests` and `isort` to dev-dependencies.
+- (nfo) The get_banner_image method now returns banners in the same language of the primary audio track.
 
 ### Changed
 
@@ -23,8 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - (nfo) The chapters_numbered check now checks case-insensitively.
-- (nfo) The get_banner_image method now correctly returns banner URLs in expected languages. Previously it would
-  return any. It now returns based on the primary audio tracks language (the first audio track).
+- (nfo) The get_banner_image method now correctly returns banner URLs in expected languages.
 - (examples) Removed typo `%` from the end of the if check syntax in templates near the chapter_entries use.
 - (examples) Removed unnecessary trailing whitespace from some artwork and templates.
 
