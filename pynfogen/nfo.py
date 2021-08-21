@@ -354,7 +354,7 @@ class NFO:
         if not subs:
             data.append("--")
         for sub in subs:
-            line = []
+            line_items = []
 
             # following sub.title tree checks and supports three different language and title scenarios
             # The second scenario is the recommended option to choose if you are open to choosing any
@@ -367,15 +367,15 @@ class NFO:
             language = pycountry.languages.get(alpha_2=sub.language).name
             if sub.title:
                 if language.lower() in sub.title.lower():
-                    line.append(sub.title)
+                    line_items.append(sub.title)
                 else:
-                    line.append(f"{language}, {sub.title}")
+                    line_items.append(f"{language}, {sub.title}")
             else:
-                line.append(language)
+                line_items.append(language)
 
-            line.append(sub.format.replace("UTF-8", "SubRip (SRT)"))
+            line_items.append(sub.format.replace("UTF-8", "SubRip (SRT)"))
 
-            line = "- " + ", ".join(line)
+            line = "- " + ", ".join(line_items)
             data += [
                 ("  " + x if i > 0 else x)
                 for i, x in enumerate(textwrap.wrap(line, 64))
