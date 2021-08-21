@@ -19,7 +19,7 @@ def scrape(url: str) -> str:
     ).text
 
 
-def open_file(path: str):
+def open_file(path: str) -> None:
     """Open file in file-associated text-editor."""
     if platform.system() == "Windows":
         os.startfile(path)
