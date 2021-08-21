@@ -35,7 +35,7 @@ Subtitle Tracks ({subtitles:len}):
 {subtitles_pretty:>>0x68}<?{chapters_named:true}?
 
 Chapters:
-{chapter_entries}%?>
+{chapter_entries}?>
 
 [HR][/HR]
 
