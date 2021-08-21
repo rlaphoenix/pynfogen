@@ -259,7 +259,21 @@ class NFO:
         return images
 
     @staticmethod
-    def get_subtitle_print(subs: List[Track]):
+    def get_subtitle_print(subs: List[Track]) -> List[str]:
+        """
+        Return a list of a brief subtitle overview per-subtitle.
+
+        e.g.
+        - English, Forced, SubRip (SRT)
+        - English, SubRip (SRT)
+        - English, SDH, SubRip (SRT)
+        - Spanish, Latin American (SDH), SubRip (SRT)
+
+        The bit of text between the Language and the Subtitle format is the Track Title.
+        It can be of any format, but it is recommended to be used as shown above.
+
+        It will be returned as a list of strings with the `- ` already pre-pended to each entry.
+        """
         data = []
         if not subs:
             data.append("--")
