@@ -59,7 +59,19 @@ class CustomFormats(Formatter):
 
     @staticmethod
     def layout(value: Union[List[str], str], width: int, height: int, spacing: int) -> str:
-        """Lay out data in a grid with specific lengths, heights, and spacing."""
+        """
+        Lay out data in a grid with specific lengths, heights, and spacing.
+
+        Example:
+            >>> f = CustomFormats()
+            >>> f.layout(['1', '2', '3', '4'], width=2, height=2, spacing=0)
+            12
+            34
+            >>> f.layout(['1', '2', '3', '4'], width=2, height=2, spacing=1)
+            1 2
+
+            3 4
+        """
         if not value:
             return ""
         if not isinstance(value, list):
@@ -67,10 +79,13 @@ class CustomFormats(Formatter):
         if len(value) != width * height:
             # TODO: How about just ignore and try fill as much as it can?
             raise ValueError("Layout invalid, not enough images...")
-        value = [(value[i:i + width]) for i in range(0, len(value), width)]
-        value = [(" " * spacing).join(x) for x in value]
-        value = ("\n" * (spacing + 1)).join(value)
-        return value
+        grid = [
+            (value[i:i + width])
+            for i in range(0, len(value), width)
+        ]
+        grid_indented = [(" " * spacing).join(x) for x in grid]
+        grid_str = ("\n" * (spacing + 1)).join(grid_indented)
+        return grid_str
 
     def wrap(self, value: Union[List[str], str], indent: int, width: int) -> str:
         """Text-wrap data at a specific width and indent amount."""
