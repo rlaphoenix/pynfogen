@@ -240,8 +240,7 @@ class NFO:
 
         banner = next((
             x["url"] for x in (res.get("tvbanner") or [])
-            # TODO: Support other languages, let user decide
-            if x["lang"] == "en"
+            if x["lang"] == sorted(self.audio, key=lambda x: x.streamorder)[0].language
         ), None)
 
         return banner
