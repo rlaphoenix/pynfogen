@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pynfogen"
-version = "0.4.3"
+version = "0.4.4"
 description = "Scriptable MediaInfo-fed NFO Generator for Movies and TV"
 license = "MIT"
 authors = ["PHOENiX <rlaphoenix@pm.me>"]
