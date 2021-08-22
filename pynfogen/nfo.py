@@ -35,7 +35,7 @@ class NFO:
         self.videos: List[Track]
         self.audio: List[Track]
         self.subtitles: List[Track]
-        self.chapters: List[str]
+        self.chapters: Dict[str, str]
         self.chapters_numbered: bool
 
         self.fanart_api_key: Optional[str]
@@ -111,16 +111,17 @@ class NFO:
 
         chapters = next(iter(self.media_info.menu_tracks), None)
         if chapters:
-            self.chapters = [
-                v for k, v in chapters.to_data().items()
+            self.chapters = {
+                ".".join([k.replace("_", ".")[:-3], k[-3:]]): v.strip(":")
+                for k, v in chapters.to_data().items()
                 if f"1{k.replace('_', '')}".isdigit()
-            ]
+            }
             self.chapters_numbered = all(
                 x.split(":", 1)[-1].lower() in [f"chapter {i + 1}", f"chapter {str(i + 1).zfill(2)}"]
-                for i, x in enumerate(self.chapters)
+                for i, x in enumerate(self.chapters.values())
             )
         else:
-            self.chapters = []
+            self.chapters = {}
             self.chapters_numbered = False
 
         self.imdb = self.get_imdb_id(config)
@@ -383,12 +384,17 @@ class NFO:
         return data
 
     @staticmethod
-    def get_chapter_print(chapters: List[str]) -> List[str]:
-        return ["--"] if not chapters else [[
-            f"- {v}"
-        ] for v in chapters]
+    def get_chapter_print(chapters: Dict[str, str]) -> List[str]:
+        if not chapters:
+            return ["--"]
+        return [
+            [
+                f"- {k}: {v}"
+            ]
+            for k, v in chapters.items()
+        ]
 
-    def get_chapter_print_short(self, chapters: List[str]) -> str:
+    def get_chapter_print_short(self, chapters: Dict[str, str]) -> str:
         if not chapters:
             return "No"
         if self.chapters_numbered:
