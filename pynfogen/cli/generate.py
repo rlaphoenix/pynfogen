@@ -73,10 +73,10 @@ def generate(obj: dict, template: str, file: str, artwork: Optional[str], season
     }
 
     if artwork:
-        artwork = Path(obj["artwork"] / f"{artwork}.nfo")
-        if not artwork.exists():
-            raise click.ClickException(f"No artwork named {artwork.stem} exists.")
-        artwork = artwork.read_text()
+        artwork_path = Path(obj["artwork"] / f"{artwork}.nfo")
+        if not artwork_path.exists():
+            raise click.ClickException(f"No artwork named {artwork} exists.")
+        artwork = artwork_path.read_text()
 
     template_path = Path(obj["templates"] / f"{template}.nfo")
     if not template_path.exists():
