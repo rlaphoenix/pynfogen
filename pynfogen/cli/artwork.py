@@ -3,6 +3,7 @@ from pathlib import Path
 
 import click
 
+from pynfogen.config import Files, Directories
 from pynfogen.helpers import open_file
 
 
@@ -13,11 +14,10 @@ def artwork() -> None:
 
 @artwork.command()
 @click.argument("name", type=str)
-@click.pass_obj
-def edit(obj: dict, name: str) -> None:
+def edit(name: str) -> None:
     """Edit an artwork file. If one does not exist, one will be created."""
     log = logging.getLogger("artwork")
-    location = Path(obj["artwork"] / f"{name}.nfo")
+    location = Path(str(Files.artwork).format(name=name))
     if not location.exists():
         log.info(f"Creating new artwork named {name}")
         location.parent.mkdir(exist_ok=True, parents=True)
@@ -30,11 +30,10 @@ def edit(obj: dict, name: str) -> None:
 @artwork.command()
 @click.argument("name", type=str)
 @click.confirmation_option(prompt="Are you sure you want to delete the artwork?")
-@click.pass_obj
-def delete(obj: dict, name: str) -> None:
+def delete(name: str) -> None:
     """Delete an artwork file."""
     log = logging.getLogger("artwork")
-    location = Path(obj["artwork"] / f"{name}.nfo")
+    location = Path(str(Files.artwork).format(name=name))
     if not location.exists():
         raise click.ClickException(f"Artwork {name} does not exist.")
     location.unlink()
@@ -42,12 +41,10 @@ def delete(obj: dict, name: str) -> None:
 
 
 @artwork.command(name="list")
-@click.pass_obj
-def list_(obj: dict) -> None:
+def list_() -> None:
     """List all available artworks."""
-    location = Path(obj["artwork"])
     found = 0
-    for nfo in location.glob("*.nfo"):
+    for nfo in Directories.artwork.glob("*.nfo"):
         print(nfo.stem)
         found += 1
     if not found:
@@ -55,7 +52,6 @@ def list_(obj: dict) -> None:
 
 
 @artwork.command()
-@click.pass_obj
-def explore(obj: dict) -> None:
+def explore() -> None:
     """Open the artwork directory in your File Explorer."""
-    open_file(obj["artwork"])
+    open_file(str(Directories.artwork))

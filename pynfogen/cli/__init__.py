@@ -1,7 +1,4 @@
-from pathlib import Path
-
 import click
-from appdirs import user_data_dir
 from dunamai import Version, Style
 
 from pynfogen import __version__
@@ -15,16 +12,8 @@ from pynfogen.cli.template import template
     help_option_names=["-?", "-h", "--help"],
     max_content_width=116  # max PEP8 line-width, -4 to adjust for initial indent
 ))
-@click.pass_context
-def cli(ctx: click.Context) -> None:
-    user_dir = Path(user_data_dir("pynfogen", "PHOENiX"))
-    config_path = user_dir / "config.yml"
-    ctx.obj = {
-        "user_dir": user_dir,
-        "config_path": config_path,
-        "templates": user_dir / "templates",
-        "artwork": user_dir / "artwork"
-    }
+def cli() -> None:
+    pass
 
 
 @cli.command()

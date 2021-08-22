@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Optional
 
 import click
-import yaml
 
+from pynfogen.config import config, Files
 from pynfogen.nfo import NFO
 
 
@@ -20,8 +20,7 @@ from pynfogen.nfo import NFO
 @click.option("-S", "--source", type=str, default=None, help="Source information.")
 @click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
 @click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
-@click.pass_obj
-def generate(obj: dict, template: str, file: str, artwork: Optional[str], season: NFO.SEASON_T, episode: NFO.EPISODE_T,
+def generate(template: str, file: str, artwork: Optional[str], season: NFO.SEASON_T, episode: NFO.EPISODE_T,
              imdb: Optional[str], tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
              preview: Optional[str]) -> None:
     """
@@ -40,14 +39,6 @@ def generate(obj: dict, template: str, file: str, artwork: Optional[str], season
         season = int(season)
 
     nfo = NFO()
-
-    config = obj["config_path"]
-    if config.exists():
-        with config.open() as f:
-            config = yaml.safe_load(f)
-    else:
-        config = {}
-
     nfo.set_config(
         str(Path(file).resolve()),
         season,
@@ -73,12 +64,12 @@ def generate(obj: dict, template: str, file: str, artwork: Optional[str], season
     }
 
     if artwork:
-        artwork_path = Path(obj["artwork"] / f"{artwork}.nfo")
+        artwork_path = Path(str(Files.artwork).format(name=artwork))
         if not artwork_path.exists():
             raise click.ClickException(f"No artwork named {artwork} exists.")
         artwork = artwork_path.read_text()
 
-    template_path = Path(obj["templates"] / f"{template}.nfo")
+    template_path = Path(str(Files.template).format(name=template))
     if not template_path.exists():
         raise click.ClickException(f"No template named {template} exists.")
     template_data = template_path.read_text()
@@ -88,10 +79,10 @@ def generate(obj: dict, template: str, file: str, artwork: Optional[str], season
         f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
 
-    template_path = Path(obj["templates"] / f"{template}.txt")
-    if template_path.exists():
-        template_data = template_path.read_text()
-        bb_txt = nfo.run(template_data, art=None, **template_vars)
+    description_path = Path(str(Files.description).format(name=template))
+    if description_path.exists():
+        description_data = description_path.read_text()
+        bb_txt = nfo.run(description_data, art=None, **template_vars)
         with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf8") as f:
             f.write(bb_txt)
         print(f"Generated BBCode Description for {nfo.release_name}")

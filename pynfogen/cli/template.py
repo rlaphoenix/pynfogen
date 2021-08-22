@@ -3,6 +3,7 @@ from pathlib import Path
 
 import click
 
+from pynfogen.config import Files, Directories
 from pynfogen.helpers import open_file
 
 
@@ -14,11 +15,10 @@ def template():
 @template.command()
 @click.argument("name", type=str)
 @click.option("--bbcode", is_flag=True, default=False, help="Specify template as a BBCode Description template.")
-@click.pass_obj
-def edit(obj, name: str, bbcode: bool):
+def edit(name: str, bbcode: bool):
     """Edit a template file. If one does not exist, one will be created."""
     log = logging.getLogger("template")
-    location = Path(obj["templates"] / f"{name}.{'txt' if bbcode else 'nfo'}")
+    location = Path(str(Files.description if bbcode else Files.template).format(name=name))
     if not location.exists():
         log.info(f"Creating new template named {name}")
         location.parent.mkdir(exist_ok=True, parents=True)
@@ -32,11 +32,10 @@ def edit(obj, name: str, bbcode: bool):
 @click.argument("name", type=str)
 @click.option("--bbcode", is_flag=True, default=False, help="Specify template as a BBCode Description template.")
 @click.confirmation_option(prompt="Are you sure you want to delete the template?")
-@click.pass_obj
-def delete(obj, name: str, bbcode: bool):
+def delete(name: str, bbcode: bool):
     """Delete a template file."""
     log = logging.getLogger("template")
-    location = Path(obj["templates"] / f"{name}.{'txt' if bbcode else 'nfo'}")
+    location = Path(str(Files.description if bbcode else Files.template).format(name=name))
     if not location.exists():
         raise click.ClickException(f"Template {name} does not exist.")
     location.unlink()
@@ -44,15 +43,13 @@ def delete(obj, name: str, bbcode: bool):
 
 
 @template.command(name="list")
-@click.pass_obj
-def list_(obj):
+def list_():
     """List all available templates."""
-    location = Path(obj["templates"])
     found = 0
-    for nfo in location.glob("*.nfo"):
+    for nfo in Directories.templates.glob("*.nfo"):
         print(nfo.stem, "-", "NFO", "Template")
         found += 1
-    for txt in location.glob("*.txt"):
+    for txt in Directories.templates.glob("*.txt"):
         print(txt.stem, "-", "BBCode", "Template")
         found += 1
     if not found:
@@ -60,7 +57,6 @@ def list_(obj):
 
 
 @template.command()
-@click.pass_obj
-def explore(obj):
+def explore():
     """Open the template directory in your File Explorer."""
-    open_file(obj["templates"])
+    open_file(str(Directories.templates))
