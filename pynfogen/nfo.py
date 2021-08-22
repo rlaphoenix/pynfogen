@@ -93,7 +93,6 @@ class NFO:
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
         self.file = file
-        self.release_name = self.get_release_name()
         self.media_info = MediaInfo.parse(self.file)
 
         self.fanart_api_key = config.get("fanart_api_key")
@@ -104,6 +103,7 @@ class NFO:
         self.season = season
         self.episode, self.episode_name = episode or (None, None)
         self.episodes = self.get_tv_episodes()
+        self.release_name = self.get_release_name()
 
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
