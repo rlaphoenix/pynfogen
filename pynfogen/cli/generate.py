@@ -8,7 +8,7 @@ from pynfogen.config import config, Files
 from pynfogen.nfo import NFO
 
 
-@click.command()
+@click.command(context_settings=dict(default_map=config.get("generate", {})))
 @click.argument("template", type=str)
 @click.argument("file", type=str)
 @click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
