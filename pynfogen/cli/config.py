@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 import click
-import yaml
+import pytomlpp
 
 from pynfogen.config import config as data, Files
 
@@ -21,7 +21,7 @@ def config(ctx: click.Context, key: Optional[str], value: Optional[str], unset: 
     log = logging.getLogger("config")
 
     if list_:
-        print(yaml.dump(data).rstrip())
+        print(pytomlpp.dumps(data).rstrip())
         return
 
     tree = key.split(".")
@@ -44,5 +44,4 @@ def config(ctx: click.Context, key: Optional[str], value: Optional[str], unset: 
             temp[tree[-1]] = value
             log.info(f"Set {key} to {repr(value)}")
             Files.config.parent.mkdir(parents=True, exist_ok=True)
-            with Files.config.open("wt") as f:
-                yaml.dump(data, f)
+            pytomlpp.dump(data, Files.config)

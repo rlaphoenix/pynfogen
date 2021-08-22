@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import yaml
+import pytomlpp
 from appdirs import user_data_dir
 
 
@@ -11,15 +11,14 @@ class Directories:
 
 
 class Files:
-    config = Directories.user / "config.yml"
+    config = Directories.user / "config.toml"
     artwork = Directories.artwork / "{name}.nfo"
     template = Directories.templates / "{name}.nfo"
     description = Directories.templates / "{name}.txt"
 
 
 if Files.config.exists():
-    with Files.config.open(encoding="utf8") as f:
-        config = yaml.safe_load(f)
+    config = pytomlpp.load(Files.config)
 else:
     config = {}
 

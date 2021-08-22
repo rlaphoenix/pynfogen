@@ -201,12 +201,12 @@ python-versions = ">=3.6"
 importlib_metadata = {version = "*", markers = "python_version < \"3.8\""}
 
 [[package]]
-name = "pyyaml"
-version = "5.4.1"
-description = "YAML parser and emitter for Python"
+name = "pytomlpp"
+version = "1.0.3"
+description = "A python wrapper for toml++"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+python-versions = "*"
 
 [[package]]
 name = "requests"
@@ -286,7 +286,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "6a7fc8e443098d221e9cdad7674918641c34bbec8c40796488317391496f8741"
+content-hash = "347892d7a3985f8e76166514767ea93b750e59fd83fcae868e2804808d5d5217"
 
 [metadata.files]
 appdirs = [
@@ -387,36 +387,28 @@ pymediainfo = [
     {file = "pymediainfo-5.1.0-py3-none-win_amd64.whl", hash = "sha256:ffba87bbac9b020526d34b7aef3094b6e9afb23b208051ffef0fbd4833007455"},
     {file = "pymediainfo-5.1.0.tar.gz", hash = "sha256:d996c69d50081a24d6dca9679abf43ffd2be368b065f953c2c9082e5d649c734"},
 ]
-pyyaml = [
-    {file = "PyYAML-5.4.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:3b2b1824fe7112845700f815ff6a489360226a5609b96ec2190a45e62a9fc922"},
-    {file = "PyYAML-5.4.1-cp27-cp27m-win32.whl", hash = "sha256:129def1b7c1bf22faffd67b8f3724645203b79d8f4cc81f674654d9902cb4393"},
-    {file = "PyYAML-5.4.1-cp27-cp27m-win_amd64.whl", hash = "sha256:4465124ef1b18d9ace298060f4eccc64b0850899ac4ac53294547536533800c8"},
-    {file = "PyYAML-5.4.1-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:bb4191dfc9306777bc594117aee052446b3fa88737cd13b7188d0e7aa8162185"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:6c78645d400265a062508ae399b60b8c167bf003db364ecb26dcab2bda048253"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:4e0583d24c881e14342eaf4ec5fbc97f934b999a6828693a99157fde912540cc"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:72a01f726a9c7851ca9bfad6fd09ca4e090a023c00945ea05ba1638c09dc3347"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-manylinux2014_s390x.whl", hash = "sha256:895f61ef02e8fed38159bb70f7e100e00f471eae2bc838cd0f4ebb21e28f8541"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-win32.whl", hash = "sha256:3bd0e463264cf257d1ffd2e40223b197271046d09dadf73a0fe82b9c1fc385a5"},
-    {file = "PyYAML-5.4.1-cp36-cp36m-win_amd64.whl", hash = "sha256:e4fac90784481d221a8e4b1162afa7c47ed953be40d31ab4629ae917510051df"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:5accb17103e43963b80e6f837831f38d314a0495500067cb25afab2e8d7a4018"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:e1d4970ea66be07ae37a3c2e48b5ec63f7ba6804bdddfdbd3cfd954d25a82e63"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:cb333c16912324fd5f769fff6bc5de372e9e7a202247b48870bc251ed40239aa"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-manylinux2014_s390x.whl", hash = "sha256:fe69978f3f768926cfa37b867e3843918e012cf83f680806599ddce33c2c68b0"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-win32.whl", hash = "sha256:dd5de0646207f053eb0d6c74ae45ba98c3395a571a2891858e87df7c9b9bd51b"},
-    {file = "PyYAML-5.4.1-cp37-cp37m-win_amd64.whl", hash = "sha256:08682f6b72c722394747bddaf0aa62277e02557c0fd1c42cb853016a38f8dedf"},
-    {file = "PyYAML-5.4.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:d2d9808ea7b4af864f35ea216be506ecec180628aced0704e34aca0b040ffe46"},
-    {file = "PyYAML-5.4.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:8c1be557ee92a20f184922c7b6424e8ab6691788e6d86137c5d93c1a6ec1b8fb"},
-    {file = "PyYAML-5.4.1-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:fd7f6999a8070df521b6384004ef42833b9bd62cfee11a09bda1079b4b704247"},
-    {file = "PyYAML-5.4.1-cp38-cp38-manylinux2014_s390x.whl", hash = "sha256:bfb51918d4ff3d77c1c856a9699f8492c612cde32fd3bcd344af9be34999bfdc"},
-    {file = "PyYAML-5.4.1-cp38-cp38-win32.whl", hash = "sha256:fa5ae20527d8e831e8230cbffd9f8fe952815b2b7dae6ffec25318803a7528fc"},
-    {file = "PyYAML-5.4.1-cp38-cp38-win_amd64.whl", hash = "sha256:0f5f5786c0e09baddcd8b4b45f20a7b5d61a7e7e99846e3c799b05c7c53fa696"},
-    {file = "PyYAML-5.4.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:294db365efa064d00b8d1ef65d8ea2c3426ac366c0c4368d930bf1c5fb497f77"},
-    {file = "PyYAML-5.4.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:74c1485f7707cf707a7aef42ef6322b8f97921bd89be2ab6317fd782c2d53183"},
-    {file = "PyYAML-5.4.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:d483ad4e639292c90170eb6f7783ad19490e7a8defb3e46f97dfe4bacae89122"},
-    {file = "PyYAML-5.4.1-cp39-cp39-manylinux2014_s390x.whl", hash = "sha256:fdc842473cd33f45ff6bce46aea678a54e3d21f1b61a7750ce3c498eedfe25d6"},
-    {file = "PyYAML-5.4.1-cp39-cp39-win32.whl", hash = "sha256:49d4cdd9065b9b6e206d0595fee27a96b5dd22618e7520c33204a4a3239d5b10"},
-    {file = "PyYAML-5.4.1-cp39-cp39-win_amd64.whl", hash = "sha256:c20cfa2d49991c8b4147af39859b167664f2ad4561704ee74c1de03318e898db"},
-    {file = "PyYAML-5.4.1.tar.gz", hash = "sha256:607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"},
+pytomlpp = [
+    {file = "pytomlpp-1.0.3-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:3caf8fbc5d7ec11f3ff1933713255e745d330c621d53194ebd55faa457504052"},
+    {file = "pytomlpp-1.0.3-cp36-cp36m-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:88817f3c84e2e556712c3c0f41b30c39fbcb28b4f7718fa31f4f955fd47d2bc1"},
+    {file = "pytomlpp-1.0.3-cp36-cp36m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:0ee25c95ba2e76a8d94a166738129f518369890abe22ed9ad26295e7ac8ceef0"},
+    {file = "pytomlpp-1.0.3-cp36-cp36m-win_amd64.whl", hash = "sha256:b65d7b81c41eacf621d89bf808abdf0e7d26b6d4c0c8b050a956f63dd1d49975"},
+    {file = "pytomlpp-1.0.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:251fa912efd3d83e1372ec8f157bcacfa496862fdf249d1678fb1c60c1831c45"},
+    {file = "pytomlpp-1.0.3-cp37-cp37m-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:ee7302668ff970ca970105c4cf52613d0c99022ea5d585603c40b587686e7b39"},
+    {file = "pytomlpp-1.0.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:89c48f277c76a5f3471460adbe9d10c5d1a3ce59827b34162332daaf277ba073"},
+    {file = "pytomlpp-1.0.3-cp37-cp37m-win_amd64.whl", hash = "sha256:cab86169a5bf1a04847745d00e5be7994b2f426cc95d18a21a742110f0ad6bd4"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:0ffcf8feb4aa7a18d4e18e0c9118b8704f7cc924631e91efd335b6dc62048f62"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:406a565e8675fd538e6e24972a61929a26abdb602c9d7512b72340a21d0f2ea5"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:d1590e6d7f0766a6779d4d74f49c2d6e261b7c6e175544b5fecb711ea95c021a"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:365f17ca4e53526cdb3c1d2ce2715208e20d8d37f4f25ac8c0e1ec701f159bf0"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:f320bf0b851eb0e19cbe640e7cd12297f82b5384ad459e311cf8342a57b48313"},
+    {file = "pytomlpp-1.0.3-cp38-cp38-win_amd64.whl", hash = "sha256:c17aa8c3ebffc6727f7454f2f72531d92250e71f7eb607d0c8027d12ce883948"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:6c3b45458f4251594bd3017eac7e16897b7a27cde3b71d71dbe3ea74343f4461"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:dd45bd78e6b8faa01c9c1558a30d74ce9c8223875bdb107f69e6d8eabc23ffd2"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:87ccc3c108f20c8d1c3abb8655bab106ee6ed890f944a745a24663a9f6b1966f"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:cbd1e22564e61cef92b1c34b43ed7fed899224d43bd4d15ece56af59e668d6c9"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:7e9daa0a0d7c4ab6fa2a15afe7c957a8ec1bdc2292bff2f6be56a7e5c80dc394"},
+    {file = "pytomlpp-1.0.3-cp39-cp39-win_amd64.whl", hash = "sha256:c76361cc578d36dd8d17a2f4523833de19788b7a4da26a9687005feb9ba98c58"},
+    {file = "pytomlpp-1.0.3.tar.gz", hash = "sha256:d3c184a263aadc535c58afb01cda40e3046e9c726d9208f805ed10420c8ab120"},
 ]
 requests = [
     {file = "requests-2.25.1-py2.py3-none-any.whl", hash = "sha256:c210084e36a42ae6b9219e00e48287def368a26d03a048ddad7bfee44f75871e"},
