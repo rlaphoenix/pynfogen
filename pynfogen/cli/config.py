@@ -4,6 +4,8 @@ from typing import Optional
 import click
 import yaml
 
+from pynfogen.config import config as data, Files
+
 
 @click.command()
 @click.argument("key", type=str, required=False)
@@ -17,15 +19,6 @@ def config(ctx: click.Context, key: Optional[str], value: Optional[str], unset: 
         return click.echo(config.get_help(ctx))
 
     log = logging.getLogger("config")
-
-    config_path = ctx.obj["config_path"]
-    if config_path.exists():
-        with config_path.open() as f:
-            data = yaml.safe_load(f)
-    else:
-        data = None
-    if not data:
-        data = {}
 
     if list_:
         print(yaml.dump(data).rstrip())
@@ -50,6 +43,6 @@ def config(ctx: click.Context, key: Optional[str], value: Optional[str], unset: 
         else:
             temp[tree[-1]] = value
             log.info(f"Set {key} to {repr(value)}")
-            config_path.parent.mkdir(parents=True, exist_ok=True)
-            with config_path.open("wt") as f:
+            Files.config.parent.mkdir(parents=True, exist_ok=True)
+            with Files.config.open("wt") as f:
                 yaml.dump(data, f)
