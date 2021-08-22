@@ -13,7 +13,12 @@ from pynfogen.cli.template import template
     max_content_width=116  # max PEP8 line-width, -4 to adjust for initial indent
 ))
 def cli() -> None:
-    pass
+    """
+    \b
+    pynfogen
+    Scriptable MediaInfo-fed NFO Generator for Movies and TV.
+    https://github.com/rlaphoenix/pynfogen
+    """
 
 
 @cli.command()
