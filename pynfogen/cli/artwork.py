@@ -7,14 +7,14 @@ from pynfogen.helpers import open_file
 
 
 @click.group()
-def artwork():
+def artwork() -> None:
     """Manages artwork files."""
 
 
 @artwork.command()
 @click.argument("name", type=str)
 @click.pass_obj
-def edit(obj, name: str):
+def edit(obj: dict, name: str) -> None:
     """Edit an artwork file. If one does not exist, one will be created."""
     log = logging.getLogger("artwork")
     location = Path(obj["artwork"] / f"{name}.nfo")
@@ -31,7 +31,7 @@ def edit(obj, name: str):
 @click.argument("name", type=str)
 @click.confirmation_option(prompt="Are you sure you want to delete the artwork?")
 @click.pass_obj
-def delete(obj, name: str):
+def delete(obj: dict, name: str) -> None:
     """Delete an artwork file."""
     log = logging.getLogger("artwork")
     location = Path(obj["artwork"] / f"{name}.nfo")
@@ -43,7 +43,7 @@ def delete(obj, name: str):
 
 @artwork.command(name="list")
 @click.pass_obj
-def list_(obj):
+def list_(obj: dict) -> None:
     """List all available artworks."""
     location = Path(obj["artwork"])
     found = 0
@@ -56,6 +56,6 @@ def list_(obj):
 
 @artwork.command()
 @click.pass_obj
-def explore(obj):
+def explore(obj: dict) -> None:
     """Open the artwork directory in your File Explorer."""
     open_file(obj["artwork"])

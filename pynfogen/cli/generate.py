@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Tuple
+from typing import Optional
 
 import click
 import yaml
@@ -12,10 +12,8 @@ from pynfogen.nfo import NFO
 @click.argument("template", type=str)
 @click.argument("file", type=str)
 @click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
-@click.option("-s", "--season", type=str, default=None,
-              help="TV Show Season Number (or name).")
-@click.option("-e", "--episode", type=(int, str), default=[None] * 2,
-              help="TV Show Episode Number and Title.")
+@click.option("-s", "--season", type=str, default=None, help="TV Show Season Number (or name).")
+@click.option("-e", "--episode", type=(int, str), default=(None, None), help="TV Show Episode Number and Title.")
 @click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
 @click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
@@ -23,9 +21,9 @@ from pynfogen.nfo import NFO
 @click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
 @click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
 @click.pass_obj
-def generate(obj, file: str, template: str, artwork: str = None, season: str = None, episode: Tuple[int, str] = None,
-             imdb: str = None, tmdb: str = None, tvdb: int = None, source: str = None, note: str = None,
-             preview: str = None):
+def generate(obj: dict, template: str, file: str, artwork: Optional[str], season: NFO.SEASON_T, episode: NFO.EPISODE_T,
+             imdb: Optional[str], tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
+             preview: Optional[str]) -> None:
     """
     Generate an NFO for a file.
 
@@ -38,7 +36,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     if not os.path.exists(file):
         raise click.ClickException("The provided file or folder path does not exist.")
 
-    if season is not None and season.isdigit():
+    if isinstance(season, str) and season.isdigit():
         season = int(season)
 
     nfo = NFO()
@@ -93,7 +91,7 @@ def generate(obj, file: str, template: str, artwork: str = None, season: str = N
     template_path = Path(obj["templates"] / f"{template}.txt")
     if template_path.exists():
         template_data = template_path.read_text()
-        bb_txt = nfo.run(template_data, **template_vars)
+        bb_txt = nfo.run(template_data, art=None, **template_vars)
         with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf8") as f:
             f.write(bb_txt)
         print(f"Generated BBCode Description for {nfo.release_name}")

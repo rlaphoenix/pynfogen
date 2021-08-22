@@ -16,7 +16,7 @@ from pynfogen.cli.template import template
     max_content_width=116  # max PEP8 line-width, -4 to adjust for initial indent
 ))
 @click.pass_context
-def cli(ctx):
+def cli(ctx: click.Context) -> None:
     user_dir = Path(user_data_dir("pynfogen", "PHOENiX"))
     config_path = user_dir / "config.yml"
     ctx.obj = {
@@ -28,7 +28,7 @@ def cli(ctx):
 
 
 @cli.command()
-def about():
+def about() -> None:
     """Shows information about pynfogen."""
     print(
         "pynfogen - Python NFO Generator.\n"
@@ -39,7 +39,7 @@ def about():
 
 
 @cli.command()
-def version():
+def version() -> None:
     """Shows the version of the project."""
     try:
         v = Version.from_git().serialize(style=Style.SemVer)
