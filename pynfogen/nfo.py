@@ -388,9 +388,7 @@ class NFO:
         if not chapters:
             return ["--"]
         return [
-            [
-                f"- {k}: {v}"
-            ]
+            f"- {k}: {v}"
             for k, v in chapters.items()
         ]
 
