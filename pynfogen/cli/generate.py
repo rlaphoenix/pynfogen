@@ -73,10 +73,10 @@ def movie() -> dict:
 
 @generate.result_callback()
 @click.pass_context
-def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str], imdb: Optional[str], tmdb: Optional[str],
-              tvdb: Optional[int], source: Optional[str], note: Optional[str], preview: Optional[str],
-              *_: Any, **__: Any) -> None:
-    if not isinstance(ctx, click.Context) or not ctx.parent:
+def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str], imdb: Optional[str],
+              tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
+              preview: Optional[str], *_: Any, **__: Any) -> None:
+    if not isinstance(ctx, click.Context) or not ctx.invoked_subcommand:
         raise ValueError("Generator called directly, or not used as part of the generate command group.")
     if not os.path.exists(file):
         raise click.ClickException("The provided file or folder path does not exist.")
