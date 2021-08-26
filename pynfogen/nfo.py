@@ -129,7 +129,7 @@ class NFO:
         self.tvdb = self.get_tvdb_id(config)
 
         self.title_name, self.title_year = self.get_title_name_year()
-        self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb else None
+        self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb and self.fanart_api_key else None
         self.preview_images = self.get_preview_images(self.preview) if self.preview else []
 
         print(self)
