@@ -179,7 +179,7 @@ class NFO:
         if not tvdb_id:
             print("Warning: No TVDB ID was provided...")
             return None
-        if not self.TVDB_ID_T.match(tvdb_id):
+        if not self.TVDB_ID_T.match(str(tvdb_id)):
             print(f"The provided TVDB ID '{tvdb_id}' is not valid...")
             print("Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us').")
             raise ValueError("Invalid TVDB ID")
