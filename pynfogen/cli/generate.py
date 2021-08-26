@@ -17,8 +17,7 @@ from pynfogen.nfo import NFO
 @click.option("-S", "--source", type=str, default=None, help="Source information.")
 @click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
 @click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
-@click.pass_context
-def generate(*_: Any, **__: Any) -> None:
+def generate(**__: Any) -> None:
     """Generate an NFO and Description for a release."""
 
 
