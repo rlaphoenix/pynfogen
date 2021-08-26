@@ -9,7 +9,7 @@ from pynfogen.nfo import NFO
 
 
 @click.group(context_settings=dict(default_map=config.get("generate", {})))
-@click.argument("file", type=str)
+@click.argument("file", type=Path)
 @click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
 @click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
@@ -72,17 +72,19 @@ def movie() -> dict:
 
 @generate.result_callback()
 @click.pass_context
-def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str], imdb: Optional[str],
+def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str], imdb: Optional[str],
               tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
               preview: Optional[str], *_: Any, **__: Any) -> None:
     if not isinstance(ctx, click.Context) or not ctx.invoked_subcommand:
         raise ValueError("Generator called directly, or not used as part of the generate command group.")
-    if not os.path.exists(file):
-        raise click.ClickException("The provided file or folder path does not exist.")
+    if not file.is_file():
+        raise click.ClickException("The provided file path is to a folder, not a file.")
+    if not file.exists():
+        raise click.ClickException("The provided file path does not exist.")
 
     nfo = NFO()
     nfo.set_config(
-        str(Path(file).resolve()),
+        str(file.resolve()),
         **dict(
             imdb=imdb,
             tmdb=tmdb,
