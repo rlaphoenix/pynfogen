@@ -88,7 +88,7 @@ class NFO:
 
         return template
 
-    def set_config(self, file: str, season: SEASON_T, episode: EPISODE_T, **config: Any) -> None:
+    def set_config(self, file: str, season: SEASON_T = None, episode: EPISODE_T = (None, None), **config: Any) -> None:
         if not config or not isinstance(config, dict):
             raise ValueError("NFO.set_config: Parameter config is empty or not a dictionary...")
 
@@ -101,7 +101,7 @@ class NFO:
         self.preview = config.get("preview")
 
         self.season = season
-        self.episode, self.episode_name = episode or (None, None)
+        self.episode, self.episode_name = episode
         self.episodes = self.get_tv_episodes()
         self.release_name = self.get_release_name()
 
