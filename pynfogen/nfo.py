@@ -19,7 +19,7 @@ class NFO:
         "LFE": 0.1
     }
     SEASON_T = Optional[Union[int, str]]
-    EPISODE_T = Optional[Union[Tuple[Optional[int], Optional[str]]]]
+    EPISODE_T = Union[Tuple[Optional[int], Optional[str]]]
     IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
