@@ -108,30 +108,29 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
 
     template = ctx.invoked_subcommand
 
+    artwork_text = None
     if artwork:
         artwork_path = Path(str(Files.artwork).format(name=artwork))
         if not artwork_path.exists():
             raise click.ClickException(f"No artwork named {artwork} exists.")
-        artwork = artwork_path.read_text()
+        artwork_text = artwork_path.read_text()
 
     template_path = Path(str(Files.template).format(name=template))
     if not template_path.exists():
         raise click.ClickException(f"No template named {template} exists.")
-    template_data = template_path.read_text()
+    template_text = template_path.read_text()
 
-    nfo_txt = nfo.run(template_data, art=artwork, **template_vars)
-    nfo_out = os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo")
-    with open(nfo_out, "wt", encoding="utf8") as f:
-        f.write(nfo_txt)
+    nfo_txt = nfo.run(template_text, art=artwork_text, **template_vars)
+    nfo_out = Path(nfo.file).parent / f"{nfo.release_name}.nfo"
+    nfo_out.write_text(nfo_txt, encoding="utf8")
     print(f"Generated NFO for {nfo.release_name}")
     print(f" + Saved to: {nfo_out}")
 
     description_path = Path(str(Files.description).format(name=template))
     if description_path.exists():
-        description_data = description_path.read_text()
-        bb_txt = nfo.run(description_data, art=None, **template_vars)
-        bb_out = os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt")
-        with open(bb_out, "wt", encoding="utf8") as f:
-            f.write(bb_txt)
-        print(f"Generated BBCode Description for {nfo.release_name}")
-        print(f" + Saved to: {bb_out}")
+        description_text = description_path.read_text()
+        description_txt = nfo.run(description_text, art=None, **template_vars)
+        description_out = Path(nfo.file).parent / f"{nfo.release_name}.desc.txt"
+        description_out.write_text(description_txt, encoding="utf8")
+        print(f"Generated Description for {nfo.release_name}")
+        print(f" + Saved to: {description_out}")
