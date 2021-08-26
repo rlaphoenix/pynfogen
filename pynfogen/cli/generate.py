@@ -118,14 +118,18 @@ def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str],
     template_data = template_path.read_text()
 
     nfo_txt = nfo.run(template_data, art=artwork, **template_vars)
-    with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo"), "wt", encoding="utf8") as f:
+    nfo_out = os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.nfo")
+    with open(nfo_out, "wt", encoding="utf8") as f:
         f.write(nfo_txt)
     print(f"Generated NFO for {nfo.release_name}")
+    print(f" + Saved to: {nfo_out}")
 
     description_path = Path(str(Files.description).format(name=template))
     if description_path.exists():
         description_data = description_path.read_text()
         bb_txt = nfo.run(description_data, art=None, **template_vars)
-        with open(os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt"), "wt", encoding="utf8") as f:
+        bb_out = os.path.join(os.path.dirname(nfo.file), f"{nfo.release_name}.desc.txt")
+        with open(bb_out, "wt", encoding="utf8") as f:
             f.write(bb_txt)
         print(f"Generated BBCode Description for {nfo.release_name}")
+        print(f" + Saved to: {bb_out}")
