@@ -90,8 +90,8 @@ def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str],
             source=source,
             note=note,
             preview=preview,
-            **args,
-            **config
+            fanart_api_key=config.get("fanart_api_key"),
+            **args
         )
     )
 
