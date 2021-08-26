@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2021-08-26
+
+### Added
+
+- (dependencies) Added `pytomlpp` for TOML parsing.
+- (config) Created new config file to manage declaration of important directories and filenames. All code that used
+  files or directories have been updated to use these new importable config objects.
+- (nfo generate) Load settings from the config under the `generate` key. This means the defaults for any of the
+  arguments for nfo generate is now able to set by the config.
+
+### Changed
+
+- (config) All uses of YAML for the config file has been replaced with TOML. Any existing `config.yml` files are now
+  invalid and should be re-written entirely due to other config changes.
+- (git) Update `.gitignore` to latest from <https://github.com/github/gitignore>.
+
+### Deprecated
+
+- (config) `art` option is no longer used. It has been renamed to `artwork` and moved under the `generate` key.
+  The config `art` option hasn't actually been used since the move to CLI, by mistake.
+
+### Removed
+
+- (dependencies) `PyYAML` as it's been replaced in favor of `pytomlpp` to switch from YAML to TOML, see above.
+- (git) Unnecessary `config.yml` exclusion has been removed.
+
+### Fixed
+
+- (nfo) Fix Runtime type-error in get_tvdb_id when click converts the provided TVDB ID string from CLI to an integer.
+
 ## [0.5.0] - 2021-08-22
 
 ### Added
@@ -195,7 +225,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release.
 
-[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.1
 [0.5.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.0
 [0.4.4]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.4
 [0.4.3]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.3
