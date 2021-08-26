@@ -129,8 +129,6 @@ class NFO:
         self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb and self.fanart_api_key else None
         self.preview_images = self.get_preview_images(self.preview) if self.preview else []
 
-        print(self)
-
     def get_imdb_id(self, imdb_id: Any) -> str:
         """
         Get an IMDB ID from either the media's global tags, or the config.
