@@ -84,7 +84,6 @@ def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str],
     nfo = NFO()
     nfo.set_config(
         str(Path(file).resolve()),
-        **args,
         **dict(
             imdb=imdb,
             tmdb=tmdb,
@@ -92,6 +91,7 @@ def generator(ctx: click.Context, args: dict, file: str, artwork: Optional[str],
             source=source,
             note=note,
             preview=preview,
+            **args,
             **config
         )
     )
