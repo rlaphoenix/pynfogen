@@ -70,7 +70,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - (github) Added GitHub actions CI build and release workflows.
 - (readme) Add some Badges including new CI build status.
-- (artwork) Add nfo artwork explore with the same functionality as nfo template explore.
+- (nfo artwork) Add nfo artwork explore with the same functionality as nfo template explore.
 
 ### Removed
 
@@ -78,9 +78,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- (artwork) Fix possibility of a no-print result if the directory exists but is empty.
-- (template) Fix possibility of a no-print result if the directory exists but is empty.
-- (config) Ensure the config directory exists before attempting to write to it.
+- (nfo artwork) Fix possibility of a no-print result if the directory exists but is empty.
+- (nfo template) Fix possibility of a no-print result if the directory exists but is empty.
+- (nfo config) Ensure the config directory exists before attempting to write to it.
 
 ## [0.4.2] - 2021-06-26
 
@@ -112,8 +112,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- (generate) Run `nfo.set_config` even if there's no config or no data in the config.
-- (generate) Ensure sure the input file or folder path exists before running generate code.
+- (nfo generate) Run `nfo.set_config` even if there's no config or no data in the config.
+- (nfo generate) Ensure sure the input file or folder path exists before running generate code.
 
 ## [0.4.0] - 2021-06-05
 
@@ -123,10 +123,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- (generate) Fix extra template variable name conflicts with base NFO class variable names. Requires template file
+- (nfo generate) Fix extra template variable name conflicts with base NFO class variable names. Requires template file
   updates, see commit ID [15c66d8] for more information, and see it's changes to the example template files to know
   what to change.
-- (template) Add missing `--bbcode` option to `delete` subcommand.
+- (nfo template) Add missing `--bbcode` option to `delete` subcommand.
 - (readme) Fix the syntax and semantics of the custom formatter `If statement` examples.
 
   [15c66d8]: <https://github.com/rlaphoenix/pynfogen/commit/15c66d8d6767abb04fc26a354aec3bac09f1b542>
@@ -141,29 +141,29 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- (generate) Ensure `-s` is optional by checking `-s` has a value before using it for the int cast check.
+- (nfo generate) Ensure `-s` is optional by checking `-s` has a value before using it for the int cast check.
 
 ## [0.3.2] - 2021-05-11
 
 ### Fixed
 
-- (generate) Ensure file path is absolute so `release_name` can be correctly retrieved in some scenarios.
+- (nfo generate) Ensure file path is absolute so `release_name` can be correctly retrieved in some scenarios.
 
 ## [0.3.1] - 2021-05-07
 
 ### Fixed
 
-- (config) Fix crash when no valid commands and/or options are used. Return help information in those cases.
-- (generate) Fix/Update the doc-string information for `nfo generate`.
-- (generate) Use `-N/--note` not `-N/--notes` as to match the already defined `note` variable used by NFO object.
+- (nfo config) Fix crash when no valid commands and/or options are used. Return help information in those cases.
+- (nfo generate) Fix/Update the doc-string information for `nfo generate`.
+- (nfo generate) Use `-N/--note` not `-N/--notes` as to match the already defined `note` variable used by NFO object.
 
 ## [0.3.0] - 2021-05-06
 
 ### Added
 
 - (changelog) This HISTORY.md document.
-- (template) `--bbcode` switch for specifying creation/editing of a BBCode Description template.
-- (template) `template explore` command to open template directory in file explorer.
+- (nfo template) `--bbcode` switch for specifying creation/editing of a BBCode Description template.
+- (nfo template) `template explore` command to open template directory in file explorer.
 - (init) `__version__` string is now available for external use by other scripts and `version` command.
 
 ### Changed
@@ -189,7 +189,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - (packaging) Replaced setuptools with Poetry (<https://python-poetry.org>).
 - (packaging) Project has been reworked as a python module.
-- (generate) Artwork is now optional.
+- (nfo generate) Artwork is now optional.
 
 ## [0.1.0] - 2021-05-05
 
