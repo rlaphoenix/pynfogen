@@ -23,7 +23,10 @@ def cli() -> None:
     https://github.com/rlaphoenix/pynfogen
     """
     codecs.register_error("unidecode", lambda e: (
-        unidecode(e.object.decode("utf8"))[e.start:e.end], e.end  # type: ignore
+        unidecode(
+            e.object.decode("utf8") if isinstance(e.object, bytes) else e.object
+        )[e.start:e.end],
+        e.end
     ))
 
 
