@@ -38,6 +38,7 @@ appdirs = "^1.4.4"
 click = "^8.0.0"
 dunamai = "^1.5.5"
 pytomlpp = "^1.0.3"
+Unidecode = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
