@@ -16,6 +16,7 @@ from pynfogen.nfo import NFO
 @click.option("-S", "--source", type=str, default=None, help="Source information.")
 @click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
 @click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
+@click.option("-e", "--encoding", type=str, default="utf8", help="Text-encoding for output, input is always UTF-8.")
 def generate(**__: Any) -> None:
     """Generate an NFO and Description for a release."""
 
@@ -73,7 +74,7 @@ def movie() -> dict:
 @click.pass_context
 def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str], imdb: Optional[str],
               tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
-              preview: Optional[str], *_: Any, **__: Any) -> None:
+              preview: Optional[str], encoding: str, *_: Any, **__: Any) -> None:
     if not isinstance(ctx, click.Context) or not ctx.invoked_subcommand:
         raise ValueError("Generator called directly, or not used as part of the generate command group.")
     if not file.is_file():
@@ -121,7 +122,7 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
 
     nfo_txt = nfo.run(template_text, art=artwork_text, **template_vars)
     nfo_out = Path(nfo.file).parent / f"{nfo.release_name}.nfo"
-    nfo_out.write_text(nfo_txt, encoding="utf8")
+    nfo_out.write_text(nfo_txt, encoding=encoding)
     print(f"Generated NFO for {nfo.release_name}")
     print(f" + Saved to: {nfo_out}")
 
@@ -130,6 +131,6 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
         description_text = description_path.read_text()
         description_txt = nfo.run(description_text, art=None, **template_vars)
         description_out = Path(nfo.file).parent / f"{nfo.release_name}.desc.txt"
-        description_out.write_text(description_txt, encoding="utf8")
+        description_out.write_text(description_txt, encoding=encoding)
         print(f"Generated Description for {nfo.release_name}")
         print(f" + Saved to: {description_out}")
