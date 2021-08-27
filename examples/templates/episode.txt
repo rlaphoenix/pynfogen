@@ -36,8 +36,3 @@ Subtitle Tracks ({subtitles:len}):
 
 Chapters:
 {chapter_entries:>>0x68}?>
-
-[HR][/HR]
-
-I sincerely hope you enjoy this release!
-Greetz: -RPG -MKVULTRA -FraMeSToR -BHDStudio

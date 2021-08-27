@@ -33,8 +33,3 @@ Audio Tracks ({audio:len}):
 
 Subtitle Tracks ({subtitles:len}):
 {subtitles_pretty:>>0x68}
-
-[HR][/HR]
-
-I sincerely hope you enjoy this release!
-Greetz: -RPG -MKVULTRA -FraMeSToR -BHDStudio
