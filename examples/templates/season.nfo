@@ -1,4 +1,4 @@
-{release_name:^>70x68}
+  {release_name:>>2x68}
 
   Title    : {title_name}
   Type     : TV ({title_year})
