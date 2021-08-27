@@ -113,12 +113,12 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
         artwork_path = Path(str(Files.artwork).format(name=artwork))
         if not artwork_path.exists():
             raise click.ClickException(f"No artwork named {artwork} exists.")
-        artwork_text = artwork_path.read_text()
+        artwork_text = artwork_path.read_text(encoding="utf8")
 
     template_path = Path(str(Files.template).format(name=template))
     if not template_path.exists():
         raise click.ClickException(f"No template named {template} exists.")
-    template_text = template_path.read_text()
+    template_text = template_path.read_text(encoding="utf8")
 
     nfo_txt = nfo.run(template_text, art=artwork_text, **template_vars)
     nfo_out = Path(nfo.file).parent / f"{nfo.release_name}.nfo"
@@ -128,7 +128,7 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
 
     description_path = Path(str(Files.description).format(name=template))
     if description_path.exists():
-        description_text = description_path.read_text()
+        description_text = description_path.read_text(encoding="utf8")
         description_txt = nfo.run(description_text, art=None, **template_vars)
         description_out = Path(nfo.file).parent / f"{nfo.release_name}.desc.txt"
         description_out.write_text(description_txt, encoding=encoding, errors="unidecode")
