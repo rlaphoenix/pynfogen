@@ -5,6 +5,18 @@ from typing import Any, List, Union
 
 
 class CustomFormats(Formatter):
+    def __init__(self) -> None:
+        super().__init__()
+        self.custom_specs = [
+            # function, regex matcher, group casts (optional), return cast (optional)
+            (self.boolean, r"^(?P<spec>!?(?:true|false))$", None, str),
+            (self.length, "^len$", None, str),
+            (self.bbimg, "^bbimg$", None, None),
+            (self.layout, r"^layout,(?P<width>\d+)x(?P<height>\d+)x(?P<spacing>\d+)$", (int, int, int), None),
+            (self.wrap, r"^>>(?P<indent>\d+)x(?P<width>\d+)$", (int, int), None),
+            (self.center, r"^\^>(?P<center_width>\d+)x(?P<wrap_width>\d+)$", (int, int), None)
+        ]
+
     def chain(self, value: Any, format_spec: str) -> Any:
         """Support chaining format specs separated by `:`."""
         for spec in format_spec.split(":"):
@@ -102,18 +114,17 @@ class CustomFormats(Formatter):
         """Apply both standard formatters along with custom formatters to value."""
         if ":" in format_spec:
             return self.chain(value, format_spec)
-        if format_spec in ("true", "!false", "false", "!true"):
-            return str(self.boolean(value, format_spec))
-        if format_spec == "len":
-            return str(self.length(value))
-        if format_spec == "bbimg":
-            return self.bbimg(value)
-        if re.match(r"^layout,\d+x\d+x\d+$", format_spec):
-            return self.layout(value, *map(int, format_spec[7:].split("x")))
-        if re.match(r"^>>\d+x\d+$", format_spec):
-            return self.wrap(value, *map(int, format_spec[2:].split("x")))
-        if re.match(r"^\^>\d+x\d+$", format_spec):
-            return self.center(value, *map(int, format_spec[2:].split("x")))
+        for func, match_str, group_casts, return_cast in self.custom_specs:
+            match = re.match(match_str, format_spec)
+            if not match:
+                continue
+            groups = match.groupdict()  # type: dict[str, Any]
+            if group_casts:
+                groups = {k: group_casts[i](v) for i, (k, v) in enumerate(groups.items())}
+            new_value = func(value, **groups)
+            if return_cast:
+                new_value = return_cast(new_value)
+            return new_value
         return super().format_field(value, format_spec)
 
     def list_to_indented_strings(self, value: list, indent: int = 0) -> str:
