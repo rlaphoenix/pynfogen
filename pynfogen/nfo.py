@@ -2,6 +2,7 @@ import glob
 import html
 import os
 import re
+import sys
 import textwrap
 from pathlib import Path
 from typing import List, Union, Tuple, Optional, Any, Dict
@@ -105,6 +106,20 @@ class NFO:
         self.videos = self.media_info.video_tracks
         self.audio = self.media_info.audio_tracks
         self.subtitles = self.media_info.text_tracks
+
+        tracks_without_language = [
+            x for x in self.videos + self.audio + self.subtitles
+            if not x.language or x.language == "und"
+        ]
+        if tracks_without_language:
+            print("The following tracks have no language tag! All tracks need a language tag!")
+            for track in tracks_without_language:
+                print(f"{track.track_type} Track #{track.track_id} ({track.format}, {track.bit_rate / 1000} kb/s)")
+            print(
+                "Yes, even Video Track's have language e.g., Credits, Signs, Letters, Different Intro Sequence, etc.\n"
+                "Don't forget to verify and add language tags to the rest of the files too!"
+            )
+            sys.exit(1)
 
         chapters = next(iter(self.media_info.menu_tracks), None)
         if chapters:
