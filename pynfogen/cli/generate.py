@@ -122,7 +122,7 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
 
     nfo_txt = nfo.run(template_text, art=artwork_text, **template_vars)
     nfo_out = Path(nfo.file).parent / f"{nfo.release_name}.nfo"
-    nfo_out.write_text(nfo_txt, encoding=encoding)
+    nfo_out.write_text(nfo_txt, encoding=encoding, errors="unidecode")
     print(f"Generated NFO for {nfo.release_name}")
     print(f" + Saved to: {nfo_out}")
 
@@ -131,6 +131,6 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
         description_text = description_path.read_text()
         description_txt = nfo.run(description_text, art=None, **template_vars)
         description_out = Path(nfo.file).parent / f"{nfo.release_name}.desc.txt"
-        description_out.write_text(description_txt, encoding=encoding)
+        description_out.write_text(description_txt, encoding=encoding, errors="unidecode")
         print(f"Generated Description for {nfo.release_name}")
         print(f" + Saved to: {description_out}")

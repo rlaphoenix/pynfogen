@@ -1,5 +1,8 @@
+import codecs
+
 import click
 from dunamai import Version, Style
+from unidecode import unidecode
 
 from pynfogen import __version__
 from pynfogen.cli.artwork import artwork
@@ -19,6 +22,9 @@ def cli() -> None:
     Scriptable MediaInfo-fed NFO Generator for Movies and TV.
     https://github.com/rlaphoenix/pynfogen
     """
+    codecs.register_error("unidecode", lambda e: (
+        unidecode(e.object.decode("utf8"))[e.start:e.end], e.end  # type: ignore
+    ))
 
 
 @cli.command()
