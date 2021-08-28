@@ -71,21 +71,10 @@ You may also want to take a look at the [Configuration](#configuration) options.
 Once you have everything set up as much as you want, simply take a look at the available commands with `nfo --help`.
 The main command you want to take a look at would be `nfo generate -h`.
 
-### What file do I pass to `nfo generate`?
+### What file should I pass to `nfo generate`?
 
-It's simple actually. Pass whichever file you wish best describes the release, as in whichever gives the most
-appropriate metadata and such that will be used within the NFO.
-
-Let's say you're doing an NFO for a full season release, but the first episode has a problem and isn't representative
-of most of the season, then use the second episode.
-
-It's important to specify the appropriate `-s/--season`, `-e/--episode` parameters (or not!) as they clue in pynfogen
-what kind of media this release is (wheter it's a Movie, a Season, or a Episode). More information on this can be seen
-in `nfo generate -h`.
-
-Finally, if pynfogen get's clued in that it's a season release, then it takes the release name from the folder name
-of the parent folder of the file you passed. It's also important not to include any other file except the files you
-will be releasing within said folder. Otherwise it may cause mistakes with the season episode count.
+It's best-practice to provide the first-most file that best represents the majority of the release. E.g., If Episode 1
+and 2 has a fault not found on Episodes 3 onwards, then provide Episode 3.
 
 ## Templates
 
