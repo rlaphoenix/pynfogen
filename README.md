@@ -144,6 +144,8 @@ then you should probably put it into an [Artwork](#artwork) instead.
 Artworks are for surrounding an NFO templates generated output with artwork or common text. Artwork templates aren't
 currently applied to Description templates.
 
+You can add, delete, edit, and list artwork with `nfo artwork -h`.
+
 **Important:**
 The provided example Artwork files are for viewing and studying only, for more information see their
 [LICENSE](/examples/art/LICENSE).
