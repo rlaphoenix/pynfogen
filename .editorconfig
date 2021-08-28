@@ -15,5 +15,8 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[examples/**]
+[/*.md]
+trim_trailing_whitespace = false
+
+[/examples/**]
 insert_final_newline = false
