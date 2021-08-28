@@ -34,10 +34,19 @@ Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 Using pynfogen is fairly simple, it's a multi-command CLI program. You can see up-to-date help information by
 running `nfo --help`, or reading the readme file.
 
-The main command is `generate`, which will create NFO and description files based on *one* file. The description file
-is intended to be used for a forum or post, while the NFO file is intended to be shared alongside the release.
-However, modern day media sharing platforms do not allow either to be shared with the files, but allow them to be with
-the forum thread or post instead.
+On initial installation, you won't have any [Artwork](#artwork) or [Templates](#templates), which are needed. You can
+take a look at some examples at [/examples/art](/examples/art) and [/examples/templates](/examples/templates) in the
+git. You may also want to take a look at [Configuration](#configuration).
+
+Once you have everything set up as much as you want, simply take a look at the available commands with `nfo --help`.
+The main command you want to take a look at would be `nfo generate -h`, which will create NFO and Description files
+based on *one* provided video file.
+
+What is an NFO and Description file, you may ask? tl-dr; Think of an NFO as a Receipt with information about your
+release to be shared alongside it, and a Description file as the body for your post, thread, topic, message, or
+such. You could also think of a Description file as an alternative output you could use.
+
+More information can be found in the sections below.
 
 ### What is an NFO?
 
@@ -60,17 +69,6 @@ While there isn't any hard-rules, If you plan to create a modern-style NFO then 
 
 Note that, elaborate ANSI art is no longer really used or wanted. Modern NFO files tend to be verbose with minimal
 ANSI art, rather than concise with elaborate ANSI art.
-
-### What should I do after installation?
-
-On initial installation, you won't have any artwork or templates. You can take a look at some example artwork and
-template files within the git project. See [Templates](#templates) for more information.
-
-You may also want to take a look at the [Configuration](#configuration) options.
-
-Once you have everything set up as much as you want, simply take a look at the available commands with `nfo --help`.
-The main command you want to take a look at would be `nfo generate -h`.
-
 ### What file should I pass to `nfo generate`?
 
 It's best-practice to provide the first-most file that best represents the majority of the release. E.g., If Episode 1
