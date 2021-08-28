@@ -53,7 +53,7 @@ More information can be found in the sections below.
 An NFO (aka .nfo, .NFO, a contraction of "Info" or "Information") is a commonly used filename extension for text files
 that accompany various releases with information about them.
 
-They are used to deliver release information about the media, such as the title, release date, authorship, etc. They
+They are for delivering release information about the media, such as the title, release date, authorship, etc. They
 also commonly contain elaborate [ANSI art](https://en.wikipedia.org/wiki/ANSI_art).
 
 An NFO is generally archaic, do not think otherwise. Originally, NFO files would be shared through IRC, Usenet,
@@ -69,6 +69,13 @@ While there isn't any hard-rules, If you plan to create a modern-style NFO then 
 
 Note that, elaborate ANSI art is no longer really used or wanted. Modern NFO files tend to be verbose with minimal
 ANSI art, rather than concise with elaborate ANSI art.
+
+### What is a Description file?
+
+It's like an NFO, without any rules whatsoever. You can use a description template as an alternative output to the NFO
+output. This alternative output can be used for any purpose you like, but most commonly used for forum posts, IRC
+messages, and such.
+
 ### What file should I pass to `nfo generate`?
 
 It's best-practice to provide the first-most file that best represents the majority of the release. E.g., If Episode 1
