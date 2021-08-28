@@ -76,6 +76,40 @@ The main command you want to take a look at would be `nfo generate -h`.
 It's best-practice to provide the first-most file that best represents the majority of the release. E.g., If Episode 1
 and 2 has a fault not found on Episodes 3 onwards, then provide Episode 3.
 
+### How is it detecting or getting ...?
+
+#### Database IDs (IMDB, TMDB, TVDB)
+
+CLI options (-imdb, -tmdb, -tvdb), or the Config, or the provided file's global tags (in that order).
+
+#### Title Name and Year
+
+The IMDB page's `<title>` tag for the provided IMDB ID.
+
+#### Release Name
+
+Season releases get it from the parent folder name of the provided file.
+Movie and Episode releases get it from the filename.
+
+#### Preview Images
+
+It scrapes the provided Preview URL (-P) for thumbnail and full image URLs.
+The Preview URL must be for a Gallery or Album.
+Supported hosts:
+
+- <https://imgbox.com>
+- <https://beyondhd.co>
+
+#### Banner Image
+
+The Fanart.tv API if a TVDB ID has been provided, and a Fanart.tv API key has been set.
+It only returns banners that match the language of the primary Audio tracks language.
+
+#### Season Episode Count
+
+It counts the amount of neighbouring files of the same file-extension as the provided file. Make sure all files
+matching this check is going to be part of the release as an episode file, or the episode count will be inaccurate.
+
 ## Templates
 
 There are three kinds of templates to use. NFO Template, Description Template, and Artwork Templates.
