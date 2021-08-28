@@ -5,7 +5,7 @@ import re
 import sys
 import textwrap
 from pathlib import Path
-from typing import List, Union, Tuple, Optional, Any, Dict
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pycountry
 import requests
@@ -19,8 +19,6 @@ class NFO:
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
-    SEASON_T = Optional[Union[int, str]]
-    EPISODE_T = Union[Tuple[Optional[int], Optional[str]]]
     IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")

@@ -1,9 +1,9 @@
 from pathlib import Path
-from typing import Optional, Any
+from typing import Any, Optional, Union
 
 import click
 
-from pynfogen.config import config, Files
+from pynfogen.config import Files, config
 from pynfogen.nfo import NFO
 
 
@@ -23,7 +23,7 @@ def generate(**__: Any) -> None:
 
 @generate.command(name="season")
 @click.argument("season", type=str)
-def season_(season: NFO.SEASON_T) -> dict:
+def season_(season: Union[int, str]) -> dict:
     """
     Generate an NFO and Description for a season release.
 
@@ -44,7 +44,7 @@ def season_(season: NFO.SEASON_T) -> dict:
 @click.argument("episode", type=int)
 @click.argument("title", type=str, default=None)
 @click.argument("season", type=str, default=None)
-def episode_(episode: int, title: str, season: NFO.SEASON_T) -> dict:
+def episode_(episode: int, title: str, season: Union[int, str]) -> dict:
     """
     Generate an NFO and Description for a single-episode release.
 
