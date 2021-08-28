@@ -81,11 +81,23 @@ messages, and such.
 It's best-practice to provide the first-most file that best represents the majority of the release. E.g., If Episode 1
 and 2 has a fault not found on Episodes 3 onwards, then provide Episode 3.
 
+### What Text-encoding is supported?
+
+The input file templates and artwork must be UTF-8. The output generated files' text-encoding can be chosen by you,
+but defaults to UTF-8.
+
+To choose a text-encoding for the output, see `-e/--encoding` of `nfo generate`. This can also be set in the config
+with `nfo config generate.encoding cp437` (sets to CP437).
+
+NFOs with elaborate ANSI art may need to use CP437 text-encoding, where-as any other NFO can get away with just about
+any encoding. The default UTF-8 will work fine for most scenarios. However, some applications or websites may require
+your NFO to be a specific text-encoding, which is usually either CP437 or UTF-8.
+
 ### How is it detecting or getting ...?
 
 #### Database IDs (IMDB, TMDB, TVDB)
 
-CLI options (-imdb, -tmdb, -tvdb), or the Config, or the provided file's global tags (in that order).
+CLI options (`-imdb`, `-tmdb`, `-tvdb`), the Config, or the provided file's global tags (in that order).
 
 #### Title Name and Year
 
@@ -98,7 +110,7 @@ Movie and Episode releases get it from the filename.
 
 #### Preview Images
 
-It scrapes the provided Preview URL (-P) for thumbnail and full image URLs.
+It scrapes the provided Preview URL (`-P`) for thumbnail and full image URLs.
 The Preview URL must be for a Gallery or Album.
 Supported hosts:
 
@@ -164,12 +176,6 @@ file, or via `nfo config` (see `nfo config -h`). All available config options ar
 | -------------- | ------ | ------------------------------------------------------------------------------ |
 | art            | string | The default artwork template to use, unless overridden by the `-a/--art` flag. |
 | fanart_api_key | string | A Fanart.tv API Key to use for the fanart banner image (if available).         |
-
-## Text-encoding
-
-Traditional NFOs expect to use the codepage 437 (cp437) "ascii" text-encoding.
-pynfogen generally doesn't care what you use, but may not respect you're choice correctly in the NFO output.
-It has not been set up for specific text-encoding choice and generally speaking UTF-8 is expected.
 
 ## Scripting
 
