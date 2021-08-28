@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2021-08-28
+
+### Added
+
+- (nfo generate) It now prints the location of the generated NFO and Description files.
+- (nfo generate) Added new option -e/--encoding to control the output text-encoding. It defaults to UTF-8. It's
+  recommended to use `cp437` for ANSI art, or `utf8` for generally anything else. Ensure the software, page, forum,
+  and so on actually supports the output text-encoding you choose. Any characters that do not map to the wanted
+  text-encoding will use unidecode to map to a best-match character. Any characters unidecode also cannot map to
+  a suitable character, will simply be ignored (i.e., deleted).
+- (nfo) It now ensures that all tracks have language information associated with them on the provided file path.
+  If not, it will tell you which tracks did not have any language information and ask you to add it. Language
+  checks happen for various reasons across the codebase on multiple track types, so it's important to have them.
+  Yes, even Video tracks should have language information!
+
+### Changed
+
+- (nfo generate) The template argument has been replaced with sub-commands named `season`, `episode`, and `movie`.
+  These sub-commands directly use templates named respectively, and directly relate to the type of content for the
+  generate command to expect. This makes it possible to move -s and -e to only the ones it needs to be used in.
+- (nfo) No longer prints its own NFO object instance representation at the end of set_config calls.
+- (cli) Replaced `os.path` calls with `Path` across the nfo CLI codebase.
+- (formatter) The multiple if checks in format_field has been replaced with a list of tuples for easier glances at
+  what custom specs are available, and how they are to be used.
+- (examples) The release_name variable on the NFO templates have been changed from centered-wrap, to left-wrap with
+  a 2-space indent. Centered wrapping never looked good due to typical release names not containing spaces or any
+  characters that could be cleanly wrapped at.
+- (examples) The `- - - ...` dashed line and `\n Video : ` (and so on) lines have been replaced with a hard line
+  separator with two windows, one for the section name, and the other for the section number/count. This reduces the
+  height footprint and helps distinguish between sections.
+
+### Removed
+
+- The term BBCode in relation to Description Templates has been removed. Description templates can use any kind of
+  format, or no particular format at all.
+- (examples) The `Greetz` text at the end of the example Description templates.
+
+### Fixed
+
+- (nfo generate) Artwork and template files are now explicitly UTF-8. This was a problem on systems that did not use
+  UTF-8 by default (e.g., Windows using cp1257 instead).
+- (nfo) Only try to get a banner image if a fanart API key is available.
+
+### Security
+
+- (nfo generate) You can no longer get values from the users' config using the config key as a variable name. This
+  allowed malicious template files to leak possibly sensitive information.
+
 ## [0.5.1] - 2021-08-26
 
 ### Added
@@ -225,7 +273,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release.
 
-[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v1.0.0
 [0.5.1]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.1
 [0.5.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.0
 [0.4.4]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.4.4
