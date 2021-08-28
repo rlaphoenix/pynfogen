@@ -28,8 +28,8 @@ def season_(season: Union[int, str]) -> dict:
     Generate an NFO and Description for a season release.
 
     \b
-    It's best practice to provide the first-most file that best represents the majority of the season.
-    E.g., If Episode 1 and 2 has a fault not found on Episodes 3-9, then provide Episode 3.
+    It's best-practice to provide the first-most file that best represents the majority of the release.
+    E.g., If Episode 1 and 2 has a fault not found on Episodes 3 onwards, then provide Episode 3.
 
     The season argument can be a Season Name or a Season Number, it's up to you. You may even provide
     a season name that also contains the Season Number e.g. "1: The Beginning" if you prefer. Just
