@@ -63,10 +63,8 @@ ANSI art, rather than concise with elaborate ANSI art.
 
 ### What should I do after installation?
 
-On initial installation, you won't have any [artwork](#templates) or [templates](#templates). You can take a
-look at some example artwork and template files within the git project.
-However, please see the [Copyright](#copyright-agreement-for-included-artwork-and-template-files) relating to the
-included artwork and template files before you start using them.
+On initial installation, you won't have any artwork or templates. You can take a look at some example artwork and
+template files within the git project. See [Templates](#templates) for more information.
 
 You may also want to take a look at the [Configuration](#configuration) options.
 
@@ -99,6 +97,9 @@ There are three kinds of templates to use. NFO Template, Description Template, a
 | Description Template | Similar to NFO templates, but are used for the description output.                 | .desc.txt      |
 | Artwork Template     | Used for surrounding the template output with art, common text, etc.               | .nfo           |
 
+**Important:**
+Artwork files are for viewing and studying only, for more information see the [Artwork LICENSE](/examples/art/LICENSE).
+
 To give you an example scenerio. I would create an Artwork template named 'phoenix' with concise ASCII artwork placed
 above the NFO, and an NFO template for 'season', 'episode', and 'movie' releases. I would also make a corresponding
 Description template for each of those NFO templates. I now have the ability to create NFO files for a Full Season
@@ -126,14 +127,6 @@ file, or via `nfo config` (see `nfo config -h`). All available config options ar
 | -------------- | ------ | ------------------------------------------------------------------------------ |
 | art            | string | The default artwork template to use, unless overridden by the `-a/--art` flag. |
 | fanart_api_key | string | A Fanart.tv API Key to use for the fanart banner image (if available).         |
-
-## Copyright Agreement for included Artwork and Template files
-
-There's already example template files and artwork files for you to look at.
-However, the Artwork files are copyright to whomever committed them where-as the templates are not copyright.
-The copyrighted files may not be used, even under the conditions of the License, except for viewing as examples.
-No derivative work is permitted based on their general concept.
-Simply remember that artwork files are themselves pieces of Art, and should be treated as such.
 
 ## Text-encoding
 
