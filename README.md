@@ -169,13 +169,15 @@ The provided example Artwork files are for viewing and studying only, for more i
 
 ## Configuration
 
-All configuration is optional, and currently quite minimal. Configuration can be done manually to the configuration
-file, or via `nfo config` (see `nfo config -h`). All available config options are listed below (with descriptions).
+All configuration values is entirely optional, but may require to be set to enable some features.
 
-| Key            | Type   | Description                                                                    |
-| -------------- | ------ | ------------------------------------------------------------------------------ |
-| art            | string | The default artwork template to use, unless overridden by the `-a/--art` flag. |
-| fanart_api_key | string | A Fanart.tv API Key to use for the fanart banner image (if available).         |
+Configuration values can be set with `nfo config`, e.g., `nfo config generate.artwork phoenix`.
+See `nfo config -h` for more information.
+
+| Config Key     | Description                                                                   |
+| -------------- | ----------------------------------------------------------------------------- |
+| fanart_api_key | A Fanart.tv API Key to use for the fanart banner image (if available)         |
+| generate.*     | Allows you to set a default for any of the arguments in use by `nfo generate` |
 
 ## Scripting
 
