@@ -146,6 +146,15 @@ Not the NFO to share alongside you're release directly.
 Where-as, NFO templates are intended to be shared alongside the release. However, not all platforms allow you to
 share the .NFO directly with the file, but may ask you to share it separately, e.g. a specific input field.
 
+## Artwork
+
+Artworks are for surrounding an NFO templates generated output with artwork or common text. Artwork templates aren't
+currently applied to Description templates.
+
+**Important:**
+The provided example Artwork files are for viewing and studying only, for more information see their
+[LICENSE](/examples/art/LICENSE).
+
 ## Configuration
 
 All configuration is optional, and currently quite minimal. Configuration can be done manually to the configuration
