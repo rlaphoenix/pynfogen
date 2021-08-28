@@ -129,34 +129,15 @@ matching this check is going to be part of the release as an episode file, or th
 
 ## Templates
 
-There are three kinds of templates to use. NFO Template, Description Template, and Artwork Templates.
-
-| Template             | Description                                                                        | File Extension |
+| Type                 | Description                                                                        | File Extension |
 | -------------------- | ---------------------------------------------------------------------------------- | -------------- |
 | NFO Template         | Primary Scriptable, structural data, like the Title, Year, Media Information, etc. | .nfo           |
-| Description Template | Similar to NFO templates, but are used for the description output.                 | .desc.txt      |
-| Artwork Template     | Used for surrounding the template output with art, common text, etc.               | .nfo           |
+| Description Template | Similar to NFO templates, but for the content of a forum post, IRC message, etc.   | .desc.txt      |
 
-**Important:**
-Artwork files are for viewing and studying only, for more information see the [Artwork LICENSE](/examples/art/LICENSE).
+You can add, delete, edit, and list templates with `nfo template -h`.
 
-To give you an example scenerio. I would create an Artwork template named 'phoenix' with concise ASCII artwork placed
-above the NFO, and an NFO template for 'season', 'episode', and 'movie' releases. I would also make a corresponding
-Description template for each of those NFO templates. I now have the ability to create NFO files for a Full Season
-release, a Single Episode release, or a Single Movie release. E.g. `nfo generate movie Movie.2021.mkv -a phoenix`.
-
-If you notice you are copy pasting something between templates that is not structural or media information, then
-you should probably put it into the Artwork Template instead. Or, if you notice you are changing something in a
-template often, for a different kind of release, perhaps think of making a seperate template for those kinds of
-releases.
-
-Artwork templates are not applied to the Description output, they are only used for the NFO output.
-
-Description templates are intended to be the contents or body of your forum post, IRC message, Email, etc.
-Not the NFO to share alongside you're release directly.
-
-Where-as, NFO templates are intended to be shared alongside the release. However, not all platforms allow you to
-share the .NFO directly with the file, but may ask you to share it separately, e.g. a specific input field.
+Tip: If you notice you are copying and pasting something between templates that is not structural or media information,
+then you should probably put it into an [Artwork](#artwork) instead.
 
 ## Artwork
 
