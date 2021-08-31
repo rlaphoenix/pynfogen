@@ -176,11 +176,11 @@ For example the following will check if the `{note}` variable (python new-style 
 and only if so, print it:
 
     # note = "Hello World!"
-    <?{note:true}Has note: {note}?>
+    <?{note:true}?Has note: {note}?>
     # returns: `Has note: Hello World!`
 
     # note = ""  # or None, 0, False, 1==2, e.t.c
-    <?{note:true}Has note: {note}?>
+    <?{note:true}?Has note: {note}?>
     # returns: ``
 
 It's obvious this is in no way good syntax for `if` statements (no `else` or `elif` support either), but it works.
