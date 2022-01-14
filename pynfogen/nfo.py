@@ -7,7 +7,6 @@ import textwrap
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import pycountry
 import requests
 from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
@@ -312,7 +311,7 @@ class NFO:
                     if os.path.exists(fp):
                         os.unlink(fp)
             line_1 = "- {language}, {codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}".format(
-                language=pycountry.languages.get(alpha_2=video.language).name,
+                language=Language.get(video.language).display_name(),
                 codec=codec,
                 profile=video.format_profile,
                 width=video.width, height=video.height,
@@ -338,7 +337,7 @@ class NFO:
             if t.title and "Commentary" in t.title:
                 title = t.title
             else:
-                title = pycountry.languages.get(alpha_2=t.language).name
+                title = Language.get(t.language).display_name()
             if t.channel_layout:
                 channels = float(sum(self.AUDIO_CHANNEL_LAYOUT_WEIGHT.get(x, 1) for x in t.channel_layout.split(" ")))
             else:
@@ -378,7 +377,7 @@ class NFO:
             # | es / Spanish | Spanish (Latin American, SDH) | - Spanish (Latin American, SDH), SubRip (SRT) |
             # | es / Spanish | Latin American (SDH)          | - Spanish, Latin American (SDH), SubRip (SRT) |
             # | es / Spanish | None                          | - Spanish, SubRip (SRT)                       |
-            language = pycountry.languages.get(alpha_2=sub.language).name
+            language = Language.get(sub.language).display_name()
             if sub.title:
                 if language.lower() in sub.title.lower():
                     line_items.append(sub.title)
