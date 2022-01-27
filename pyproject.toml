@@ -23,7 +23,6 @@ classifiers = [
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Video",
 ]
-include = ["LICENSE", "README.md"]
 
 [tool.poetry.dependencies]
 python = ">=3.6.1,<4.0"
