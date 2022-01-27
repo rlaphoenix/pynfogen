@@ -66,9 +66,34 @@ class NFO:
             self.chapters = {}
             self.chapters_numbered = False
 
-        self.imdb = self.get_imdb_id(config.get("imdb"))
-        self.tmdb = self.get_tmdb_id(config.get("tmdb"))
-        self.tvdb = self.get_tvdb_id(config.get("tvdb"))
+        self.imdb = config.get("imdb")
+        if not self.imdb:
+            self.imdb = self.media_info.general_tracks[0].to_data().get("imdb")
+        if not self.imdb:
+            raise ValueError("An IMDB ID is required, but none were provided.")
+        if not self.IMDB_ID_T.match(self.imdb):
+            raise ValueError(
+                f"The provided IMDB ID `{self.imdb!r}` is not valid. "
+                f"Expected e.g., 'tt0487831', 'tt10810424', (i.e., include the 'tt')."
+            )
+
+        self.tmdb = config.get("tmdb")
+        if not self.tmdb:
+            self.tmdb = self.media_info.general_tracks[0].to_data().get("tmdb")
+        if self.tmdb and not self.TMDB_ID_T.match(self.tmdb):
+            raise ValueError(
+                f"The provided TMDB ID {self.tmdb!r} is not valid. "
+                f"Expected e.g., 'tv/2490', 'movie/14836', (i.e., include the 'tv/' or 'movie/')."
+            )
+
+        self.tvdb = config.get("tvdb")
+        if not self.tvdb:
+            self.tvdb = self.media_info.general_tracks[0].to_data().get("tvdb")
+        if self.tvdb and not self.TVDB_ID_T.match(str(self.tvdb)):
+            raise ValueError(
+                f"The provided TVDB ID {self.tvdb!r} is not valid. "
+                f"Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us')."
+            )
 
         self.title_name, self.title_year = self.get_title_name_year()
 
@@ -120,62 +145,6 @@ class NFO:
         template = "\n".join(map(str.rstrip, template.splitlines(keepends=False)))
 
         return template
-
-    def get_imdb_id(self, imdb_id: Any) -> str:
-        """
-        Get an IMDB ID from either the media's global tags, or the config.
-        Since IMDB IDs are required for this project, it will bug the user for
-        one interactively if not found.
-        """
-        if not imdb_id:
-            general_track = self.media_info.general_tracks[0].to_data()
-            imdb_id = general_track.get("imdb")
-        if not imdb_id:
-            print("No IMDB ID was provided but is required...")
-        while not imdb_id or not isinstance(imdb_id, str):
-            user_id = input("IMDB ID (e.g., 'tt0487831'): ")
-            if not self.IMDB_ID_T.match(user_id):
-                print(f"The provided IMDB ID {user_id!r} is not valid...")
-                print("Expected e.g., 'tt0487831', 'tt10810424', (include the 'tt').")
-            else:
-                imdb_id = user_id
-        return imdb_id
-
-    def get_tmdb_id(self, tmdb_id: Any) -> Optional[str]:
-        """
-        Get a TMDB ID from either the media's global tags, or the config.
-        It will raise a ValueError if the provided ID is invalid.
-        """
-        if not tmdb_id:
-            general_track = self.media_info.general_tracks[0].to_data()
-            tmdb_id = general_track.get("tmdb")
-        if not tmdb_id:
-            print("Warning: No TMDB ID was provided...")
-            return None
-        if not self.TMDB_ID_T.match(tmdb_id) or not isinstance(tmdb_id, str):
-            print(f"The provided TMDB ID {tmdb_id!r} is not valid...")
-            print("Expected e.g., 'tv/2490', 'movie/14836', (include the 'tv/' or 'movie/').")
-            raise ValueError("Invalid TMDB ID")
-        return tmdb_id
-
-    def get_tvdb_id(self, tvdb_id: Any) -> Optional[int]:
-        """
-        Get a TVDB ID from either the media's global tags, or the config.
-        It will raise a ValueError if the provided ID is invalid.
-        """
-        if not tvdb_id:
-            general_track = self.media_info.general_tracks[0].to_data()
-            tvdb_id = general_track.get("tvdb")
-        if not tvdb_id:
-            print("Warning: No TVDB ID was provided...")
-            return None
-        if isinstance(tvdb_id, int):
-            tvdb_id = str(tvdb_id)
-        if not self.TVDB_ID_T.match(tvdb_id) or not isinstance(tvdb_id, str):
-            print(f"The provided TVDB ID {tvdb_id!r} is not valid...")
-            print("Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us').")
-            raise ValueError("Invalid TVDB ID")
-        return int(tvdb_id)
 
     def get_title_name_year(self) -> Tuple[str, str]:
         """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
