@@ -12,7 +12,6 @@ from langcodes import Language
 from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
 
-from pynfogen.constants import DYNAMIC_RANGE_MAP
 from pynfogen.formatter import CustomFormats
 
 
@@ -20,6 +19,14 @@ class NFO:
     AUDIO_CHANNEL_LAYOUT_WEIGHT = {
         "LFE": 0.1
     }
+    DYNAMIC_RANGE_MAP = {
+        "SMPTE ST 2086": "HDR10",
+        "HDR10": "HDR10",
+        "SMPTE ST 2094 App 4": "HDR10+",
+        "HDR10+": "HDR10+",
+        "Dolby Vision": "DV"
+    }
+
     IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
@@ -314,7 +321,7 @@ class NFO:
                         os.unlink(fp)
 
             if video.hdr_format:
-                range_ = " ".join([DYNAMIC_RANGE_MAP.get(x) for x in video.hdr_format.split(" / ")])
+                range_ = " ".join([self.DYNAMIC_RANGE_MAP.get(x) for x in video.hdr_format.split(" / ")])
             elif "HLG" in ((video.transfer_characteristics or ""), (video.transfer_characteristics_original or "")):
                 range_ = "HLG"
             else:
