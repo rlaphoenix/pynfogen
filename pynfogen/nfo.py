@@ -1,4 +1,3 @@
-import glob
 import html
 import os
 import re
@@ -44,7 +43,7 @@ class NFO:
 
         self.season: Union[int, str] = config.get("season")
         self.episode, self.episode_name = config.get("episode") or (None, None)
-        self.episodes: int = self.get_tv_episodes()
+        self.episodes: int = self.get_episode_count()
         self.release_name = self.get_release_name()
 
         self.videos = self.media_info.video_tracks
@@ -162,12 +161,9 @@ class NFO:
             raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
         return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
-    def get_tv_episodes(self) -> int:
-        """Calculate total episode count based on neighbouring same-extension files."""
-        return len(glob.glob(os.path.join(
-            os.path.dirname(self.file),
-            f"*{os.path.splitext(self.file)[-1]}"
-        )))
+    def get_episode_count(self) -> int:
+        """Count episodes based on neighbouring same-extension files."""
+        return sum(1 for _ in self.file.parent.glob(f"*{self.file.suffix}"))
 
     def get_release_name(self) -> str:
         """
