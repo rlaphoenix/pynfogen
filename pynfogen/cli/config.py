@@ -4,7 +4,8 @@ from typing import Optional
 import click
 import pytomlpp
 
-from pynfogen.config import config as data, Files
+from pynfogen.config import Files
+from pynfogen.config import config as data
 
 
 @click.command()

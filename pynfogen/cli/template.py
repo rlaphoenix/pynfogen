@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from pynfogen.config import Files, Directories
+from pynfogen.config import Directories, Files
 from pynfogen.helpers import open_file
 
 
