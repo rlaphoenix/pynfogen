@@ -1,5 +1,4 @@
 import html
-import os
 import re
 import sys
 import textwrap
@@ -248,7 +247,7 @@ class NFO:
             vst = False
             if codec in ["MPEG-1", "MPEG-2"]:
                 # parse d2v file with pyd2v, generates D2V if needed
-                d2v = D2V.load(Path(self.file))
+                d2v = D2V.load(self.file)
                 self.file = d2v.path
                 # get every frames' flag data, this contains information on displaying frames
                 # add vob and cell number to each frames flag data as well
@@ -262,9 +261,7 @@ class NFO:
                     scan_overview = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
                     vst = True
                 for ext in ["log", "d2v", "mpg", "mpeg"]:
-                    fp = os.path.splitext(self.file)[0] + "." + ext
-                    if os.path.exists(fp):
-                        os.unlink(fp)
+                    self.file.with_suffix(f".{ext}").unlink(missing_ok=True)
 
             if video.hdr_format:
                 range_ = " ".join([self.DYNAMIC_RANGE_MAP.get(x) for x in video.hdr_format.split(" / ")])
