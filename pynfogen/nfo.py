@@ -172,8 +172,8 @@ class NFO:
         Hence when pack, it uses the parent folder's name as the release name.
         """
         if self.season is not None and self.episode is None:
-            return os.path.basename(os.path.dirname(self.file))
-        return os.path.splitext(os.path.basename(self.file))[0]
+            return self.file.parent.name
+        return self.file.stem
 
     def get_banner_image(self, tvdb_id: int) -> Optional[str]:
         """
