@@ -1,0 +1,31 @@
+repos:
+  # isort
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+
+  # flake8
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        args: ["--ignore=W503"]
+
+  # pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-added-large-files          # Block large files from being committed
+        args: ["--maxkb=1000"]               # - >=1MB files are large
+      - id: debug-statements                 # Block debugger imports and breakpoint calls
+      - id: check-yaml                       # Verify syntax of all YAML files
+      - id: check-toml                       # Verify syntax of all TOML files
+      - id: trailing-whitespace              # Trim trailing whitespace
+        args: [--markdown-linebreak-ext=md]  # - except hard linebreaks in markdown files
+      - id: check-merge-conflict             # Check for files that contain merge conflict strings
+      - id: end-of-file-fixer                # Make sure files end in a newline and only a newline
+      - id: fix-encoding-pragma              # Remove the coding pragma: # -*- coding: utf-8 -*-
+        args: ["--remove"]
+      - id: mixed-line-ending                # Replace or check mixed line ending
+        args: ["--fix=lf"]
