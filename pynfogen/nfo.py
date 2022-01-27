@@ -11,6 +11,7 @@ import requests
 from langcodes import Language
 from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
+from tldextract import tldextract
 
 from pynfogen.formatter import CustomFormats
 
@@ -212,24 +213,27 @@ class NFO:
     def get_preview_images(self, url: str) -> List[Dict[str, str]]:
         if not url:
             return []
+
+        domain = tldextract.extract(url).registered_domain
+        supported_domains = ["imgbox.com", "beyondhd.co"]
+        if domain not in supported_domains:
+            return []
+
         images = []
-        for domain in ["imgbox.com", "beyondhd.co"]:
-            if domain not in url.lower():
-                continue
-            page = self.session.get(url).text
-            if domain == "imgbox.com":
-                for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
-                    images.append({
-                        "url": f"https://imgbox.com/{m.group(2)}",
-                        "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
-                    })
-            elif domain == "beyondhd.co":
-                for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
-                    images.append({
-                        "url": f"https://beyondhd.co/image/{m.group(1)}",
-                        "src": m.group(2)
-                    })
-            break
+        page = self.session.get(url).text
+        if domain == "imgbox.com":
+            for m in re.finditer('src="(https://thumbs2.imgbox.com.+/)(\\w+)_b.([^"]+)', page):
+                images.append({
+                    "url": f"https://imgbox.com/{m.group(2)}",
+                    "src": f"{m.group(1)}{m.group(2)}_t.{m.group(3)}"
+                })
+        if domain == "beyondhd.co":
+            for m in re.finditer('/image/([^"]+)"\\D+src="(https://.*beyondhd.co/images.+/(\\w+).md.[^"]+)', page):
+                images.append({
+                    "url": f"https://beyondhd.co/image/{m.group(1)}",
+                    "src": m.group(2)
+                })
+
         return images
 
     def get_video_print(self, videos: List[Track]) -> List[List[str]]:

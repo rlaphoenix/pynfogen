@@ -36,6 +36,7 @@ pytomlpp = "^1.0.10"
 Unidecode = "^1.2.0"
 langcodes = { extras = ["data"], version = "^3.3.0" }
 jsonpickle = "^2.1.0"
+tldextract = "^3.1.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"
