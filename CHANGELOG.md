@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2022-01-27
+
+### Added
+
+- Added export() and import(), which is the ability to backup and restore configuration, artwork,
+  and templates to and from one gzip compressed file.
+- Video Range is now shown in Video Track print line 2. Includes fallback range.
+- Added a LICENSE for the /examples/art that is separate to main license.
+- Added a `.gitattributes` file to enforce lf line-endings on all text files.
+- Added `jsonpickle` to dependencies.
+- Added `isort` test to CI workflow, added tests on 3.10.
+- Added `pre-commit` to dev dependencies and a config with tests for isort, flake8, and more.
+
+### Changed
+
+- Advanced Development Status PyPI trove classifier to 4 (Beta).
+- Replaced all uses of `pycountry` with `langcodes`.
+- Renamed GitHub Workflows from Build and Release to CI, CD.
+- Refactored CD workflow to auto-create releases when version tags are made.
+
+### Removed
+
+- Dropped support for Python versions below 3.7.
+- Dropped CI workflow tests on 3.6.
+
+### Fixed
+
+- Editorconfig will no longer trim trailing whitespace on Markdown files.
+- Updated the README for v1.0.0 changes.
+- Fixed the custom `if` formatter example which had a syntax error.
+- LICENSE and README.md is no longer explicitly included.
+
 ## [1.0.0] - 2021-08-28
 
 ### Added
@@ -273,7 +305,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release.
 
-[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/rlaphoenix/pynfogen/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v1.1.0
 [1.0.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v1.0.0
 [0.5.1]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.1
 [0.5.0]: https://github.com/rlaphoenix/pynfogen/releases/tag/v0.5.0
