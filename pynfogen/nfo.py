@@ -313,8 +313,8 @@ class NFO:
                     if os.path.exists(fp):
                         os.unlink(fp)
 
-            if video.hdr_format_commercial:
-                range_ = DYNAMIC_RANGE_MAP.get(video.hdr_format_commercial)
+            if video.hdr_format:
+                range_ = " ".join([DYNAMIC_RANGE_MAP.get(x) for x in video.hdr_format.split(" / ")])
             elif "HLG" in ((video.transfer_characteristics or ""), (video.transfer_characteristics_original or "")):
                 range_ = "HLG"
             else:
