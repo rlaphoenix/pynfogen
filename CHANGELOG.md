@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Replaced all uses of `pycountry` with `langcodes`.
 - Renamed GitHub Workflows from Build and Release to CI, CD.
 - Refactored CD workflow to auto-create releases when version tags are made.
+- Updated pytomlpp to 1.0.10 for Python 3.10 fixes.
 
 ### Removed
 
