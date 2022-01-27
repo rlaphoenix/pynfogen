@@ -34,7 +34,7 @@ click = "^8.0.0"
 dunamai = "^1.5.5"
 pytomlpp = "^1.0.10"
 Unidecode = "^1.2.0"
-langcodes = "^3.3.0"
+langcodes = { extras = ["data"], version = "^3.3.0" }
 jsonpickle = "^2.1.0"
 
 [tool.poetry.dev-dependencies]

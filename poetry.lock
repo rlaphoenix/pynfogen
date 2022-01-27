@@ -166,8 +166,33 @@ category = "main"
 optional = false
 python-versions = ">=3.6"
 
+[package.dependencies]
+language-data = {version = ">=1.1,<2.0", optional = true, markers = "extra == \"data\""}
+
 [package.extras]
 data = ["language-data (>=1.1,<2.0)"]
+
+[[package]]
+name = "language-data"
+version = "1.1"
+description = "Supplementary data about languages used by the langcodes module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+marisa-trie = ">=0.7.7,<0.8.0"
+
+[[package]]
+name = "marisa-trie"
+version = "0.7.7"
+description = "Static memory-efficient and fast Trie-like structures for Python."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.extras]
+test = ["hypothesis", "pytest", "readme-renderer"]
 
 [[package]]
 name = "mccabe"
@@ -408,7 +433,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "a940a5cf09b1fac080d50dbbc8ae85f06128c5e5f31f7f5f2c0ca02d75484806"
+content-hash = "c32f4430ed3ed36ff33983ca47fa3ca4519219411a8152e2ce429be579d39fee"
 
 [metadata.files]
 appdirs = [
@@ -474,6 +499,48 @@ jsonpickle = [
 langcodes = [
     {file = "langcodes-3.3.0-py3-none-any.whl", hash = "sha256:4d89fc9acb6e9c8fdef70bcdf376113a3db09b67285d9e1d534de6d8818e7e69"},
     {file = "langcodes-3.3.0.tar.gz", hash = "sha256:794d07d5a28781231ac335a1561b8442f8648ca07cd518310aeb45d6f0807ef6"},
+]
+language-data = [
+    {file = "language_data-1.1-py3-none-any.whl", hash = "sha256:f7ba86fafe099ef213ef597eda483d5227b12446604a61f617122d6c925847d5"},
+    {file = "language_data-1.1.tar.gz", hash = "sha256:c1f5283c46bba68befa37505857a3f672497aba0c522b37d99367e911232455b"},
+]
+marisa-trie = [
+    {file = "marisa-trie-0.7.7.tar.gz", hash = "sha256:bbeafb7d92839dc221365340e79d012cb50ee48a1f3f30dd916eb35a8b93db00"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:7732907dfc1cf954d840cd95e4f63a52c61a9f6e864a3104e0427c4845fcfe82"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:f86a718b4023904cf4a9e7ac1d967cb99b540ae05d081cf8b437129031f0845f"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:df23addeb641d3b6a80e4127a8f19074ebf1cbe9eb80206ee99e57da0f51e7f2"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:e1f51f814b81847eafc4b622188b453c9fae765ace812caf67da140a6d435f99"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:8863b9df15abd984d5faf11d129e626255468569ac2c7365519168d68f7dc7eb"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-win32.whl", hash = "sha256:5a53632478f839d2d02450ca2108350d983eb61319bb8da4c63d5f8e660ee8a0"},
+    {file = "marisa_trie-0.7.7-cp310-cp310-win_amd64.whl", hash = "sha256:65e9ae1c080587dffeec3dd2e7da88120ecb090e6cad2714a8da1a5a7e56ac4f"},
+    {file = "marisa_trie-0.7.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:62ca721b1be9aa2be1157b386be5dd55c0f78a7b92a25390a6fa663ed47ed222"},
+    {file = "marisa_trie-0.7.7-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:1c77def45f1daf6bec70af9667092e9d45457f15032a75b0921239792891faf7"},
+    {file = "marisa_trie-0.7.7-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:739178a8f98d7584d5613c59a0346273d8a95154b0bcb0eb0bd11d6514a61dff"},
+    {file = "marisa_trie-0.7.7-cp36-cp36m-win32.whl", hash = "sha256:64e76e9ed5c7b5929d9c598f343039f75ef4ae1881a8bb1b633d5fe624ae6b84"},
+    {file = "marisa_trie-0.7.7-cp36-cp36m-win_amd64.whl", hash = "sha256:8db8e511e2d3b42221de0ed95ed6288ad514df0f7f88d0813990ea871ccd0baf"},
+    {file = "marisa_trie-0.7.7-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:afa06ffe3a992de978582246550f3fe365cf3eaf0468b27e8cdf04ac2b5dbeeb"},
+    {file = "marisa_trie-0.7.7-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:55c99a3fd4025a5f428f83ba678912844014806f36684c8690deb59ca08c93af"},
+    {file = "marisa_trie-0.7.7-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:332ca107795dd67f21aafbc0141252dc33d1f8f1b4239cc7bb61b67cae33cf30"},
+    {file = "marisa_trie-0.7.7-cp37-cp37m-win32.whl", hash = "sha256:150bbc78b98135e9c43eee43ac548fe4393bd069213c5104555e5cc108df0546"},
+    {file = "marisa_trie-0.7.7-cp37-cp37m-win_amd64.whl", hash = "sha256:984ec658756a92d72e7bf664be02e6a1949a0e08658d5120e43fd26b9bd49187"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:e060334862ba425568478fdbae2ec6599a6e123ac2b4c946b50f5e3417ed2072"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:8ae6ef87610489f9b756916145550b99a1a87f672233111c20d7c9c91c3cf7b2"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:09bf4b0e2df7f07e5a59e2e07b6aa9ee781d48be7509eba11087bc2a8e1a94ad"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:8df910508422ea2b331d2ce41a2c96f26f110663efb4c318525eedccd7b103af"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:6a96100cc5cd6f50a1b02e20ece8dd05f476d1deb3062832259d87a6f4729ae4"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-win32.whl", hash = "sha256:d3d6e3174d9e9ed73ae9934b0c8e9c630a19a3182dca508825f44e3e5a1641cd"},
+    {file = "marisa_trie-0.7.7-cp38-cp38-win_amd64.whl", hash = "sha256:7c978f7959218610780770725eb5bd88451e42f97af47ee220c1ae802fb9e402"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:a0614aadb611e11c48d8d4d5710827e5b3a944ebfb4c51a999bfdde133dc4e9b"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:882ba0a90d961f93ec89b36c388dc0a6a7ffb871a6eb283a7a92485987212e22"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:9ab818dcd557a6d673bc1f12e1f2dc69e62dacfe7ad444e723410aa745882210"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:16e9147753f2a211f9674e7b866bc931566950a6695d89b0d92bab8f6f34fe2b"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:643fb52f6658ef9f77f66b736207acdd4d372272381a95b0ecdc20c98614f9ba"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-win32.whl", hash = "sha256:f2540463270999718dc434d733e172b0918541fe123460494e19bcc185dbaefe"},
+    {file = "marisa_trie-0.7.7-cp39-cp39-win_amd64.whl", hash = "sha256:a2638e9abd05b9b3cf19adfb30ac503e7fb32247b8defa97c9a5f09fa8330063"},
+    {file = "marisa_trie-0.7.7-pp37-pypy37_pp73-macosx_10_9_x86_64.whl", hash = "sha256:939c14a81c466ebbc0985d1ac2b8f167c52add5231789359e9262d6558be731c"},
+    {file = "marisa_trie-0.7.7-pp37-pypy37_pp73-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:197b41decda4865b9d6e24f3c0eccebf5804c89d7bbe35c77fee45dba3989c8a"},
+    {file = "marisa_trie-0.7.7-pp37-pypy37_pp73-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:b2e25ec564f51d67e4406cdb52cba4942ebce07cb93b959ddadafbbdcd8523b1"},
+    {file = "marisa_trie-0.7.7-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:37d121319813dbe9e9ff27f3a50ccff772d93296b27d6a8e32c08460827f477c"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
