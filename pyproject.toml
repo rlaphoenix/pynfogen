@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pynfogen"
-version = "1.1.0"
+version = "1.1.1"
 description = "Scriptable MediaInfo-fed NFO Generator for Movies and TV"
 license = "MIT"
 authors = ["PHOENiX <rlaphoenix@pm.me>"]
