@@ -82,9 +82,8 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
     if not file.exists():
         raise click.ClickException("The provided file path does not exist.")
 
-    nfo = NFO()
-    nfo.set_config(
-        str(file.resolve()),
+    nfo = NFO(
+        file,
         **dict(
             imdb=imdb,
             tmdb=tmdb,

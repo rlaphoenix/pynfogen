@@ -31,37 +31,63 @@ class NFO:
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
 
-    def __init__(self) -> None:
-        self.media_info: MediaInfo
-
-        self.file: str
-        self.season: Optional[Union[int, str]]
-        self.episode: Optional[int]
-        self.episode_name: Optional[str]
-
-        self.videos: List[Track]
-        self.audio: List[Track]
-        self.subtitles: List[Track]
-        self.chapters: Dict[str, str]
-        self.chapters_numbered: bool
-
-        self.fanart_api_key: Optional[str]
-        self.source: Optional[str]
-        self.note: Optional[str]
-        self.preview: Optional[str]
-
-        self.imdb: str
-        self.tmdb: Optional[str]
-        self.tvdb: Optional[int]
-
-        self.title_name: str
-        self.title_year: str
-        self.episodes: int
-        self.release_name: str
-        self.preview_images: List[dict[str, str]]
-        self.banner_image: Optional[str]
-
+    def __init__(self, file: Path, **config: Any) -> None:
         self.session = self.get_session()
+
+        self.file = file
+        self.media_info = MediaInfo.parse(self.file)
+
+        self.fanart_api_key: str = config.get("fanart_api_key")
+        self.source: str = config.get("source")
+        self.note: str = config.get("note")
+        self.preview: str = config.get("preview")
+
+        self.season: Union[int, str] = config.get("season")
+        self.episode, self.episode_name = config.get("episode") or (None, None)
+        self.episodes: int = self.get_tv_episodes()
+        self.release_name = self.get_release_name()
+
+        self.videos = self.media_info.video_tracks
+        self.audio = self.media_info.audio_tracks
+        self.subtitles = self.media_info.text_tracks
+
+        chapters = next(iter(self.media_info.menu_tracks), None)
+        if chapters:
+            self.chapters = {
+                ".".join([k.replace("_", ".")[:-3], k[-3:]]): v.strip(":")
+                for k, v in chapters.to_data().items()
+                if f"1{k.replace('_', '')}".isdigit()
+            }
+            self.chapters_numbered = all(
+                x.split(":", 1)[-1].lower() in [f"chapter {i + 1}", f"chapter {str(i + 1).zfill(2)}"]
+                for i, x in enumerate(self.chapters.values())
+            )
+        else:
+            self.chapters = {}
+            self.chapters_numbered = False
+
+        self.imdb = self.get_imdb_id(config.get("imdb"))
+        self.tmdb = self.get_tmdb_id(config.get("tmdb"))
+        self.tvdb = self.get_tvdb_id(config.get("tvdb"))
+
+        self.title_name, self.title_year = self.get_title_name_year()
+
+        if self.tvdb and self.fanart_api_key:
+            self.banner_image = self.get_banner_image(self.tvdb)
+        else:
+            self.banner_image = None
+
+        if self.preview:
+            self.preview_images = self.get_preview_images(self.preview)
+        else:
+            self.preview_images = []
+
+        if any(not x.language or x.language == "und" for x in self.audio + self.subtitles):
+            print(
+                "One or more Audio and/or Subtitle track has no Language specified.\n"
+                "All Audio and Subtitle tracks require a language to be set."
+            )
+            sys.exit(1)
 
     def __repr__(self) -> str:
         return "<{c} {attrs}>".format(
@@ -94,55 +120,6 @@ class NFO:
         template = "\n".join(map(str.rstrip, template.splitlines(keepends=False)))
 
         return template
-
-    def set_config(self, file: str, **config: Any) -> None:
-        self.file = file
-        self.media_info = MediaInfo.parse(self.file)
-
-        self.fanart_api_key = config.get("fanart_api_key")
-        self.source = config.get("source")
-        self.note = config.get("note")
-        self.preview = config.get("preview")
-
-        self.season = config.get("season")
-        self.episode, self.episode_name = config.get("episode") or (None, None)
-        self.episodes = self.get_tv_episodes()
-        self.release_name = self.get_release_name()
-
-        self.videos = self.media_info.video_tracks
-        self.audio = self.media_info.audio_tracks
-        self.subtitles = self.media_info.text_tracks
-
-        tracks_und_lang = any(not x.language or x.language == "und" for x in self.audio + self.subtitles)
-        if tracks_und_lang:
-            print(
-                "One or more Audio and/or Subtitle track has no Language specified.\n"
-                "All Audio and Subtitle tracks require a language to be set."
-            )
-            sys.exit(1)
-
-        chapters = next(iter(self.media_info.menu_tracks), None)
-        if chapters:
-            self.chapters = {
-                ".".join([k.replace("_", ".")[:-3], k[-3:]]): v.strip(":")
-                for k, v in chapters.to_data().items()
-                if f"1{k.replace('_', '')}".isdigit()
-            }
-            self.chapters_numbered = all(
-                x.split(":", 1)[-1].lower() in [f"chapter {i + 1}", f"chapter {str(i + 1).zfill(2)}"]
-                for i, x in enumerate(self.chapters.values())
-            )
-        else:
-            self.chapters = {}
-            self.chapters_numbered = False
-
-        self.imdb = self.get_imdb_id(config.get("imdb"))
-        self.tmdb = self.get_tmdb_id(config.get("tmdb"))
-        self.tvdb = self.get_tvdb_id(config.get("tvdb"))
-
-        self.title_name, self.title_year = self.get_title_name_year()
-        self.banner_image = self.get_banner_image(self.tvdb) if self.tvdb and self.fanart_api_key else None
-        self.preview_images = self.get_preview_images(self.preview) if self.preview else []
 
     def get_imdb_id(self, imdb_id: Any) -> str:
         """
