@@ -6,6 +6,7 @@ import textwrap
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+import langcodes
 import requests
 from langcodes import Language
 from pyd2v import D2V
@@ -196,12 +197,17 @@ class NFO:
                 return None
             raise ValueError(f"An unexpected error occurred while calling Fanart.tv, {res}")
 
-        banner = next((
-            x["url"] for x in (res.get("tvbanner") or [])
-            if x["lang"] == sorted(self.audio, key=lambda x: x.streamorder)[0].language
+        url = next((
+            x["url"]
+            for x in res.get("tvbanner") or []
+            if langcodes.closest_supported_match(
+                x["lang"],
+                sorted(self.audio, key=lambda x: x.streamorder)[0].language,
+                max_distance=5
+            )
         ), None)
 
-        return banner
+        return url
 
     def get_preview_images(self, url: str) -> List[Dict[str, str]]:
         if not url:
