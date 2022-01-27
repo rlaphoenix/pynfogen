@@ -12,6 +12,7 @@ from langcodes import Language
 from pyd2v import D2V
 from pymediainfo import MediaInfo, Track
 
+from pynfogen.constants import DYNAMIC_RANGE_MAP
 from pynfogen.formatter import CustomFormats
 
 
@@ -311,6 +312,14 @@ class NFO:
                     fp = os.path.splitext(self.file)[0] + "." + ext
                     if os.path.exists(fp):
                         os.unlink(fp)
+
+            if video.hdr_format_commercial:
+                range_ = DYNAMIC_RANGE_MAP.get(video.hdr_format_commercial)
+            elif "HLG" in ((video.transfer_characteristics or ""), (video.transfer_characteristics_original or "")):
+                range_ = "HLG"
+            else:
+                range_ = "SDR"
+
             line_1 = "- {language}, {codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}".format(
                 language=Language.get(video.language).display_name(),
                 codec=codec,
@@ -319,14 +328,16 @@ class NFO:
                 aspect=video.other_display_aspect_ratio[0],
                 bitrate=f"{video.other_bit_rate[0]}{f' ({video.bit_rate_mode})' if video.bit_rate_mode else ''}"
             )
-            line_2 = "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {scan}".format(
+            line_2 = "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {range}, {scan}".format(
                 fps=f"{video.framerate_num}/{video.framerate_den}" if video.framerate_num else video.frame_rate,
                 fps_mode="VFR" if vst else video.frame_rate_mode,
                 color_space=video.color_space,
                 subsampling=video.chroma_subsampling.replace(":", ""),
                 bit_depth=video.bit_depth,
+                range=range_,
                 scan=scan_overview
             )
+
             data.append([line_1, line_2])
         return data
 
