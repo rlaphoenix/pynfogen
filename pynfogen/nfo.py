@@ -178,7 +178,7 @@ class NFO:
     def get_banner_image(self, tvdb_id: int) -> Optional[str]:
         """
         Get a wide banner image from fanart.tv.
-        Currently restricts banners to English-only.
+        It will only return banners in the same language as the first audio track.
         """
         if not tvdb_id:
             return None
