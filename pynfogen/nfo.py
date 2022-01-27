@@ -113,17 +113,11 @@ class NFO:
         self.audio = self.media_info.audio_tracks
         self.subtitles = self.media_info.text_tracks
 
-        tracks_without_language = [
-            x for x in self.videos + self.audio + self.subtitles
-            if not x.language or x.language == "und"
-        ]
-        if tracks_without_language:
-            print("The following tracks have no language tag! All tracks need a language tag!")
-            for track in tracks_without_language:
-                print(f"{track.track_type} Track #{track.track_id} ({track.format}, {track.bit_rate / 1000} kb/s)")
+        tracks_und_lang = any(not x.language or x.language == "und" for x in self.audio + self.subtitles)
+        if tracks_und_lang:
             print(
-                "Yes, even Video Track's have language e.g., Credits, Signs, Letters, Different Intro Sequence, etc.\n"
-                "Don't forget to verify and add language tags to the rest of the files too!"
+                "One or more Audio and/or Subtitle track has no Language specified.\n"
+                "All Audio and Subtitle tracks require a language to be set."
             )
             sys.exit(1)
 
@@ -327,15 +321,23 @@ class NFO:
             else:
                 range_ = "SDR"
 
-            line_1 = "- {language}, {codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}".format(
-                language=Language.get(video.language).display_name(),
+            if video.language and video.language != "und":
+                language = Language.get(video.language).display_name()
+            else:
+                language = None
+
+            line_1 = CustomFormats().format(
+                "- <?{language:true}?{language}, ?>{codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}",
+                language=language,
                 codec=codec,
                 profile=video.format_profile,
                 width=video.width, height=video.height,
                 aspect=video.other_display_aspect_ratio[0],
                 bitrate=f"{video.other_bit_rate[0]}{f' ({video.bit_rate_mode})' if video.bit_rate_mode else ''}"
             )
-            line_2 = "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {range}, {scan}".format(
+
+            line_2 = CustomFormats().format(
+                "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {range}, {scan}",
                 fps=f"{video.framerate_num}/{video.framerate_den}" if video.framerate_num else video.frame_rate,
                 fps_mode="VFR" if vst else video.frame_rate_mode,
                 color_space=video.color_space,
