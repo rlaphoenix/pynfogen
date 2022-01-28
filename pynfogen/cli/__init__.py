@@ -105,7 +105,7 @@ def import_(file: Path):
     Directories.templates.mkdir(parents=True, exist_ok=True)
 
     Files.config.write_text(pytomlpp.dumps(json["config"]))
-    print(f"Imported Configuration")
+    print("Imported Configuration")
 
     for name, data in json["art"].items():
         path = (Directories.artwork / name).with_suffix(".nfo")
