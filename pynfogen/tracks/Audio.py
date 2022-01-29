@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Optional
 
 import pymediainfo
 
@@ -37,25 +38,22 @@ class Audio(BaseTrack):
         return float(self._x.channel_s)
 
     @property
-    def title(self) -> str:
+    def title(self) -> Optional[str]:
         """
         Get track title in it's simplest form.
-
-        If the track title is just the Audio Codec/Channels, it will be replaced with
-        the track language. Otherwise, the track title will be used as-is, with the
-        track languages appended before it.
+        Returns None if the title is just stating the Language, Audio Codec, or Channels.
         """
-        bad_title = not self._x.title or any(str(x) in self._x.title for x in (
-            self._x.format,  # Codec (e.g. E-AC-3)
-            self._x.format.replace("-", ""),  # Alphanumeric Codec (e.g. EAC3)
-            self.codec,  # Simplified Codec (e.g. DD+)
-            self.codec.replace("-", "").replace("+", "P"),  # Alphanumeric Simplified Codec (e.g. DDP)
-            "Stereo",
-            "Surround",
+        if not self._x.title or any(str(x) in self._x.title.lower() for x in (
+            self.language.lower(),  # Language Display Name (e.g. Spanish)
+            self._x.language.lower(),  # Language Code (e.g. und, or es)
+            self._x.format.lower(),  # Codec (e.g. E-AC-3)
+            self._x.format.replace("-", "").lower(),  # Alphanumeric Codec (e.g. EAC3)
+            self.codec.lower(),  # Simplified Codec (e.g. DD+)
+            self.codec.replace("-", "").replace("+", "P").lower(),  # Alphanumeric Simplified Codec (e.g. DDP)
+            "stereo",
+            "surround",
             self.channels,  # Channel Layout Float Representation
-        ))
+        )):
+            return None
 
-        if bad_title:
-            return self.language
-
-        return f"{self.language}, {self._x.title}"
+        return self._x.title

@@ -256,7 +256,8 @@ class NFO:
         data = []
         for a in audio:
             data.append(CustomFormats().vformat(
-                "- {title}, {codec} {channels} @ {bitrate}<?{bit_rate_mode:true}? ({bit_rate_mode})?>",
+                "- {language}<?{title:true}?, {title}?>, {codec} {channels} @ "
+                "{bitrate}<?{bit_rate_mode:true}? ({bit_rate_mode})?>",
                 args=[],
                 kwargs=a.all_properties
             ))
