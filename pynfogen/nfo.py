@@ -186,7 +186,7 @@ class NFO:
 
         language = next((
             lang.language
-            for lang in sorted(self.audio, key=lambda x: x.streamorder)
+            for lang in sorted(self.audio + self.subtitles, key=lambda x: x.streamorder)  # type: ignore
             if lang.language
         ), "en")  # defaults to English
 
