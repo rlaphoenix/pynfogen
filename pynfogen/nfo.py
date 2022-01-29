@@ -184,11 +184,11 @@ class NFO:
                 return None
             raise ValueError(f"An unexpected error occurred while calling Fanart.tv, {res}")
 
-        language = next([
-            lang[0].language
+        language = next((
+            lang.language
             for lang in sorted(self.audio, key=lambda x: x.streamorder)
-            if lang[0].language
-        ], "en")  # defaults to English
+            if lang.language
+        ), "en")  # defaults to English
 
         url = next((
             x["url"]
