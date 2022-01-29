@@ -1,6 +1,5 @@
 import html
 import re
-import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -98,13 +97,6 @@ class NFO:
             self.preview_images = self.get_preview_images(self.preview)
         else:
             self.preview_images = []
-
-        if any(not x.language for x in self.audio + self.subtitles):
-            print(
-                "One or more Audio and/or Subtitle track has no Language specified.\n"
-                "All Audio and Subtitle tracks require a language to be set."
-            )
-            sys.exit(1)
 
     def __repr__(self) -> str:
         return "<{c} {attrs}>".format(
