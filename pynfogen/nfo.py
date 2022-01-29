@@ -37,6 +37,11 @@ class NFO:
         self.videos = [Video(x, self.file) for x in self.media_info.video_tracks]
         self.audio = [Audio(x, self.file) for x in self.media_info.audio_tracks]
         self.subtitles = [Subtitle(x, self.file) for x in self.media_info.text_tracks]
+        self.language = next((
+            lang.language
+            for lang in sorted(self.audio + self.subtitles, key=lambda x: x.streamorder)  # type: ignore
+            if lang.language
+        ), "en")  # defaults to English
 
         chapters = next(iter(self.media_info.menu_tracks), None)
         if chapters:
@@ -184,16 +189,10 @@ class NFO:
                 return None
             raise ValueError(f"An unexpected error occurred while calling Fanart.tv, {res}")
 
-        language = next((
-            lang.language
-            for lang in sorted(self.audio + self.subtitles, key=lambda x: x.streamorder)  # type: ignore
-            if lang.language
-        ), "en")  # defaults to English
-
         url = next((
             x["url"]
             for x in res.get("tvbanner") or []
-            if langcodes.closest_supported_match(x["lang"], [language], 5)
+            if langcodes.closest_supported_match(x["lang"], [self.language], 5)
         ), None)
 
         return url
