@@ -41,6 +41,8 @@ class Subtitle(BaseTrack):
         #       Only return the title/tags.
         if not self._x.title:
             return self.language
+        if not self.language:
+            return self._x.title
         if self.language.lower() in self._x.title.lower():
             return self._x.title
         return f"{self.language}, {self._x.title}"
