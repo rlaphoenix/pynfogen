@@ -184,14 +184,16 @@ class NFO:
                 return None
             raise ValueError(f"An unexpected error occurred while calling Fanart.tv, {res}")
 
+        language = next([
+            lang[0].language
+            for lang in sorted(self.audio, key=lambda x: x.streamorder)
+            if lang[0].language
+        ], "en")  # defaults to English
+
         url = next((
             x["url"]
             for x in res.get("tvbanner") or []
-            if langcodes.closest_supported_match(
-                x["lang"],
-                sorted(self.audio, key=lambda x: x.streamorder)[0].language,
-                max_distance=5
-            )
+            if langcodes.closest_supported_match(x["lang"], [language], 5)
         ), None)
 
         return url
