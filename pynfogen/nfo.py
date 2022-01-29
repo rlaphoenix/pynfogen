@@ -1,32 +1,19 @@
 import html
 import re
 import sys
-import textwrap
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import langcodes
 import requests
-from langcodes import Language
-from pyd2v import D2V
-from pymediainfo import MediaInfo, Track
+from pymediainfo import MediaInfo
 from tldextract import tldextract
 
 from pynfogen.formatter import CustomFormats
+from pynfogen.tracks import Audio, Subtitle, Video
 
 
 class NFO:
-    AUDIO_CHANNEL_LAYOUT_WEIGHT = {
-        "LFE": 0.1
-    }
-    DYNAMIC_RANGE_MAP = {
-        "SMPTE ST 2086": "HDR10",
-        "HDR10": "HDR10",
-        "SMPTE ST 2094 App 4": "HDR10+",
-        "HDR10+": "HDR10+",
-        "Dolby Vision": "DV"
-    }
-
     IMDB_ID_T = re.compile(r"^tt\d{7,8}$")
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
@@ -47,9 +34,9 @@ class NFO:
         self.episodes: int = self.get_episode_count()
         self.release_name = self.get_release_name()
 
-        self.videos = self.media_info.video_tracks
-        self.audio = self.media_info.audio_tracks
-        self.subtitles = self.media_info.text_tracks
+        self.videos = [Video(x, self.file) for x in self.media_info.video_tracks]
+        self.audio = [Audio(x, self.file) for x in self.media_info.audio_tracks]
+        self.subtitles = [Subtitle(x, self.file) for x in self.media_info.text_tracks]
 
         chapters = next(iter(self.media_info.menu_tracks), None)
         if chapters:
@@ -107,7 +94,7 @@ class NFO:
         else:
             self.preview_images = []
 
-        if any(not x.language or x.language == "und" for x in self.audio + self.subtitles):
+        if any(not x.language for x in self.audio + self.subtitles):
             print(
                 "One or more Audio and/or Subtitle track has no Language specified.\n"
                 "All Audio and Subtitle tracks require a language to be set."
@@ -235,90 +222,49 @@ class NFO:
 
         return images
 
-    def get_video_print(self, videos: List[Track]) -> List[List[str]]:
+    @staticmethod
+    def get_video_print(videos: List[Video]) -> List[List[str]]:
+        """Get Video track's as string representations."""
         if not videos:
             return [["--"]]
+
         data = []
-        for video in videos:
-            codec = {
-                "MPEG Video": f"MPEG-{(video.format_version or '').replace('Version ', '')}"
-            }.get(video.format, video.format)
-            scan_overview = video.scan_type
-            vst = False
-            if codec in ["MPEG-1", "MPEG-2"]:
-                # parse d2v file with pyd2v, generates D2V if needed
-                d2v = D2V.load(self.file)
-                self.file = d2v.path
-                # get every frames' flag data, this contains information on displaying frames
-                # add vob and cell number to each frames flag data as well
-                flags = [f for line in [
-                    [dict(**y, vob=x["vob"], cell=x["cell"]) for y in x["flags"]] for x in d2v.data
-                ] for f in line]
-                interlaced_percent = (sum(1 for f in flags if not f["progressive_frame"]) / len(flags)) * 100
-                if interlaced_percent == 100:
-                    scan_overview = "Interlaced (CST)"
-                else:
-                    scan_overview = f"{round(interlaced_percent, 2)}% Interlaced (VST)"
-                    vst = True
-                for ext in ["log", "d2v", "mpg", "mpeg"]:
-                    self.file.with_suffix(f".{ext}").unlink(missing_ok=True)
+        for v in videos:
+            data.append([
+                CustomFormats().vformat(
+                    "- <?{language:true}?{language}, ?>{codec} ({profile}) "
+                    "{width}x{height} ({dar}) @ {bitrate}<?{bit_rate_mode:true}? ({bit_rate_mode})?>",
+                    args=[],
+                    kwargs=v.all_properties
+                ),
+                CustomFormats().vformat(
+                    "  {fps} FPS ({frame_rate_mode}), {color_space} {chroma_subsampling} {bit_depth}bps, "
+                    "{range}, {scan}",
+                    args=[],
+                    kwargs=v.all_properties
+                )
+            ])
 
-            if video.hdr_format:
-                range_ = " ".join([self.DYNAMIC_RANGE_MAP.get(x) for x in video.hdr_format.split(" / ")])
-            elif "HLG" in ((video.transfer_characteristics or ""), (video.transfer_characteristics_original or "")):
-                range_ = "HLG"
-            else:
-                range_ = "SDR"
-
-            if video.language and video.language != "und":
-                language = Language.get(video.language).display_name()
-            else:
-                language = None
-
-            line_1 = CustomFormats().format(
-                "- <?{language:true}?{language}, ?>{codec} ({profile}) {width}x{height} ({aspect}) @ {bitrate}",
-                language=language,
-                codec=codec,
-                profile=video.format_profile,
-                width=video.width, height=video.height,
-                aspect=video.other_display_aspect_ratio[0],
-                bitrate=f"{video.other_bit_rate[0]}{f' ({video.bit_rate_mode})' if video.bit_rate_mode else ''}"
-            )
-
-            line_2 = CustomFormats().format(
-                "  {fps} FPS ({fps_mode}), {color_space}{subsampling}P{bit_depth}, {range}, {scan}",
-                fps=f"{video.framerate_num}/{video.framerate_den}" if video.framerate_num else video.frame_rate,
-                fps_mode="VFR" if vst else video.frame_rate_mode,
-                color_space=video.color_space,
-                subsampling=video.chroma_subsampling.replace(":", ""),
-                bit_depth=video.bit_depth,
-                range=range_,
-                scan=scan_overview
-            )
-
-            data.append([line_1, line_2])
-        return data
-
-    def get_audio_print(self, audio: List[Track]) -> List[str]:
-        if not audio:
-            return ["--"]
-        data = []
-        for t in audio:
-            if t.title and "Commentary" in t.title:
-                title = t.title
-            else:
-                title = Language.get(t.language).display_name()
-            if t.channel_layout:
-                channels = float(sum(self.AUDIO_CHANNEL_LAYOUT_WEIGHT.get(x, 1) for x in t.channel_layout.split(" ")))
-            else:
-                channels = float(t.channel_s)
-            bit_rate_mode = f" ({t.bit_rate_mode})" if t.bit_rate_mode else ""
-            l1 = f"- {title}, {t.format} {channels} @ {t.other_bit_rate[0]}{bit_rate_mode}"
-            data += [("  " + x if i > 0 else x) for i, x in enumerate(textwrap.wrap(l1, 64))]
         return data
 
     @staticmethod
-    def get_subtitle_print(subs: List[Track]) -> List[str]:
+    def get_audio_print(audio: List[Audio]) -> List[str]:
+        """Get Audio track's as string representations."""
+        if not audio:
+            return ["--"]
+
+        data = []
+        for a in audio:
+            data.append(CustomFormats().vformat(
+                "- {title}, {codec} {channels} @ {bitrate}<?{bit_rate_mode:true}? ({bit_rate_mode})?>",
+                args=[],
+                kwargs=a.all_properties
+            ))
+
+        return data
+
+    @staticmethod
+    def get_subtitle_print(subtitles: List[Subtitle]) -> List[str]:
         """
         Return a list of a brief subtitle overview per-subtitle.
 
@@ -333,48 +279,32 @@ class NFO:
 
         It will be returned as a list of strings with the `- ` already pre-pended to each entry.
         """
+        if not subtitles:
+            return ["--"]
+
         data = []
-        if not subs:
-            data.append("--")
-        for sub in subs:
-            line_items = []
+        for s in subtitles:
+            data.append(CustomFormats().vformat(
+                "- {title}, {codec}",
+                args=[],
+                kwargs=s.all_properties
+            ))
 
-            # following sub.title tree checks and supports three different language and title scenarios
-            # The second scenario is the recommended option to choose if you are open to choosing any
-            # The third scenario should be used if you have nothing unique to state about the track
-            # | Language     | Track Title                   | Output                                        |
-            # | ------------ | ----------------------------- | --------------------------------------------- |
-            # | es / Spanish | Spanish (Latin American, SDH) | - Spanish (Latin American, SDH), SubRip (SRT) |
-            # | es / Spanish | Latin American (SDH)          | - Spanish, Latin American (SDH), SubRip (SRT) |
-            # | es / Spanish | None                          | - Spanish, SubRip (SRT)                       |
-            language = Language.get(sub.language).display_name()
-            if sub.title:
-                if language.lower() in sub.title.lower():
-                    line_items.append(sub.title)
-                else:
-                    line_items.append(f"{language}, {sub.title}")
-            else:
-                line_items.append(language)
-
-            line_items.append(sub.format.replace("UTF-8", "SubRip (SRT)"))
-
-            line = "- " + ", ".join(line_items)
-            data += [
-                ("  " + x if i > 0 else x)
-                for i, x in enumerate(textwrap.wrap(line, 64))
-            ]
         return data
 
     @staticmethod
     def get_chapter_print(chapters: Dict[str, str]) -> List[str]:
+        """Get Chapter's as string representations."""
         if not chapters:
             return ["--"]
+
         return [
             f"- {k}: {v}"
             for k, v in chapters.items()
         ]
 
     def get_chapter_print_short(self, chapters: Dict[str, str]) -> str:
+        """Get string stating if there's Chapters, and if so, if named or numbered."""
         if not chapters:
             return "No"
         if self.chapters_numbered:
