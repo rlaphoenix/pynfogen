@@ -30,13 +30,15 @@ class Subtitle(BaseTrack):
         The third scenario is the recommended option to choose if you are open to choosing any,
         but the fourth scenario should be used if you have nothing unique to state about the track.
 
-        | Language     | Track Title                   | Output                          |
-        | ------------ | ----------------------------- | ------------------------------- |
-        | es / Spanish | Spanish                       | - Spanish                       |
-        | es / Spanish | Spanish (Latin American, SDH) | - Spanish (Latin American, SDH) |
-        | es / Spanish | Latin American (SDH)          | - Spanish, Latin American (SDH) |
-        | es / Spanish | None                          | - Spanish                       |
+        | Language     | Track Title                   | Output                        |
+        | ------------ | ----------------------------- | ----------------------------- |
+        | es / Spanish | Spanish                       | Spanish                       |
+        | es / Spanish | Spanish (Latin American, SDH) | Spanish (Latin American, SDH) |
+        | es / Spanish | Latin American (SDH)          | Spanish, Latin American (SDH) |
+        | es / Spanish | None                          | Spanish                       |
         """
+        # TODO: Exclude Language from all Title scenarios.
+        #       Only return the title/tags.
         if not self._x.title:
             return self.language
         if self.language.lower() in self._x.title.lower():
