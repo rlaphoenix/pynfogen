@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pytomlpp
+import toml
 from appdirs import user_data_dir
 
 
@@ -18,7 +18,7 @@ class Files:
 
 
 if Files.config.exists():
-    config = pytomlpp.load(Files.config)
+    config = toml.load(Files.config)
 else:
     config = {}
 

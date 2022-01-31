@@ -5,7 +5,7 @@ from pathlib import Path
 
 import click
 import jsonpickle
-import pytomlpp
+import toml
 from click_default_group import DefaultGroup
 from dunamai import Style, Version
 from unidecode import unidecode
@@ -108,7 +108,7 @@ def import_(file: Path):
     Directories.artwork.mkdir(parents=True, exist_ok=True)
     Directories.templates.mkdir(parents=True, exist_ok=True)
 
-    Files.config.write_text(pytomlpp.dumps(json["config"]))
+    Files.config.write_text(toml.dumps(json["config"]))
     print("Imported Configuration")
 
     for name, data in json["art"].items():
