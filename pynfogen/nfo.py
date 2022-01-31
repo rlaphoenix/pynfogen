@@ -1,10 +1,10 @@
-import html
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
 import langcodes
 import requests
+from imdb import IMDb
 from pymediainfo import MediaInfo
 from tldextract import tldextract
 
@@ -56,14 +56,14 @@ class NFO:
             self.chapters = {}
             self.chapters_numbered = False
 
-        self.imdb = imdb
-        if not self.imdb:
+        if not imdb:
             raise ValueError("An IMDB ID is required, but none were provided.")
-        if not self.IMDB_ID_T.match(self.imdb):
+        if not self.IMDB_ID_T.match(imdb):
             raise ValueError(
-                f"The provided IMDB ID `{self.imdb!r}` is not valid. "
+                f"The provided IMDB ID `{imdb!r}` is not valid. "
                 f"Expected e.g., 'tt0487831', 'tt10810424', (i.e., include the 'tt')."
             )
+        self.imdb = IMDb().get_movie(imdb.strip("tt"))
 
         self.tmdb = config.get("tmdb")
         if not self.tmdb:
@@ -83,7 +83,8 @@ class NFO:
                 f"Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us')."
             )
 
-        self.title_name, self.title_year = self.get_title_name_year()
+        self.title_name = self.imdb["title"]
+        self.title_year = self.imdb["series years"]
 
         if self.tvdb and self.fanart_api_key:
             self.banner_image = self.get_banner_image(self.tvdb)
@@ -126,22 +127,6 @@ class NFO:
         template = "\n".join(map(str.rstrip, template.splitlines(keepends=False)))
 
         return template
-
-    def get_title_name_year(self) -> Tuple[str, str]:
-        """Scrape Title Name and Year (including e.g. 2019-) from IMDB"""
-        r = self.session.get(f"https://www.imdb.com/title/{self.imdb}")
-        if r.status_code != 200:
-            raise ValueError(f"An unexpected error occurred getting IMDB Title Page [{r.status_code}]")
-        imdb_page = html.unescape(r.text)
-        imdb_title = re.search(
-            # testing ground: https://regex101.com/r/bEoEDn/1
-            r"<title>(?P<name>.+) \(((?P<type>TV (Movie|Series|Mini[- ]Series|Short|Episode) |Video |Short |)"
-            r"(?P<year>(\d{4})(|– |–\d{4})))\) - IMDb</title>",
-            imdb_page
-        )
-        if not imdb_title:
-            raise ValueError(f"Could not scrape Movie Title or Year for {self.imdb}...")
-        return imdb_title.group("name").strip(), imdb_title.group("year").strip()
 
     def get_episode_count(self) -> int:
         """Count episodes based on neighbouring same-extension files."""
