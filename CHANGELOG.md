@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2022-01-31
+
+### Added
+
+- Improved language equality check in `get_banner_image` via `langcodes.closest_supported_match`.
+- Created Video, Audio, Subtitle, and BaseTrack classes to override and tailor properties of `MediaInfo.Track`
+  objects for NFO usage.
+- Added CustomFormatter() usage to `get_video_print`, `get_audio_print`, and `get_subtitle_print` to allow for
+  the use of Templating system's custom formatter system, if chains, and so on.
+- Added language equality check against subtitles in `get_banner_image` if needed.
+- Set the default command to `generate`. Now `nfo ...` is identical to `nfo generate ...`.
+
+### Changed
+
+- Replaced `pytomlpp` with `toml` for more reliability on importing. Project won't lose out on the speed.
+- No tracks are checked for a specified language anymore. Languages on Video tracks may not be necessary
+  in every situation, and code has been updated to check language is available prior to use.
+- Merged `NFO.set_config` into `NFO`'s constructor for a simplified instantiation.
+- Merged `get_imdb_id`, `get_tmdb_id`, and `get_tvdb_id` into the `NFO` constructor.
+- Renamed `get_tv_episodes` to `get_episode_count`.
+- Audio track's title will no longer be returned if detected to just be the Language, Codec, or Channels.
+- Moved the default language code to `NFO` constructor as `language` property.
+
+### Fixed
+
+- Fixed information in the doc-string of `NFO.get_banner_image`.
+- Corrected the value of `__version__` value. Fixes `nfo version`'s value outside of git repositories.
+
 ## [1.1.1] - 2022-01-27
 
 ### Fixed
