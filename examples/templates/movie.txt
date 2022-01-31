@@ -12,7 +12,7 @@
 
 [HR][/HR]
 ?>
-Release: {release_name}
+Release: {file.stem}
 Title: {title_name}
 Type: Movie ({title_year})
 IMDb: https://imdb.com/title/{imdb}

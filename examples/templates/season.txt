@@ -12,7 +12,7 @@
 
 [HR][/HR]
 ?>
-Release: {release_name}
+Release: {file.parent.name}
 Title: {title_name}
 Type: TV ({title_year})
 Season: {season} ({episodes} Episodes)

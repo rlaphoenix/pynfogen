@@ -12,7 +12,7 @@
 
 [HR][/HR]
 ?>
-Release: {release_name}
+Release: {file.stem}
 Title: {title_name}
 Type: TV ({title_year})
 Episode: {season}x{episode} "{episode_name}"

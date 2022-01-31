@@ -31,7 +31,6 @@ class NFO:
         self.season: Union[int, str] = config.get("season")
         self.episode, self.episode_name = config.get("episode") or (None, None)
         self.episodes: int = self.get_episode_count()
-        self.release_name = self.get_release_name()
 
         self.videos = [Video(x, self.file) for x in self.media_info.video_tracks]
         self.audio = [Audio(x, self.file) for x in self.media_info.audio_tracks]
@@ -149,16 +148,6 @@ class NFO:
     def get_episode_count(self) -> int:
         """Count episodes based on neighbouring same-extension files."""
         return sum(1 for _ in self.file.parent.glob(f"*{self.file.suffix}"))
-
-    def get_release_name(self) -> str:
-        """
-        Retrieve the release name based on the file used during MediaInfo.
-        If a season was specified, but an episode number was not, it presumes the release is a Pack.
-        Hence when pack, it uses the parent folder's name as the release name.
-        """
-        if self.season is not None and self.episode is None:
-            return self.file.parent.name
-        return self.file.stem
 
     def get_banner_image(self, tvdb_id: int) -> Optional[str]:
         """
