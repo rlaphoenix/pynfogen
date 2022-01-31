@@ -2,7 +2,7 @@
 
   Title    : {title_name}
   Type     : Movie ({title_year})
-  IMDb     : https://imdb.com/title/{imdb}
+  IMDb     : https://imdb.com/title/tt{imdb.movieID}
   TMDB     : https://themoviedb.org/{tmdb}
   Preview  : {preview}
   Chapters : {chapters_yes_no}

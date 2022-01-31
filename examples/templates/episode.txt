@@ -16,7 +16,7 @@ Release: {file.stem}
 Title: {title_name}
 Type: TV ({title_year})
 Episode: {season}x{episode} "{episode_name}"
-IMDb: https://imdb.com/title/{imdb}
+IMDb: https://imdb.com/title/tt{imdb.movieID}
 TMDB: https://themoviedb.org/{tmdb}
 TVDB: https://thetvdb.com/?tab=series&id={tvdb}
 Preview: {preview}
