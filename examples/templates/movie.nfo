@@ -1,7 +1,7 @@
   {file.stem:>>2x68}
 
-  Title    : {title_name}
-  Type     : Movie ({title_year})
+  Title    : {imdb[title]}
+  Type     : Movie ({imdb[year]})
   IMDb     : https://imdb.com/title/tt{imdb.movieID}
   TMDB     : https://themoviedb.org/{tmdb}
   Preview  : {preview}

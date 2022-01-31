@@ -83,9 +83,6 @@ class NFO:
                 f"Expected e.g., '79216', '1395', (not the url slug e.g., 'the-office-us')."
             )
 
-        self.title_name = self.imdb["title"]
-        self.title_year = self.imdb["series years"]
-
         if self.tvdb and self.fanart_api_key:
             self.banner_image = self.get_banner_image(self.tvdb)
         else:

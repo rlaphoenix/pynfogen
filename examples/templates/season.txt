@@ -13,8 +13,8 @@
 [HR][/HR]
 ?>
 Release: {file.parent.name}
-Title: {title_name}
-Type: TV ({title_year})
+Title: {imdb[title]}
+Type: TV ({imdb[series years]})
 Season: {season} ({episodes} Episodes)
 IMDb: https://imdb.com/title/tt{imdb.movieID}
 TMDB: https://themoviedb.org/{tmdb}
