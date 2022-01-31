@@ -17,7 +17,7 @@ class NFO:
     TMDB_ID_T = re.compile(r"^(tv|movie)/\d+$")
     TVDB_ID_T = re.compile(r"^\d+$")
 
-    def __init__(self, file: Path, **config: Any) -> None:
+    def __init__(self, file: Path, imdb: str, **config: Any) -> None:
         self.session = self.get_session()
 
         self.file = file
@@ -56,9 +56,7 @@ class NFO:
             self.chapters = {}
             self.chapters_numbered = False
 
-        self.imdb = config.get("imdb")
-        if not self.imdb:
-            self.imdb = self.media_info.general_tracks[0].to_data().get("imdb")
+        self.imdb = imdb
         if not self.imdb:
             raise ValueError("An IMDB ID is required, but none were provided.")
         if not self.IMDB_ID_T.match(self.imdb):

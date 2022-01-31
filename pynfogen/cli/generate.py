@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Any, Optional, Union
 
 import click
+from pymediainfo import MediaInfo
 
 from pynfogen.config import Files, config
 from pynfogen.nfo import NFO
@@ -9,7 +10,7 @@ from pynfogen.nfo import NFO
 
 @click.group(context_settings=dict(default_map=config.get("generate", {})))
 @click.argument("file", type=Path)
-@click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
+@click.argument("imdb", type=str)
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
 @click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
 @click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
@@ -18,7 +19,13 @@ from pynfogen.nfo import NFO
 @click.option("-p", "--preview", type=str, default=None, help="Preview information, typically an URL.")
 @click.option("-e", "--encoding", type=str, default="utf8", help="Text-encoding for output, input is always UTF-8.")
 def generate(**__: Any) -> None:
-    """Generate an NFO and Description for a release."""
+    """
+    Generate an NFO and Description for a release.
+
+    \b
+    IMDb IDs are required and should include the `tt`.
+    TMDB and TVDB IDs may optionally be provided.
+    """
 
 
 @generate.command(name="season")
@@ -72,7 +79,7 @@ def movie() -> dict:
 
 @generate.result_callback()
 @click.pass_context
-def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str], imdb: Optional[str],
+def generator(ctx: click.Context, args: dict, file: Path, imdb: str, artwork: Optional[str],
               tmdb: Optional[str], tvdb: Optional[int], source: Optional[str], note: Optional[str],
               preview: Optional[str], encoding: str, *_: Any, **__: Any) -> None:
     if not isinstance(ctx, click.Context) or not ctx.invoked_subcommand:
@@ -82,10 +89,15 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
     if not file.exists():
         raise click.ClickException("The provided file path does not exist.")
 
+    if imdb == "-":
+        imdb = MediaInfo.parse(file).general_tracks[0].to_data().get("imdb")
+        if not imdb:
+            raise ValueError("No IMDB ID was found within the file's metadata.")
+
     nfo = NFO(
         file,
+        imdb,
         **dict(
-            imdb=imdb,
             tmdb=tmdb,
             tvdb=tvdb,
             source=source,
