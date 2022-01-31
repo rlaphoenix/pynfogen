@@ -9,13 +9,13 @@ from pynfogen.nfo import NFO
 
 @click.group(context_settings=dict(default_map=config.get("generate", {})))
 @click.argument("file", type=Path)
-@click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
 @click.option("-imdb", type=str, default=None, help="IMDB ID (including 'tt').")
 @click.option("-tmdb", type=str, default=None, help="TMDB ID (including 'tv/' or 'movie/').")
 @click.option("-tvdb", type=int, default=None, help="TVDB ID ('73244' not 'the-office-us').")
-@click.option("-S", "--source", type=str, default=None, help="Source information.")
-@click.option("-N", "--note", type=str, default=None, help="Notes/special information.")
-@click.option("-P", "--preview", type=str, default=None, help="Preview information, typically an URL.")
+@click.option("-a", "--artwork", type=str, default=None, help="Artwork to use.")
+@click.option("-s", "--source", type=str, default=None, help="Source information.")
+@click.option("-n", "--note", type=str, default=None, help="Notes/special information.")
+@click.option("-p", "--preview", type=str, default=None, help="Preview information, typically an URL.")
 @click.option("-e", "--encoding", type=str, default="utf8", help="Text-encoding for output, input is always UTF-8.")
 def generate(**__: Any) -> None:
     """Generate an NFO and Description for a release."""
