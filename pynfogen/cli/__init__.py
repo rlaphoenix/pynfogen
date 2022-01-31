@@ -6,6 +6,7 @@ from pathlib import Path
 import click
 import jsonpickle
 import pytomlpp
+from click_default_group import DefaultGroup
 from dunamai import Style, Version
 from unidecode import unidecode
 
@@ -18,10 +19,13 @@ from pynfogen.config import Directories, Files
 from pynfogen.config import config as config_data
 
 
-@click.group(context_settings=dict(
-    help_option_names=["-?", "-h", "--help"],
-    max_content_width=116  # max PEP8 line-width, -4 to adjust for initial indent
-))
+@click.group(
+    cls=DefaultGroup, default="generate", default_if_no_args=True,
+    context_settings=dict(
+        help_option_names=["-?", "-h", "--help"],
+        max_content_width=116  # max PEP8 line-width, -4 to adjust for initial indent
+    )
+)
 def cli() -> None:
     """
     \b
