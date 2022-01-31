@@ -119,17 +119,23 @@ def generator(ctx: click.Context, args: dict, file: Path, artwork: Optional[str]
         raise click.ClickException(f"No template named {template} exists.")
     template_text = template_path.read_text(encoding="utf8")
 
+    file_name = {
+        "season": file.parent.name,
+        "episode": file.stem,
+        "movie": file.stem
+    }[ctx.invoked_subcommand]
+
     nfo_txt = nfo.run(template_text, art=artwork_text, **template_vars)
-    nfo_out = Path(nfo.file).parent / f"{nfo.release_name}.nfo"
+    nfo_out = Path(nfo.file).parent / f"{file_name}.nfo"
     nfo_out.write_text(nfo_txt, encoding=encoding, errors="unidecode")
-    print(f"Generated NFO for {nfo.release_name}")
+    print(f"Generated NFO for {file_name}")
     print(f" + Saved to: {nfo_out}")
 
     description_path = Path(str(Files.description).format(name=template))
     if description_path.exists():
         description_text = description_path.read_text(encoding="utf8")
         description_txt = nfo.run(description_text, art=None, **template_vars)
-        description_out = Path(nfo.file).parent / f"{nfo.release_name}.desc.txt"
+        description_out = Path(nfo.file).parent / f"{file_name}.desc.txt"
         description_out.write_text(description_txt, encoding=encoding, errors="unidecode")
-        print(f"Generated Description for {nfo.release_name}")
+        print(f"Generated Description for {file_name}")
         print(f" + Saved to: {description_out}")
