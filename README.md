@@ -12,21 +12,6 @@ Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 
     pip install --user pynfogen
 
-## Development
-
-### Dependencies
-
-- [Python](https://python.org/downloads) (v3.7 or newer)
-- [Poetry](https://python-poetry.org/docs) (latest recommended)
-
-### Installation
-
-1. `git clone https://github.com/rlaphoenix/pynfogen`
-2. `cd pynfogen`
-3. `poetry config virtualenvs.in-project true` (optional, but recommended)
-4. `poetry install`
-5. `nfo -h`
-
 ## F.A.Q
 
 Using pynfogen is fairly simple, it's a multi-command CLI program. You can see up-to-date help information by
