@@ -243,8 +243,6 @@ Type-hint: center(var: Any, centering: int, wrap: int)
 
 Centers and also Text-wraps (while also centering wraps) to a specific width.
 
-## Contribute
+## License
 
-Please do contribute! Issues, pull requests, and discussion topics are welcome.
-
-Thank you to anyone who helps contribute to the project!
+[MIT License](LICENSE)
