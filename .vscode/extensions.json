@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker",
+        "tamasfe.even-better-toml",
+        "EditorConfig.EditorConfig",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}
