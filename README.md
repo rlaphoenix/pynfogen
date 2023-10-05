@@ -17,7 +17,6 @@ Scriptable MediaInfo-fed NFO Generator for Movies and TV.
 ### Dependencies
 
 - [Python](https://python.org/downloads) (v3.7 or newer)
-- [PIP](https://pip.pypa.io/en/stable/installing) (v19.0 or newer)
 - [Poetry](https://python-poetry.org/docs) (latest recommended)
 
 ### Installation
