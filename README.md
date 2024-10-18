@@ -1,5 +1,15 @@
 # pynfogen
 
+> [!IMPORTANT]  
+> This has been functionally replaced with <https://nfog.vercel.app>
+> 
+> This original version of pynfogen had upstream packages break that were quite critical,
+> but even then, a vast majority of users struggled to grasp the templating and CLI commands.
+> And to > be honest I can't blame anyone since really too many things were going on for a simple task.
+>
+> The new Web App version is a lot nicer to use with a lot of automation built into it
+> as well as an on-the-fly previewing system where you can see the variables available.
+
 [![License](https://img.shields.io/github/license/rlaphoenix/pynfogen)](https://github.com/rlaphoenix/pynfogen/blob/master/LICENSE)
 [![Build status](https://github.com/rlaphoenix/pynfogen/actions/workflows/ci.yml/badge.svg)](https://github.com/rlaphoenix/pynfogen/actions/workflows/ci.yml)
 [![Python version](https://img.shields.io/pypi/pyversions/pynfogen)](https://pypi.python.org/pypi/pynfogen)
