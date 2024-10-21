@@ -14,7 +14,7 @@ class BaseTrack:
         self._x = track
         self._path = path
         # common shorthands
-        self.bitrate = self._x.other_bit_rate[0]
+        self.bitrate = self._x.other_bit_rate[0] if self._x.track_type != "Text" else None
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._x, name)
